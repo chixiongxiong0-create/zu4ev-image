@@ -1,0 +1,30 @@
+--- a/include/linux/dma/xilinx_dma.h
++++ b/include/linux/dma/xilinx_dma.h
+@@ -43,5 +43,6 @@
+ 					struct xilinx_vdma_config *cfg);
+ 
+ int xilinx_vdma_channel_is_halted(struct dma_chan *dchan);
++int xilinx_vdma_channel_has_error(struct dma_chan *dchan);
+ 
+ #endif
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -2631,6 +2631,18 @@
+ }
+ EXPORT_SYMBOL_GPL(xilinx_vdma_channel_is_halted);
+ 
++/* Client-visible latched and current VDMA errors without mapping registers. */
++int xilinx_vdma_channel_has_error(struct dma_chan *dchan)
++{
++    struct xilinx_dma_chan *chan = to_xilinx_chan(dchan);
++
++    if (chan->xdev->dma_config->dmatype != XDMA_TYPE_VDMA)
++        return -EINVAL;
++    return READ_ONCE(chan->err) ||
++        !!(dma_ctrl_read(chan, XILINX_DMA_REG_DMASR) & XILINX_DMA_DMASR_ALL_ERR_MASK);
++}
++EXPORT_SYMBOL_GPL(xilinx_vdma_channel_has_error);
++
+ /* -----------------------------------------------------------------------------
+  * Probe and remove
+  */

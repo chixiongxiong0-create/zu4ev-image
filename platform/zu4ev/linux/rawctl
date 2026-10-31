@@ -1,0 +1,25 @@
+#!/bin/sh
+# Capture one coherent RAW10-in-u16 frame into a file.
+set -eu
+if [ "$#" -ne 2 ] || [ "$1" != "capture" ]; then
+    echo "Usage: rawctl capture OUTPUT.raw" >&2
+    exit 2
+fi
+output=$2
+case "$output" in
+    '') echo 'empty output path' >&2; exit 2 ;;
+esac
+tmp=$(mktemp "${output}.tmp.XXXXXX")
+trap 'rm -f -- "$tmp"' EXIT HUP INT TERM
+if ! cat /dev/sc130_raw10 > "$tmp"; then
+    echo 'RAW capture failed' >&2
+    exit 1
+fi
+bytes=$(wc -c < "$tmp")
+if [ "$bytes" -ne 2621440 ]; then
+    echo "RAW capture incomplete: ${bytes} bytes" >&2
+    exit 1
+fi
+mv -f -- "$tmp" "$output"
+trap - EXIT HUP INT TERM
+printf 'RAW10 saved: %s, 1280x1024, little-endian u16, 2621440 bytes\n' "$output"

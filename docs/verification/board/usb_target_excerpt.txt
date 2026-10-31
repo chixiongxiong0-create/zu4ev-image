@@ -1,0 +1,25 @@
+USB STREAMON fps=120; capture already running
+stats ns=1430474771456 capture=25799 sent=113 returned=112 invalid=0 drop=9 usb_error=0 dp_flips=25789 seq=30342 dp_held=2 usb_buf_error=0 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+stats ns=1431475057086 capture=25919 sent=233 returned=232 invalid=0 drop=9 usb_error=0 dp_flips=25909 seq=30462 dp_held=2 usb_buf_error=0 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+USB error kind=buffer count=1 ns=1432404383173 errno=0 streaming=1 on=1 index=0 flags=0x4040 bytesused=0 sequence=0 source_seq=30572 state=0
+stats ns=1432475338696 capture=26039 sent=353 returned=352 invalid=0 drop=9 usb_error=1 dp_flips=26029 seq=30582 dp_held=2 usb_buf_error=1 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+USB error kind=buffer count=2 ns=1432659875183 errno=0 streaming=1 on=1 index=0 flags=0x4040 bytesused=0 sequence=0 source_seq=30603 state=0
+USB error kind=buffer count=3 ns=1432802495099 errno=0 streaming=1 on=1 index=0 flags=0x4040 bytesused=0 sequence=0 source_seq=30620 state=0
+stats ns=1433475625346 capture=26159 sent=473 returned=472 invalid=0 drop=9 usb_error=3 dp_flips=26149 seq=30702 dp_held=2 usb_buf_error=3 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+stats ns=1434475905995 capture=26279 sent=593 returned=592 invalid=0 drop=9 usb_error=3 dp_flips=26269 seq=30822 dp_held=2 usb_buf_error=3 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+stats ns=1435476210555 capture=26399 sent=713 returned=712 invalid=0 drop=9 usb_error=3 dp_flips=26389 seq=30942 dp_held=2 usb_buf_error=3 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+stats ns=1436476494895 capture=26519 sent=833 returned=832 invalid=0 drop=9 usb_error=3 dp_flips=26509 seq=31062 dp_held=2 usb_buf_error=3 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+stats ns=1437476730275 capture=26639 sent=953 returned=952 invalid=0 drop=9 usb_error=3 dp_flips=26628 seq=31182 dp_held=2 usb_buf_error=3 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+stats ns=1438477223204 capture=26759 sent=1073 returned=1072 invalid=0 drop=9 usb_error=3 dp_flips=26749 seq=31302 dp_held=2 usb_buf_error=3 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+stats ns=1439477356194 capture=26879 sent=1193 returned=1192 invalid=0 drop=9 usb_error=3 dp_flips=26869 seq=31422 dp_held=2 usb_buf_error=3 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+USB stopped; capture and DP continue
+stats ns=1440477635884 capture=26999 sent=1237 returned=1236 invalid=0 drop=10 usb_error=3 dp_flips=26988 seq=31542 dp_held=2 usb_buf_error=3 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+stats ns=1441477915904 capture=27119 sent=1237 returned=1236 invalid=0 drop=10 usb_error=3 dp_flips=27108 seq=31662 dp_held=2 usb_buf_error=3 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+USB STREAMON fps=120; capture already running
+USB error kind=buffer count=4 ns=1619258600218 errno=0 streaming=1 on=1 index=0 flags=0x4040 bytesused=0 sequence=0 source_seq=52988 state=0
+USB error kind=buffer count=5 ns=1624266978497 errno=0 streaming=1 on=1 index=0 flags=0x4040 bytesused=0 sequence=0 source_seq=53589 state=0
+USB error kind=buffer count=6 ns=1635690690771 errno=0 streaming=1 on=1 index=0 flags=0x4040 bytesused=0 sequence=0 source_seq=54960 state=0
+USB error kind=buffer count=7 ns=1644099504055 errno=0 streaming=1 on=1 index=1 flags=0x4040 bytesused=0 sequence=0 source_seq=55969 state=0
+USB error kind=buffer count=8 ns=1644125881046 errno=0 streaming=1 on=1 index=0 flags=0x4040 bytesused=0 sequence=0 source_seq=55972 state=0
+USB error kind=buffer count=16 ns=1666350023079 errno=0 streaming=1 on=1 index=0 flags=0x4040 bytesused=0 sequence=0 source_seq=58638 state=0
+USB error kind=buffer count=32 ns=1716630825987 errno=0 streaming=1 on=1 index=0 flags=0x4040 bytesused=0 sequence=0 source_seq=64670 state=0

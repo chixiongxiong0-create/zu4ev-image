@@ -1,0 +1,23 @@
+CAPI=2:
+name: local:ibex:opentitan_peripherals:0.1
+description: Pinned OpenTitan timer, I2C, UART and GPIO behind an Ibex native bus
+filesets:
+  rtl:
+    depend:
+      - lowrisc:earlgrey_constants:top_pkg
+      - lowrisc:earlgrey_constants:top_racl_pkg
+      - lowrisc:prim_generic:all
+      - lowrisc:tlul:adapter_host
+      - lowrisc:tlul:socket_1n
+      - lowrisc:ip:rv_timer
+      - lowrisc:ip:i2c
+      - lowrisc:ip:uart
+      - lowrisc:earlgrey_ip:gpio
+    files:
+      - ibex_opentitan_tlul_bridge.sv
+      - ibex_opentitan_peripherals.sv
+    file_type: systemVerilogSource
+targets:
+  default:
+    filesets: [rtl]
+    toplevel: ibex_opentitan_peripherals

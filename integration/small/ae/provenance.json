@@ -1,0 +1,8 @@
+{
+  "origin": "E:\\workspace\\AI_Projects\\ZU4EV\\zynq-zu4ev_platform\\software\\r5-ae",
+  "policy_sha256": "c62ead530edf13b3508bc63eb6cc52b72cfc5ac300ff1ea4a6bd2c64c0dc76d7",
+  "local_policy_sha256": "c62ead530edf13b3508bc63eb6cc52b72cfc5ac300ff1ea4a6bd2c64c0dc76d7",
+  "r5_build_policy_sha256": "c62ead530edf13b3508bc63eb6cc52b72cfc5ac300ff1ea4a6bd2c64c0dc76d7",
+  "r5_elf_sha256": "bcb636ba558c07bdb4f150061846a36e7e2f828487badb7b0eba163f736183a6",
+  "main_source_matches_build_copy": true
+}

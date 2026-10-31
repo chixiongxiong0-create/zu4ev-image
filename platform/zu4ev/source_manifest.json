@@ -1,0 +1,1923 @@
+{
+  "format": 1,
+  "scope": "source-only publication; no SDK libraries or compiled artifacts",
+  "inputs": {
+    "source_manifest.json": "1ed7a6dee53942ba6754bfea9c5412ed5e575417b54ecfd1692ffa29e71b2137",
+    "integration_manifest.json": "598432126d84a43833a5de570e2a9789a8fd812fc99e65c0a825279b7463da5e"
+  },
+  "fsbl_prepared_variant_differences": [
+    "xfsbl_qspi.c"
+  ],
+  "excluded": [
+    {
+      "path": "software/r5-ae/.vscode/settings.json",
+      "reason": "machine/editor settings"
+    }
+  ],
+  "files": [
+    {
+      "path": "IBEX_ISP_MASTER.md",
+      "bytes": 5349,
+      "sha256": "2bfd62d52021407471a4583af7c7289dbeb37429ad775d6135a3e56b1780c861",
+      "origin": "frozen-v3/IBEX_ISP_MASTER.md"
+    },
+    {
+      "path": "LICENSES/AMD-Xilinx-MIT.txt",
+      "bytes": 1372,
+      "sha256": "323c587d0ccf10e376f8bf9a7f31fb4ca6078105194b42e0b1e0ee2bc9bde71f",
+      "origin": "vitis-2025.1/LICENSES/MIT"
+    },
+    {
+      "path": "LICENSES/GPL-2.0.txt",
+      "bytes": 18729,
+      "sha256": "f6b78c087c3ebdf0f3c13415070dd480a3f35d8fc76f3d02180a407c1c812f79",
+      "origin": "linux-source/LICENSES/preferred/GPL-2.0"
+    },
+    {
+      "path": "README.upstream.md",
+      "bytes": 4071,
+      "sha256": "3cf0977cfbeca0340efa4aab7d0c24d50085e682f0cb594bf0d3102204880d2c",
+      "origin": "frozen-v3/README.md",
+      "upstream_sha256": "3cf0977cfbeca0340efa4aab7d0c24d50085e682f0cb594bf0d3102204880d2c"
+    },
+    {
+      "path": "boot/bin_to_mcs.py",
+      "bytes": 2204,
+      "sha256": "216ab7faa01a79c1424ea843b0b836c73b3fbb0aacb99d181e32b2f3223a5df0",
+      "origin": "original-platform/boot/bin_to_mcs.py"
+    },
+    {
+      "path": "boot/build_atf.sh",
+      "bytes": 872,
+      "sha256": "f2c38f2770ef939aa8fe84a24574d62371cd165d8e3b82ad1f02e91345322c54",
+      "origin": "original-platform/boot/build_atf.sh"
+    },
+    {
+      "path": "boot/build_boot_bin.ps1",
+      "bytes": 1496,
+      "sha256": "3444da606feda9cf1c869473e09f4328817b34f323f6f6db9e698cb4bbe32aa0",
+      "origin": "original-platform/boot/build_boot_bin.ps1"
+    },
+    {
+      "path": "boot/build_uboot.sh",
+      "bytes": 2160,
+      "sha256": "fbf9015b6b8888fb9c2c74feb2c233f8a9bcdf20b321369a586b2c5e86c37ced",
+      "origin": "original-platform/boot/build_uboot.sh"
+    },
+    {
+      "path": "boot/build_uboot_ramtest.sh",
+      "bytes": 954,
+      "sha256": "28966a1317f139a047cfc8eb58714216367abf051edf9f5e736f54788e112426",
+      "origin": "original-platform/boot/build_uboot_ramtest.sh"
+    },
+    {
+      "path": "boot/fsbl/README.md",
+      "bytes": 3324,
+      "sha256": "2502c56b0883e52c3c724de05cac00c56ab79e8c36df5c41cf43f76e92818c7e",
+      "origin": "original-platform/boot/fsbl/README.md"
+    },
+    {
+      "path": "boot/fsbl/build_fsbl.ps1",
+      "bytes": 2125,
+      "sha256": "2c6dd99e258599b8c5bafa78a29c751ed1dc4ef56267583af19b5334942b9c12",
+      "origin": "original-platform/boot/fsbl/build_fsbl.ps1"
+    },
+    {
+      "path": "boot/fsbl/camera/camera_pipeline.c",
+      "bytes": 1729,
+      "sha256": "426815975b02349b0820b732924cdb54c982f3fcd129e54aa1f7e06b0a7ba16b",
+      "origin": "original-platform/boot/fsbl/camera/camera_pipeline.c"
+    },
+    {
+      "path": "boot/fsbl/camera/camera_pipeline.h",
+      "bytes": 206,
+      "sha256": "8b7969d808223a532dc3c86ce28283f18649f2bb80c67dec76d058ed7f1badcc",
+      "origin": "original-platform/boot/fsbl/camera/camera_pipeline.h"
+    },
+    {
+      "path": "boot/fsbl/camera/sc130_table.h",
+      "bytes": 2772,
+      "sha256": "5b52042b646b26d60a6867f062e2c9be20fbde27b486d7d5f400c87d2b3540bc",
+      "origin": "original-platform/boot/fsbl/camera/sc130_table.h"
+    },
+    {
+      "path": "boot/fsbl/camera/sensor_i2c.c",
+      "bytes": 7762,
+      "sha256": "3a48efe1dddcbc218bc8b0464385baed4759c7a911675668591c7f24d7896212",
+      "origin": "original-platform/boot/fsbl/camera/sensor_i2c.c"
+    },
+    {
+      "path": "boot/fsbl/check_layout.py",
+      "bytes": 855,
+      "sha256": "4aa0f53312c55644cfa309257ebb11eceb5bdba3ebd60c075a2e8df49fc2b959",
+      "origin": "original-platform/boot/fsbl/check_layout.py"
+    },
+    {
+      "path": "boot/fsbl/prepare_fsbl.py",
+      "bytes": 3948,
+      "sha256": "d77349d98ce8566f02c38eb53345e94b337a45ac7843e552ccbcc85b7f0fce85",
+      "origin": "original-platform/boot/fsbl/prepare_fsbl.py"
+    },
+    {
+      "path": "boot/fsbl/prepared/camera_pipeline.c",
+      "bytes": 1729,
+      "sha256": "426815975b02349b0820b732924cdb54c982f3fcd129e54aa1f7e06b0a7ba16b",
+      "origin": "frozen-production-fsbl/camera_pipeline.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/camera_pipeline.h",
+      "bytes": 206,
+      "sha256": "8b7969d808223a532dc3c86ce28283f18649f2bb80c67dec76d058ed7f1badcc",
+      "origin": "frozen-production-fsbl/camera_pipeline.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/lscript.ld",
+      "bytes": 7185,
+      "sha256": "df036ee67a3ebcbb17dabf3cc7b1cdf91ccad78f1d15b69791485aa5fce6f78a",
+      "origin": "frozen-production-fsbl/lscript.ld"
+    },
+    {
+      "path": "boot/fsbl/prepared/psu_init.c",
+      "bytes": 822637,
+      "sha256": "6129d07602822c668b1228d122f284e111426ee9b0aaa3be4bd9dff436854fdd",
+      "origin": "frozen-production-fsbl/psu_init.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/psu_init.h",
+      "bytes": 1422911,
+      "sha256": "1b8bbc7a18ad617689bbf2e73cafc6ab0731ce2341d22689e7c9b8e8d7e8c2b5",
+      "origin": "frozen-production-fsbl/psu_init.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/ram_boot_support.c",
+      "bytes": 240,
+      "sha256": "c8190008a344c58577c554915c9bdec5efd6f280f1942c370c29b780a6766a37",
+      "origin": "frozen-production-fsbl/ram_boot_support.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/sc130_iic_clock.c",
+      "bytes": 1553,
+      "sha256": "f725712e127c99a51b72fbdfcfe59874ab77b46330e72e326d2f3232a1e3e4c3",
+      "origin": "frozen-production-fsbl/sc130_iic_clock.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/sc130_power.c",
+      "bytes": 748,
+      "sha256": "ccce7e0dffa4644486f74aa4d1e97b1bea11dbdf889206434f2c132aeac0c67c",
+      "origin": "frozen-production-fsbl/sc130_power.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/sc130_sensor_start.c",
+      "bytes": 1080,
+      "sha256": "09e692696c226032313e93f66ab3e968d185ca0fed47a3aa70ce799f6536e83f",
+      "origin": "frozen-production-fsbl/sc130_sensor_start.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/sc130_table.h",
+      "bytes": 2772,
+      "sha256": "5b52042b646b26d60a6867f062e2c9be20fbde27b486d7d5f400c87d2b3540bc",
+      "origin": "frozen-production-fsbl/sc130_table.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/sensor_i2c.c",
+      "bytes": 7867,
+      "sha256": "3d05987d7c2423e973b0f1e87245431efca05c4fab99ebe2e988e392a1297f0b",
+      "origin": "frozen-production-fsbl/sensor_i2c.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_authentication.c",
+      "bytes": 23508,
+      "sha256": "f507337e75b07bc90c69a701c46a676be3e62595730be3198dc12ad9d607074f",
+      "origin": "frozen-production-fsbl/xfsbl_authentication.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_authentication.h",
+      "bytes": 4274,
+      "sha256": "cbc305237c320eac0d73d37a1ce5cf1cf2ee1f242d1957be46fa7b942fc310dc",
+      "origin": "frozen-production-fsbl/xfsbl_authentication.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_board.c",
+      "bytes": 25602,
+      "sha256": "b701597e9bc5f11522753e4ae909a83b1906e97185e8f73112cdf8f169256b0b",
+      "origin": "frozen-production-fsbl/xfsbl_board.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_board.h",
+      "bytes": 5325,
+      "sha256": "f5f2012f7cc812b21f3cbb57a945b0359317508d235912f3a1237ec89109fbdd",
+      "origin": "frozen-production-fsbl/xfsbl_board.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_bs.c",
+      "bytes": 10804,
+      "sha256": "3cbf55ed5befd2e7b3793bff0a0c47b3ddca9759addc1f32522366e7a8af24fe",
+      "origin": "frozen-production-fsbl/xfsbl_bs.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_bs.h",
+      "bytes": 2633,
+      "sha256": "d32f64567cdf62bd904e53e0ecc931a8cc72012c64f411481e43fe3229c2f812",
+      "origin": "frozen-production-fsbl/xfsbl_bs.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_config.h",
+      "bytes": 8898,
+      "sha256": "9dccc404b601e0142c8ba557223a4d37234a847628fa4bc628bbab0d26905ea7",
+      "origin": "frozen-production-fsbl/xfsbl_config.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_csu_dma.c",
+      "bytes": 2466,
+      "sha256": "c81b78d391a7b6bd9ede72c2ad6fdc317486f076ba874698f6d72d0608f97345",
+      "origin": "frozen-production-fsbl/xfsbl_csu_dma.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_csu_dma.h",
+      "bytes": 1757,
+      "sha256": "3555c89381e62b795dfae93bf88f59b371f067fb14358b292e77b1aef5d2b09f",
+      "origin": "frozen-production-fsbl/xfsbl_csu_dma.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_ddr_init.c",
+      "bytes": 220896,
+      "sha256": "c8e07683ea4a0f2422d4180ba8d513aee84a1ec4d858cbcb7c0d1a43053d0765",
+      "origin": "frozen-production-fsbl/xfsbl_ddr_init.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_ddr_init.h",
+      "bytes": 46957,
+      "sha256": "584cd67653524f6881cf38a74700d971787c2930e84dd2f4edf6843f1c0757e8",
+      "origin": "frozen-production-fsbl/xfsbl_ddr_init.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_debug.h",
+      "bytes": 2894,
+      "sha256": "45e43755da936dc753ab18f7fd7a10774a8ee765ca42a92117f6501a719909c8",
+      "origin": "frozen-production-fsbl/xfsbl_debug.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_dfu_util.c",
+      "bytes": 18617,
+      "sha256": "92ffc34c28fd20c89e6819c5a13c839312f025f7c934d51eb3f7218d3e78eb4a",
+      "origin": "frozen-production-fsbl/xfsbl_dfu_util.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_dfu_util.h",
+      "bytes": 6171,
+      "sha256": "9913f8557975da0944be4cacc3a562c943c71adde24b9e87efebad1f626e8ece",
+      "origin": "frozen-production-fsbl/xfsbl_dfu_util.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_error.h",
+      "bytes": 8061,
+      "sha256": "2c318617bff3f9442421064ad387496a2704331d75c0452b73f68282919a1069",
+      "origin": "frozen-production-fsbl/xfsbl_error.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_exit.S",
+      "bytes": 5446,
+      "sha256": "42d7cdf68b2ea475db69b63237fcc166d4e8974d3ba1afcb9e420c3a80fb5132",
+      "origin": "frozen-production-fsbl/xfsbl_exit.S"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_handoff.c",
+      "bytes": 33154,
+      "sha256": "fdcb573a74dee36c5267e08ec24fb31c2b976893941d69f203e0fd556b4ee695",
+      "origin": "frozen-production-fsbl/xfsbl_handoff.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_hooks.c",
+      "bytes": 6903,
+      "sha256": "1e203e9647ded36e5163cf2c542a9503a7373ad9b11d885c09b68ce3e9106406",
+      "origin": "frozen-production-fsbl/xfsbl_hooks.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_hooks.h",
+      "bytes": 1608,
+      "sha256": "df24ec2a7988303fb72623b1580692609d622db172fa7266f4311c117c4424ee",
+      "origin": "frozen-production-fsbl/xfsbl_hooks.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_hw.h",
+      "bytes": 35305,
+      "sha256": "f8dc576e02f3f8678600e210eda7ee7b7a6713c15b112078da88036d6cb5d1f7",
+      "origin": "frozen-production-fsbl/xfsbl_hw.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_image_header.c",
+      "bytes": 26102,
+      "sha256": "3610aebe8559a140de05d97006a9222826c632377872f39a7f7edde2dae190e3",
+      "origin": "frozen-production-fsbl/xfsbl_image_header.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_image_header.h",
+      "bytes": 11802,
+      "sha256": "655ab411675992be6c0440b445d98a67db9f813e6c216c5399744987c5cf4e9a",
+      "origin": "frozen-production-fsbl/xfsbl_image_header.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_initialization.c",
+      "bytes": 61910,
+      "sha256": "270ea261a9b338f4850b3206f17c6525e13681f10f9174b7ae81fe86c5469c6b",
+      "origin": "frozen-production-fsbl/xfsbl_initialization.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_main.c",
+      "bytes": 16432,
+      "sha256": "e250095245a35d91c31604803062ec1fdc5b410f6eb5b350d90f771276574fa2",
+      "origin": "frozen-production-fsbl/xfsbl_main.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_main.h",
+      "bytes": 6774,
+      "sha256": "7ce060d1c6b1f28f3a829b86408d4bfb36c734509408020c4acdd6b998578274",
+      "origin": "frozen-production-fsbl/xfsbl_main.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_misc.c",
+      "bytes": 23148,
+      "sha256": "bbadaf9f926d7cf10ea22f243f99046a9be9a1a3ab252d67f3d399ac0752807e",
+      "origin": "frozen-production-fsbl/xfsbl_misc.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_misc.h",
+      "bytes": 2680,
+      "sha256": "bb30c250bc6de2a128714a6e160c3720d596f747ad9b894e9b8ed2423fcc29fe",
+      "origin": "frozen-production-fsbl/xfsbl_misc.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_misc_drivers.c",
+      "bytes": 9165,
+      "sha256": "32600457788744ffd5bee54cf662fdbedc997dbb56dc1f2fbb3455681cae67d1",
+      "origin": "frozen-production-fsbl/xfsbl_misc_drivers.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_misc_drivers.h",
+      "bytes": 2575,
+      "sha256": "4b96bd0eee4e445503182d9b2907c14ecfdb7b87dece14737b54fb6674f06adc",
+      "origin": "frozen-production-fsbl/xfsbl_misc_drivers.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_nand.c",
+      "bytes": 4957,
+      "sha256": "fe6f0bb441a77837579f76e803d4f8283043e32f419cf5a765c79ab2cb65ed7b",
+      "origin": "frozen-production-fsbl/xfsbl_nand.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_partition_load.c",
+      "bytes": 58316,
+      "sha256": "04abf26e9449f01e48322d90775acf89290e0cb6cb2b3b44f69fee3bcfef06cc",
+      "origin": "frozen-production-fsbl/xfsbl_partition_load.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_plpartition_valid.c",
+      "bytes": 33747,
+      "sha256": "8420ae7bebd5f494c2339d560fc8547436bbf9211f86f46b1e230bc087a54beb",
+      "origin": "frozen-production-fsbl/xfsbl_plpartition_valid.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_plpartition_valid.h",
+      "bytes": 3894,
+      "sha256": "8b0641a89c514c39613ff1bec46c7e6d98eb6101159d8a0b9b9ce798c96cd2f3",
+      "origin": "frozen-production-fsbl/xfsbl_plpartition_valid.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_qspi.c",
+      "bytes": 43111,
+      "sha256": "ac1f2b1381b59a8ae589b8c2e1341428711a765bda24b1a0c72edaf56fb26e7d",
+      "origin": "frozen-production-fsbl/xfsbl_qspi.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_qspi.h",
+      "bytes": 7442,
+      "sha256": "e60dfe9945d06d9c8c25d5020358b8082f02bb4a688402d7f69e02f6d4bdd1a2",
+      "origin": "frozen-production-fsbl/xfsbl_qspi.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_rsa_sha.c",
+      "bytes": 5268,
+      "sha256": "fef6abbf699b9245c536d5f90e173dcd16b43ec76d1068898c5afcf921cc72d7",
+      "origin": "frozen-production-fsbl/xfsbl_rsa_sha.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_sd.c",
+      "bytes": 4890,
+      "sha256": "a966ec80e41b27f312730be692c79326021e702aefee4b22ec785d307cab1cbf",
+      "origin": "frozen-production-fsbl/xfsbl_sd.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_tpm.c",
+      "bytes": 13211,
+      "sha256": "b772be16375a645dc3c057c111d73ee47c17bef1450d022cc1027e8dddb57703",
+      "origin": "frozen-production-fsbl/xfsbl_tpm.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_tpm.h",
+      "bytes": 4091,
+      "sha256": "60f089618bf917038ec22c35d13a3a8ea978e99e2293c6cbfe33c32574426228",
+      "origin": "frozen-production-fsbl/xfsbl_tpm.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_tpm_util.c",
+      "bytes": 9287,
+      "sha256": "8f8a14aff0d4839e4f7169bc170ae682ea70d1f080558a1a580b1f093b4ea500",
+      "origin": "frozen-production-fsbl/xfsbl_tpm_util.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_translation_table.S",
+      "bytes": 11162,
+      "sha256": "fa5f0b07829603a9c993a73ce8f3288faa4655f5b011033a8a3a2227e21ee522",
+      "origin": "frozen-production-fsbl/xfsbl_translation_table.S"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_usb.c",
+      "bytes": 13258,
+      "sha256": "f34c364aaba38e12ac84621a959bc4df57b5c330aa32b1e044df0cf818af95a1",
+      "origin": "frozen-production-fsbl/xfsbl_usb.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xfsbl_usb.h",
+      "bytes": 3266,
+      "sha256": "93ceb1b7b873ece02618750c3ad5f73b8f94b9ea053ff0980af8650a7ea4d5f6",
+      "origin": "frozen-production-fsbl/xfsbl_usb.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xiicps.c",
+      "bytes": 10273,
+      "sha256": "af58e4e720ce7b987cb64f2d67b12cfeb0b55ca075ec0abfb9c45fac150ba617",
+      "origin": "frozen-production-fsbl/xiicps.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xiicps.h",
+      "bytes": 13187,
+      "sha256": "41742b8eb025363119a572547ded912a92448d4630826548ba2785f65f4bf9ba",
+      "origin": "frozen-production-fsbl/xiicps.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xiicps_hw.c",
+      "bytes": 6190,
+      "sha256": "7235dae9f790b4eefeccce421426fba63d8f7a72363ac4f06828ba860f49bc2c",
+      "origin": "frozen-production-fsbl/xiicps_hw.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xiicps_hw.h",
+      "bytes": 13490,
+      "sha256": "0013bcfc147a4c7fc1e60bba7368b5742b638661afb7fdf7efb8dab3223b3d9a",
+      "origin": "frozen-production-fsbl/xiicps_hw.h"
+    },
+    {
+      "path": "boot/fsbl/prepared/xiicps_master.c",
+      "bytes": 24572,
+      "sha256": "6e002edfd94b80b0dfdd54215c0a536e5fbe06380d7a40f0418b6e52066e3b10",
+      "origin": "frozen-production-fsbl/xiicps_master.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xiicps_options.c",
+      "bytes": 14746,
+      "sha256": "702a5b1789fbab9df73d13e1ea572a78ee34fca29abae67d2b2d99b63212c450",
+      "origin": "frozen-production-fsbl/xiicps_options.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xiicps_xfer.c",
+      "bytes": 11521,
+      "sha256": "628414e27016be423ca950af493d522556587e4e04f1eef0e1ce7b10ecffbc1f",
+      "origin": "frozen-production-fsbl/xiicps_xfer.c"
+    },
+    {
+      "path": "boot/fsbl/prepared/xiicps_xfer.h",
+      "bytes": 3992,
+      "sha256": "94a72a32a8c1e1a18a0506c998de88c69e9e1cb612da483cec91bccc7ef64a0b",
+      "origin": "frozen-production-fsbl/xiicps_xfer.h"
+    },
+    {
+      "path": "boot/fsbl/ram_boot_support.c",
+      "bytes": 240,
+      "sha256": "c8190008a344c58577c554915c9bdec5efd6f280f1942c370c29b780a6766a37",
+      "origin": "original-platform/boot/fsbl/ram_boot_support.c"
+    },
+    {
+      "path": "boot/fsbl/ramtest/xfsbl_qspi.c",
+      "bytes": 45181,
+      "sha256": "30bb9fde06c9e0b9065d09b47e29eff38089149e868dbd2cfdf45c7a690026dc",
+      "origin": "frozen-ramtest-fsbl/xfsbl_qspi.c"
+    },
+    {
+      "path": "boot/fsbl/sc130_power.c",
+      "bytes": 748,
+      "sha256": "ccce7e0dffa4644486f74aa4d1e97b1bea11dbdf889206434f2c132aeac0c67c",
+      "origin": "original-platform/boot/fsbl/sc130_power.c"
+    },
+    {
+      "path": "boot/fsbl/sc130_sensor_start.c",
+      "bytes": 1080,
+      "sha256": "09e692696c226032313e93f66ab3e968d185ca0fed47a3aa70ce799f6536e83f",
+      "origin": "original-platform/boot/fsbl/sc130_sensor_start.c"
+    },
+    {
+      "path": "boot/fsbl/test_prepare.py",
+      "bytes": 1202,
+      "sha256": "cbea0c2aa77aa443e9259da7b07ea2309280616a151691d18226ae6ca1fc4d43",
+      "origin": "original-platform/boot/fsbl/test_prepare.py"
+    },
+    {
+      "path": "boot/fsbl/tests/test_power.c",
+      "bytes": 1053,
+      "sha256": "8d4433c0050b8ca58b317273a1be1103a515ee40bd0cbb4c5c684bd6656dccb4",
+      "origin": "original-platform/boot/fsbl/tests/test_power.c"
+    },
+    {
+      "path": "boot/package_qspi.py",
+      "bytes": 2969,
+      "sha256": "6029ccffe72be1f1bd956bb6d83950da042df7658cb04fdbd47b11138b11dff4",
+      "origin": "original-platform/boot/package_qspi.py"
+    },
+    {
+      "path": "boot/test_package_qspi.py",
+      "bytes": 749,
+      "sha256": "f38344229ce7dcdd04326818ae5b9a709531f8cfe1b156e5086748ba5b93f9b5",
+      "origin": "original-platform/boot/test_package_qspi.py"
+    },
+    {
+      "path": "boot/zumini-sc130-qspi.dts",
+      "bytes": 525,
+      "sha256": "7e4d6ad4b9205a7e3a07cc12e269afd0e3f4e4fb95f0c58eccba96311703e021",
+      "origin": "original-platform/boot/zumini-sc130-qspi.dts"
+    },
+    {
+      "path": "constraints/board.xdc",
+      "bytes": 812,
+      "sha256": "08ce5b55db95eb1567792ec111b3ea57d0f1884880972496b2e1a2146d57dcba",
+      "origin": "frozen-v3/constraints/board.xdc",
+      "upstream_sha256": "08ce5b55db95eb1567792ec111b3ea57d0f1884880972496b2e1a2146d57dcba"
+    },
+    {
+      "path": "constraints/pl_ddr4.xdc",
+      "bytes": 3721,
+      "sha256": "46fc4addd489e0f5bce3b33d575309a1e18cc14f058ebb24617866efdac76282",
+      "origin": "frozen-v3/constraints/pl_ddr4.xdc",
+      "upstream_sha256": "46fc4addd489e0f5bce3b33d575309a1e18cc14f058ebb24617866efdac76282"
+    },
+    {
+      "path": "docs/full_ae_project.md",
+      "bytes": 2774,
+      "sha256": "23986dec2ae755ef56e3056827d6d7b14b879dcecbeea85a9b927fd0f792eeae",
+      "origin": "frozen-v3/docs/full_ae_project.md",
+      "upstream_sha256": "23986dec2ae755ef56e3056827d6d7b14b879dcecbeea85a9b927fd0f792eeae"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/lscript.ld",
+      "bytes": 7185,
+      "sha256": "df036ee67a3ebcbb17dabf3cc7b1cdf91ccad78f1d15b69791485aa5fce6f78a",
+      "origin": "generated-fsbl-application/lscript.ld"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/psu_init.c",
+      "bytes": 822637,
+      "sha256": "6129d07602822c668b1228d122f284e111426ee9b0aaa3be4bd9dff436854fdd",
+      "origin": "generated-fsbl-application/psu_init.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/psu_init.h",
+      "bytes": 1422911,
+      "sha256": "1b8bbc7a18ad617689bbf2e73cafc6ab0731ce2341d22689e7c9b8e8d7e8c2b5",
+      "origin": "generated-fsbl-application/psu_init.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_authentication.c",
+      "bytes": 23508,
+      "sha256": "f507337e75b07bc90c69a701c46a676be3e62595730be3198dc12ad9d607074f",
+      "origin": "generated-fsbl-application/xfsbl_authentication.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_authentication.h",
+      "bytes": 4274,
+      "sha256": "cbc305237c320eac0d73d37a1ce5cf1cf2ee1f242d1957be46fa7b942fc310dc",
+      "origin": "generated-fsbl-application/xfsbl_authentication.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_board.c",
+      "bytes": 25602,
+      "sha256": "b701597e9bc5f11522753e4ae909a83b1906e97185e8f73112cdf8f169256b0b",
+      "origin": "generated-fsbl-application/xfsbl_board.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_board.h",
+      "bytes": 5325,
+      "sha256": "f5f2012f7cc812b21f3cbb57a945b0359317508d235912f3a1237ec89109fbdd",
+      "origin": "generated-fsbl-application/xfsbl_board.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_bs.c",
+      "bytes": 10804,
+      "sha256": "3cbf55ed5befd2e7b3793bff0a0c47b3ddca9759addc1f32522366e7a8af24fe",
+      "origin": "generated-fsbl-application/xfsbl_bs.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_bs.h",
+      "bytes": 2633,
+      "sha256": "d32f64567cdf62bd904e53e0ecc931a8cc72012c64f411481e43fe3229c2f812",
+      "origin": "generated-fsbl-application/xfsbl_bs.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_config.h",
+      "bytes": 8898,
+      "sha256": "9dccc404b601e0142c8ba557223a4d37234a847628fa4bc628bbab0d26905ea7",
+      "origin": "generated-fsbl-application/xfsbl_config.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_csu_dma.c",
+      "bytes": 2466,
+      "sha256": "c81b78d391a7b6bd9ede72c2ad6fdc317486f076ba874698f6d72d0608f97345",
+      "origin": "generated-fsbl-application/xfsbl_csu_dma.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_csu_dma.h",
+      "bytes": 1757,
+      "sha256": "3555c89381e62b795dfae93bf88f59b371f067fb14358b292e77b1aef5d2b09f",
+      "origin": "generated-fsbl-application/xfsbl_csu_dma.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_ddr_init.c",
+      "bytes": 220896,
+      "sha256": "c8e07683ea4a0f2422d4180ba8d513aee84a1ec4d858cbcb7c0d1a43053d0765",
+      "origin": "generated-fsbl-application/xfsbl_ddr_init.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_ddr_init.h",
+      "bytes": 46957,
+      "sha256": "584cd67653524f6881cf38a74700d971787c2930e84dd2f4edf6843f1c0757e8",
+      "origin": "generated-fsbl-application/xfsbl_ddr_init.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_debug.h",
+      "bytes": 2894,
+      "sha256": "45e43755da936dc753ab18f7fd7a10774a8ee765ca42a92117f6501a719909c8",
+      "origin": "generated-fsbl-application/xfsbl_debug.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_dfu_util.c",
+      "bytes": 18617,
+      "sha256": "92ffc34c28fd20c89e6819c5a13c839312f025f7c934d51eb3f7218d3e78eb4a",
+      "origin": "generated-fsbl-application/xfsbl_dfu_util.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_dfu_util.h",
+      "bytes": 6171,
+      "sha256": "9913f8557975da0944be4cacc3a562c943c71adde24b9e87efebad1f626e8ece",
+      "origin": "generated-fsbl-application/xfsbl_dfu_util.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_error.h",
+      "bytes": 8061,
+      "sha256": "2c318617bff3f9442421064ad387496a2704331d75c0452b73f68282919a1069",
+      "origin": "generated-fsbl-application/xfsbl_error.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_exit.S",
+      "bytes": 5446,
+      "sha256": "42d7cdf68b2ea475db69b63237fcc166d4e8974d3ba1afcb9e420c3a80fb5132",
+      "origin": "generated-fsbl-application/xfsbl_exit.S"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_handoff.c",
+      "bytes": 33154,
+      "sha256": "fdcb573a74dee36c5267e08ec24fb31c2b976893941d69f203e0fd556b4ee695",
+      "origin": "generated-fsbl-application/xfsbl_handoff.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_hooks.c",
+      "bytes": 5863,
+      "sha256": "35d0fe1f292166c36b09addb2aebb239c97583e66ceea3379a494689a4dd1f20",
+      "origin": "generated-fsbl-application/xfsbl_hooks.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_hooks.h",
+      "bytes": 1608,
+      "sha256": "df24ec2a7988303fb72623b1580692609d622db172fa7266f4311c117c4424ee",
+      "origin": "generated-fsbl-application/xfsbl_hooks.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_hw.h",
+      "bytes": 35305,
+      "sha256": "f8dc576e02f3f8678600e210eda7ee7b7a6713c15b112078da88036d6cb5d1f7",
+      "origin": "generated-fsbl-application/xfsbl_hw.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_image_header.c",
+      "bytes": 26102,
+      "sha256": "3610aebe8559a140de05d97006a9222826c632377872f39a7f7edde2dae190e3",
+      "origin": "generated-fsbl-application/xfsbl_image_header.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_image_header.h",
+      "bytes": 11802,
+      "sha256": "655ab411675992be6c0440b445d98a67db9f813e6c216c5399744987c5cf4e9a",
+      "origin": "generated-fsbl-application/xfsbl_image_header.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_initialization.c",
+      "bytes": 61910,
+      "sha256": "270ea261a9b338f4850b3206f17c6525e13681f10f9174b7ae81fe86c5469c6b",
+      "origin": "generated-fsbl-application/xfsbl_initialization.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_main.c",
+      "bytes": 16432,
+      "sha256": "e250095245a35d91c31604803062ec1fdc5b410f6eb5b350d90f771276574fa2",
+      "origin": "generated-fsbl-application/xfsbl_main.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_main.h",
+      "bytes": 6774,
+      "sha256": "7ce060d1c6b1f28f3a829b86408d4bfb36c734509408020c4acdd6b998578274",
+      "origin": "generated-fsbl-application/xfsbl_main.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_misc.c",
+      "bytes": 23148,
+      "sha256": "bbadaf9f926d7cf10ea22f243f99046a9be9a1a3ab252d67f3d399ac0752807e",
+      "origin": "generated-fsbl-application/xfsbl_misc.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_misc.h",
+      "bytes": 2680,
+      "sha256": "bb30c250bc6de2a128714a6e160c3720d596f747ad9b894e9b8ed2423fcc29fe",
+      "origin": "generated-fsbl-application/xfsbl_misc.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_misc_drivers.c",
+      "bytes": 9165,
+      "sha256": "32600457788744ffd5bee54cf662fdbedc997dbb56dc1f2fbb3455681cae67d1",
+      "origin": "generated-fsbl-application/xfsbl_misc_drivers.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_misc_drivers.h",
+      "bytes": 2575,
+      "sha256": "4b96bd0eee4e445503182d9b2907c14ecfdb7b87dece14737b54fb6674f06adc",
+      "origin": "generated-fsbl-application/xfsbl_misc_drivers.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_nand.c",
+      "bytes": 4957,
+      "sha256": "fe6f0bb441a77837579f76e803d4f8283043e32f419cf5a765c79ab2cb65ed7b",
+      "origin": "generated-fsbl-application/xfsbl_nand.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_partition_load.c",
+      "bytes": 58316,
+      "sha256": "04abf26e9449f01e48322d90775acf89290e0cb6cb2b3b44f69fee3bcfef06cc",
+      "origin": "generated-fsbl-application/xfsbl_partition_load.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_plpartition_valid.c",
+      "bytes": 33747,
+      "sha256": "8420ae7bebd5f494c2339d560fc8547436bbf9211f86f46b1e230bc087a54beb",
+      "origin": "generated-fsbl-application/xfsbl_plpartition_valid.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_plpartition_valid.h",
+      "bytes": 3894,
+      "sha256": "8b0641a89c514c39613ff1bec46c7e6d98eb6101159d8a0b9b9ce798c96cd2f3",
+      "origin": "generated-fsbl-application/xfsbl_plpartition_valid.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_qspi.c",
+      "bytes": 43111,
+      "sha256": "ac1f2b1381b59a8ae589b8c2e1341428711a765bda24b1a0c72edaf56fb26e7d",
+      "origin": "generated-fsbl-application/xfsbl_qspi.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_qspi.h",
+      "bytes": 7442,
+      "sha256": "e60dfe9945d06d9c8c25d5020358b8082f02bb4a688402d7f69e02f6d4bdd1a2",
+      "origin": "generated-fsbl-application/xfsbl_qspi.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_rsa_sha.c",
+      "bytes": 5268,
+      "sha256": "fef6abbf699b9245c536d5f90e173dcd16b43ec76d1068898c5afcf921cc72d7",
+      "origin": "generated-fsbl-application/xfsbl_rsa_sha.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_sd.c",
+      "bytes": 4890,
+      "sha256": "a966ec80e41b27f312730be692c79326021e702aefee4b22ec785d307cab1cbf",
+      "origin": "generated-fsbl-application/xfsbl_sd.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_tpm.c",
+      "bytes": 13211,
+      "sha256": "b772be16375a645dc3c057c111d73ee47c17bef1450d022cc1027e8dddb57703",
+      "origin": "generated-fsbl-application/xfsbl_tpm.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_tpm.h",
+      "bytes": 4091,
+      "sha256": "60f089618bf917038ec22c35d13a3a8ea978e99e2293c6cbfe33c32574426228",
+      "origin": "generated-fsbl-application/xfsbl_tpm.h"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_tpm_util.c",
+      "bytes": 9287,
+      "sha256": "8f8a14aff0d4839e4f7169bc170ae682ea70d1f080558a1a580b1f093b4ea500",
+      "origin": "generated-fsbl-application/xfsbl_tpm_util.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_translation_table.S",
+      "bytes": 11162,
+      "sha256": "fa5f0b07829603a9c993a73ce8f3288faa4655f5b011033a8a3a2227e21ee522",
+      "origin": "generated-fsbl-application/xfsbl_translation_table.S"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_usb.c",
+      "bytes": 13258,
+      "sha256": "f34c364aaba38e12ac84621a959bc4df57b5c330aa32b1e044df0cf818af95a1",
+      "origin": "generated-fsbl-application/xfsbl_usb.c"
+    },
+    {
+      "path": "firmware/boot_reference/zynqmp_fsbl/xfsbl_usb.h",
+      "bytes": 3266,
+      "sha256": "93ceb1b7b873ece02618750c3ad5f73b8f94b9ea053ff0980af8650a7ea4d5f6",
+      "origin": "generated-fsbl-application/xfsbl_usb.h"
+    },
+    {
+      "path": "hardware/camera_clocks.tcl",
+      "bytes": 3250,
+      "sha256": "da8165a6fba8db97c5714e20357be92bf017161e12885c785bee9f033c91e362",
+      "origin": "frozen-v3/hardware/camera_clocks.tcl",
+      "upstream_sha256": "da8165a6fba8db97c5714e20357be92bf017161e12885c785bee9f033c91e362"
+    },
+    {
+      "path": "hardware/camera_ila.tcl",
+      "bytes": 3276,
+      "sha256": "cc18ffe9801f4e06c0bbab748f149576a3bedb3d136bf3ccf70d9ae798e68395",
+      "origin": "frozen-v3/hardware/camera_ila.tcl",
+      "upstream_sha256": "cc18ffe9801f4e06c0bbab748f149576a3bedb3d136bf3ccf70d9ae798e68395"
+    },
+    {
+      "path": "hardware/csi2_rx_uvc.tcl",
+      "bytes": 3328,
+      "sha256": "1491631963ad741edf5f3be37b50aa15bc7035bb9d537ed6fb9e1e2fd9c3af4c",
+      "origin": "frozen-v3/hardware/csi2_rx_uvc.tcl",
+      "upstream_sha256": "1491631963ad741edf5f3be37b50aa15bc7035bb9d537ed6fb9e1e2fd9c3af4c"
+    },
+    {
+      "path": "hardware/pl_ddr4.tcl",
+      "bytes": 1410,
+      "sha256": "0d21412aeba1159db3fdc5058600a99c530d407734a35f4e421de374cb5f444d",
+      "origin": "frozen-v3/hardware/pl_ddr4.tcl",
+      "upstream_sha256": "0d21412aeba1159db3fdc5058600a99c530d407734a35f4e421de374cb5f444d"
+    },
+    {
+      "path": "hardware/ps_system.tcl",
+      "bytes": 76544,
+      "sha256": "c0310056b0bc8cbe39ac0d1ba3c261628437fabc23d4b5f5ad36998fd8c7da5c",
+      "origin": "frozen-v3/hardware/ps_system.tcl",
+      "upstream_sha256": "c0310056b0bc8cbe39ac0d1ba3c261628437fabc23d4b5f5ad36998fd8c7da5c"
+    },
+    {
+      "path": "hardware/uvc_ila.tcl",
+      "bytes": 3066,
+      "sha256": "d205eaf7e63ae8d60b89f719f4f17f17d93977c70c9b877ff5243560f2e9d9d6",
+      "origin": "frozen-v3/hardware/uvc_ila.tcl",
+      "upstream_sha256": "d205eaf7e63ae8d60b89f719f4f17f17d93977c70c9b877ff5243560f2e9d9d6"
+    },
+    {
+      "path": "isp/README.md",
+      "bytes": 5139,
+      "sha256": "95348f8e5d939b08d03f82630892b7c2b98b78a0ed65f1867175ee0e55ea668e",
+      "origin": "frozen-v3/isp/README.md",
+      "upstream_sha256": "95348f8e5d939b08d03f82630892b7c2b98b78a0ed65f1867175ee0e55ea668e"
+    },
+    {
+      "path": "isp/ae/README.md",
+      "bytes": 4575,
+      "sha256": "73fe737c34c7634891a2facde36b66335c447d0f037d830ff4bf90d36ae47cbc",
+      "origin": "frozen-v3/isp/ae/README.md",
+      "upstream_sha256": "73fe737c34c7634891a2facde36b66335c447d0f037d830ff4bf90d36ae47cbc"
+    },
+    {
+      "path": "isp/ae/ae_stats_raw10.sv",
+      "bytes": 5922,
+      "sha256": "38e998e988f775e395c399a82d145f5773433ea37be255731e629cc20b30ddef",
+      "origin": "frozen-v3/isp/ae/ae_stats_raw10.sv",
+      "upstream_sha256": "38e998e988f775e395c399a82d145f5773433ea37be255731e629cc20b30ddef"
+    },
+    {
+      "path": "isp/black_corrected_tone_lut.mem",
+      "bytes": 4096,
+      "sha256": "f0d352ced86d8fe73900436e6360ac4754a4d35a691ad85515442620acf7888e",
+      "origin": "frozen-v3/isp/black_corrected_tone_lut.mem",
+      "upstream_sha256": "f0d352ced86d8fe73900436e6360ac4754a4d35a691ad85515442620acf7888e"
+    },
+    {
+      "path": "isp/generate_rtl.py",
+      "bytes": 2912,
+      "sha256": "02415b68c7822bc845de5ea8042bf67b94c89e13fed34ca9a556e89525c2cd1f",
+      "origin": "frozen-v3/isp/generate_rtl.py",
+      "upstream_sha256": "02415b68c7822bc845de5ea8042bf67b94c89e13fed34ca9a556e89525c2cd1f"
+    },
+    {
+      "path": "isp/isp.v",
+      "bytes": 9307,
+      "sha256": "88e27d9fc2581680a7078592c313e33d25ba757fe45e6e1de9b015055c1e440f",
+      "origin": "frozen-v3/isp/isp.v",
+      "upstream_sha256": "819f2c1b442732084f02317aa1a7bbf605428200d5baaee619047867ada900f0"
+    },
+    {
+      "path": "isp/isp_capture_frontend.sv",
+      "bytes": 6125,
+      "sha256": "fbfb965d983ba0b35f6c906cb230e2bb8303bda9e8a7e1069c00f3069fc788e5",
+      "origin": "frozen-v3/isp/isp_capture_frontend.sv",
+      "upstream_sha256": "22fddc40f4cff544dcfee97602efd0041e2340a013a4773f4171ea16a5390b14"
+    },
+    {
+      "path": "isp/ltm/PROCESSOR.md",
+      "bytes": 5304,
+      "sha256": "f2422a800260c062796f8816273e96e1806c39e555fe71844bf9fcd9b7a17e42",
+      "origin": "frozen-v3/isp/ltm/PROCESSOR.md",
+      "upstream_sha256": "f2422a800260c062796f8816273e96e1806c39e555fe71844bf9fcd9b7a17e42"
+    },
+    {
+      "path": "isp/ltm/README.md",
+      "bytes": 5114,
+      "sha256": "38fc9a219b226a20323fbdbf22c1d7110db8114069986180f79eb483cd9507a7",
+      "origin": "frozen-v3/isp/ltm/README.md",
+      "upstream_sha256": "38fc9a219b226a20323fbdbf22c1d7110db8114069986180f79eb483cd9507a7"
+    },
+    {
+      "path": "isp/ltm/add_to_project.tcl",
+      "bytes": 1093,
+      "sha256": "4a5f11b38ac92299b00f6099dafac8089e0eabfb7ab0093f923bae6e227fb38c",
+      "origin": "frozen-v3/isp/ltm/add_to_project.tcl",
+      "upstream_sha256": "4a5f11b38ac92299b00f6099dafac8089e0eabfb7ab0093f923bae6e227fb38c"
+    },
+    {
+      "path": "isp/ltm/base_tone.coe",
+      "bytes": 6274,
+      "sha256": "8a22f4ef16e627846fd5ce46657e79e2d4c2179fd38a29aa9441bc085177061e",
+      "origin": "frozen-v3/isp/ltm/base_tone.coe",
+      "upstream_sha256": "8a22f4ef16e627846fd5ce46657e79e2d4c2179fd38a29aa9441bc085177061e"
+    },
+    {
+      "path": "isp/ltm/base_tone.json",
+      "bytes": 382,
+      "sha256": "63c80a2b56143f592fada578bde1f4154730168a92715de5044b4317aa977762",
+      "origin": "frozen-v3/isp/ltm/base_tone.json",
+      "upstream_sha256": "63c80a2b56143f592fada578bde1f4154730168a92715de5044b4317aa977762"
+    },
+    {
+      "path": "isp/ltm/bilateral_kernel.sv",
+      "bytes": 4631,
+      "sha256": "33848870b1c3369ef359ccf14739454f698232c4c495f4e1d7f2c237047bc043",
+      "origin": "frozen-v3/isp/ltm/bilateral_kernel.sv",
+      "upstream_sha256": "33848870b1c3369ef359ccf14739454f698232c4c495f4e1d7f2c237047bc043"
+    },
+    {
+      "path": "isp/ltm/bilateral_layers.sv",
+      "bytes": 5810,
+      "sha256": "98d19356a948c8a95d2ef9daa0cacc02b166d39a7a4ab6b2fe78df23f96c4de1",
+      "origin": "frozen-v3/isp/ltm/bilateral_layers.sv",
+      "upstream_sha256": "98d19356a948c8a95d2ef9daa0cacc02b166d39a7a4ab6b2fe78df23f96c4de1"
+    },
+    {
+      "path": "isp/ltm/create_ingress_ip.tcl",
+      "bytes": 1024,
+      "sha256": "a8992a36693a88524c54a39698f20fc749532e3544f0490a08b8b5f38676fe40",
+      "origin": "frozen-v3/isp/ltm/create_ingress_ip.tcl",
+      "upstream_sha256": "a8992a36693a88524c54a39698f20fc749532e3544f0490a08b8b5f38676fe40"
+    },
+    {
+      "path": "isp/ltm/create_ip.tcl",
+      "bytes": 1335,
+      "sha256": "5dc13fa601faeeac98b40356a62d05c2475dc22fcb82ff159a5d6e1c45d414a3",
+      "origin": "frozen-v3/isp/ltm/create_ip.tcl",
+      "upstream_sha256": "5dc13fa601faeeac98b40356a62d05c2475dc22fcb82ff159a5d6e1c45d414a3"
+    },
+    {
+      "path": "isp/ltm/create_tone_bank_ip.tcl",
+      "bytes": 1706,
+      "sha256": "cbf9126a6a751cf1e79a1b92e9a7957207ff5bb4615322eb89d2d752c9e2b872",
+      "origin": "frozen-v3/isp/ltm/create_tone_bank_ip.tcl",
+      "upstream_sha256": "cbf9126a6a751cf1e79a1b92e9a7957207ff5bb4615322eb89d2d752c9e2b872"
+    },
+    {
+      "path": "isp/ltm/create_tone_ip.tcl",
+      "bytes": 1566,
+      "sha256": "1248c52c9d562fc27708269c8fe2d2d007b8516fe733e74576090ba04369a46c",
+      "origin": "frozen-v3/isp/ltm/create_tone_ip.tcl",
+      "upstream_sha256": "1248c52c9d562fc27708269c8fe2d2d007b8516fe733e74576090ba04369a46c"
+    },
+    {
+      "path": "isp/ltm/generate_range_lut.py",
+      "bytes": 1146,
+      "sha256": "e7a754d099d2b1ded6d1815e3754f6ec684af7331fc7a39aa72d8140bd2a2f30",
+      "origin": "frozen-v3/isp/ltm/generate_range_lut.py",
+      "upstream_sha256": "e7a754d099d2b1ded6d1815e3754f6ec684af7331fc7a39aa72d8140bd2a2f30"
+    },
+    {
+      "path": "isp/ltm/generate_tone_rom.py",
+      "bytes": 1291,
+      "sha256": "8a7d40babc9cf3e0904dcc543529e425ce9a17fadae3742cb648c760b82a1e91",
+      "origin": "frozen-v3/isp/ltm/generate_tone_rom.py",
+      "upstream_sha256": "8a7d40babc9cf3e0904dcc543529e425ce9a17fadae3742cb648c760b82a1e91"
+    },
+    {
+      "path": "isp/ltm/isp_axi_regs.sv",
+      "bytes": 8803,
+      "sha256": "4c8a7152253c91809696c6f90f8a0e1f768df22e452b8e051dc78bf2bdb2446a",
+      "origin": "frozen-v3/isp/ltm/isp_axi_regs.sv",
+      "upstream_sha256": "4c8a7152253c91809696c6f90f8a0e1f768df22e452b8e051dc78bf2bdb2446a"
+    },
+    {
+      "path": "isp/ltm/ltm_camera_ingress.sv",
+      "bytes": 4974,
+      "sha256": "da6615f73bc6ab5f25196222e73fc5f0b117076ee0faaebd09f9e83114dc43b2",
+      "origin": "frozen-v3/isp/ltm/ltm_camera_ingress.sv",
+      "upstream_sha256": "da6615f73bc6ab5f25196222e73fc5f0b117076ee0faaebd09f9e83114dc43b2"
+    },
+    {
+      "path": "isp/ltm/ltm_processor.sv",
+      "bytes": 6575,
+      "sha256": "b5d713c351a003c59cdfe6d6baaaf8a83f8234314cbdffd861b6d8ca920f6585",
+      "origin": "frozen-v3/isp/ltm/ltm_processor.sv",
+      "upstream_sha256": "b5d713c351a003c59cdfe6d6baaaf8a83f8234314cbdffd861b6d8ca920f6585"
+    },
+    {
+      "path": "isp/ltm/range_lut.svh",
+      "bytes": 6769,
+      "sha256": "75bca330be5aee72a4ccd2e7afb1646d02b4b054184faf001d2b6fdb2d56b77b",
+      "origin": "frozen-v3/isp/ltm/range_lut.svh",
+      "upstream_sha256": "75bca330be5aee72a4ccd2e7afb1646d02b4b054184faf001d2b6fdb2d56b77b"
+    },
+    {
+      "path": "isp/ltm/range_lut128.svh",
+      "bytes": 13576,
+      "sha256": "1f85c52b332a36cd046965db283e1cabca7aec9edb70b77c309bd51e9ae9300b",
+      "origin": "frozen-v3/isp/ltm/range_lut128.svh",
+      "upstream_sha256": "1f85c52b332a36cd046965db283e1cabca7aec9edb70b77c309bd51e9ae9300b"
+    },
+    {
+      "path": "isp/ltm/range_lut32.svh",
+      "bytes": 3366,
+      "sha256": "d37c3acd6bfb3a0f909781d8ece718106f2e94847308b0fc6758518885e8b0aa",
+      "origin": "frozen-v3/isp/ltm/range_lut32.svh",
+      "upstream_sha256": "d37c3acd6bfb3a0f909781d8ece718106f2e94847308b0fc6758518885e8b0aa"
+    },
+    {
+      "path": "isp/ltm/unsigned_divider.sv",
+      "bytes": 1503,
+      "sha256": "19a2bf5c5c10f60ce2ba105a00e74d16a4a6ef6258781b6bf6bdb862b9831241",
+      "origin": "frozen-v3/isp/ltm/unsigned_divider.sv",
+      "upstream_sha256": "19a2bf5c5c10f60ce2ba105a00e74d16a4a6ef6258781b6bf6bdb862b9831241"
+    },
+    {
+      "path": "isp/raw10_to_yuy2.v",
+      "bytes": 1446,
+      "sha256": "addff3826f26a388c8b7b7eab890f2d54f79bc8bc24a461858495ae80160250c",
+      "origin": "frozen-v3/isp/raw10_to_yuy2.v",
+      "upstream_sha256": "addff3826f26a388c8b7b7eab890f2d54f79bc8bc24a461858495ae80160250c"
+    },
+    {
+      "path": "isp/sc130_tonemap_yuy2.v",
+      "bytes": 27716,
+      "sha256": "c7533d066e4a09e2dfe97984f9e68541fac81b143360ea1847c20e688dd4cb24",
+      "origin": "frozen-v3/isp/sc130_tonemap_yuy2.v",
+      "upstream_sha256": "c7533d066e4a09e2dfe97984f9e68541fac81b143360ea1847c20e688dd4cb24"
+    },
+    {
+      "path": "isp/tnr/create_ip.tcl",
+      "bytes": 1230,
+      "sha256": "37141ab294ded8f1807a05990ecbc8428e4b025b9c0594e089c026c88b8f7d5f",
+      "origin": "frozen-v3/isp/tnr/create_ip.tcl",
+      "upstream_sha256": "37141ab294ded8f1807a05990ecbc8428e4b025b9c0594e089c026c88b8f7d5f"
+    },
+    {
+      "path": "isp/tnr/isp_tnr_node.sv",
+      "bytes": 9137,
+      "sha256": "2ab94a5f4c3a294c2dfbd4a435700504dc586d7a3f33650381d4a5cce02085ef",
+      "origin": "frozen-v3/isp/tnr/isp_tnr_node.sv",
+      "upstream_sha256": "2ab94a5f4c3a294c2dfbd4a435700504dc586d7a3f33650381d4a5cce02085ef"
+    },
+    {
+      "path": "isp/tnr/tnr_axi_regs.sv",
+      "bytes": 5299,
+      "sha256": "be858c5282728abf1f05a04fe65b36c69af06851bd2d7ef496dae678d3039096",
+      "origin": "frozen-v3/isp/tnr/tnr_axi_regs.sv",
+      "upstream_sha256": "be858c5282728abf1f05a04fe65b36c69af06851bd2d7ef496dae678d3039096"
+    },
+    {
+      "path": "isp/tnr/tnr_core.sv",
+      "bytes": 14890,
+      "sha256": "44a474f4b283dfc779cc1154cc777fe02ae262d6bc8ee8fe5d8f10e0713a2948",
+      "origin": "frozen-v3/isp/tnr/tnr_core.sv",
+      "upstream_sha256": "44a474f4b283dfc779cc1154cc777fe02ae262d6bc8ee8fe5d8f10e0713a2948"
+    },
+    {
+      "path": "isp/tnr/tnr_ddr_bist.sv",
+      "bytes": 4549,
+      "sha256": "74cc61584653f5c46497550993cd0975f59da04c1962f7c255eaca45a4d40a04",
+      "origin": "frozen-v3/isp/tnr/tnr_ddr_bist.sv",
+      "upstream_sha256": "74cc61584653f5c46497550993cd0975f59da04c1962f7c255eaca45a4d40a04"
+    },
+    {
+      "path": "isp/tone_config.json",
+      "bytes": 363,
+      "sha256": "12fc0f8a62ea734d27bc56e83876aa989015d7eb0ddefb535c8401a669945598",
+      "origin": "frozen-v3/isp/tone_config.json",
+      "upstream_sha256": "12fc0f8a62ea734d27bc56e83876aa989015d7eb0ddefb535c8401a669945598"
+    },
+    {
+      "path": "linux/README.md",
+      "bytes": 10240,
+      "sha256": "faf0f033b75570883361e1eec7dbf36f4d0a3e322b7fadd673904d91b98c978f",
+      "origin": "original-platform/linux/README.md"
+    },
+    {
+      "path": "linux/build.sh",
+      "bytes": 7205,
+      "sha256": "4e841e23995ba9affcf965343ed8bad0e58e46d3b92b35e220ffc79e0d3d2808",
+      "origin": "original-platform/linux/build.sh"
+    },
+    {
+      "path": "linux/dt/sc130-pl.dtsi",
+      "bytes": 3420,
+      "sha256": "34517155be232a9634f1213e5d8c2a87ed7c9d276b5dbd3b66201988e8f65492",
+      "origin": "original-platform/linux/dt/sc130-pl.dtsi"
+    },
+    {
+      "path": "linux/dt/sc130-uvc.dts",
+      "bytes": 2978,
+      "sha256": "01ea06f8d0d1957da296c203af1b1bd6fff4759ffc1929d61dc486630a7b6ac2",
+      "origin": "original-platform/linux/dt/sc130-uvc.dts"
+    },
+    {
+      "path": "linux/flash-boot.c",
+      "bytes": 6486,
+      "sha256": "3b763311345ffd18245e4de7fd1849de34d48fbecb22944fcdf0a6f86a65e9c3",
+      "origin": "original-platform/linux/flash-boot.c"
+    },
+    {
+      "path": "linux/initramfs-init.sh",
+      "bytes": 504,
+      "sha256": "132c4d2be67de916ee271215c265c8747e99db133ba8c0a65418b1f975b76884",
+      "origin": "original-platform/linux/initramfs-init.sh"
+    },
+    {
+      "path": "linux/kernel/Makefile",
+      "bytes": 126,
+      "sha256": "c6b6438ec2aeb9918db7348259432ba2526cc78c39da01a0f9e62b17d9b68b7b",
+      "origin": "original-platform/linux/kernel/Makefile"
+    },
+    {
+      "path": "linux/kernel/dual_core.h",
+      "bytes": 3809,
+      "sha256": "6a73b2f78861c5363749fbbfb92bd0606dd733afe12c2686a66b9079a033454e",
+      "origin": "original-platform/linux/kernel/dual_core.h"
+    },
+    {
+      "path": "linux/kernel/raw_capture_contract.c",
+      "bytes": 558,
+      "sha256": "671c194050c911a1ada958eaceae11946e649918bd32b913ba67983f7f9d9a00",
+      "origin": "original-platform/linux/kernel/raw_capture_contract.c"
+    },
+    {
+      "path": "linux/kernel/raw_capture_contract.h",
+      "bytes": 433,
+      "sha256": "e7622668edac615b782d63d70fcc55fbfd1e83551aa3e4fc74d305f5fd7e32ec",
+      "origin": "original-platform/linux/kernel/raw_capture_contract.h"
+    },
+    {
+      "path": "linux/kernel/sc130_capture.c",
+      "bytes": 21968,
+      "sha256": "9904bfe87688603337bb17b916d66f02442d8ccaad64d34c7ee2ddbccb630c52",
+      "origin": "original-platform/linux/kernel/sc130_capture.c"
+    },
+    {
+      "path": "linux/kernel/sc130_contract.h",
+      "bytes": 971,
+      "sha256": "497700b250388d9c349077758da9b40e6dca3fdf19d7ff76fda9e025ee5affff",
+      "origin": "original-platform/linux/kernel/sc130_contract.h"
+    },
+    {
+      "path": "linux/kernel/sc130_raw_capture.c",
+      "bytes": 10211,
+      "sha256": "7f18d05f61fc025ba3fa0bb512485b26b8e1adf7127b153867c4f0b5da5345b0",
+      "origin": "original-platform/linux/kernel/sc130_raw_capture.c"
+    },
+    {
+      "path": "linux/patches/0001-uvc-allow-ss-only-descriptors.patch",
+      "bytes": 613,
+      "sha256": "17793e4fb528678668f707c5066bf8b25c251abae1ac0db19363d977854d6ca7",
+      "origin": "original-platform/linux/patches/0001-uvc-allow-ss-only-descriptors.patch"
+    },
+    {
+      "path": "linux/patches/0002-vdma-export-halted-query.patch",
+      "bytes": 1019,
+      "sha256": "a7a4e6710e99e06441ea56deb5cb6f021ae29e894a3ed19e43a5cbf90c90d6c4",
+      "origin": "original-platform/linux/patches/0002-vdma-export-halted-query.patch"
+    },
+    {
+      "path": "linux/patches/0003-zynqmp-vblank-on-active-modeset-only.patch",
+      "bytes": 1578,
+      "sha256": "aad864d5a0afe014ea6c75e1836fcf7307dc6bff1782a67e7c7f4675b781f49f",
+      "origin": "original-platform/linux/patches/0003-zynqmp-vblank-on-active-modeset-only.patch"
+    },
+    {
+      "path": "linux/patches/0004-vdma-single-frame-program-all-address-slots.patch",
+      "bytes": 1141,
+      "sha256": "0b06e38cc71d97f8702372c988dd8a374e085ca4abbaf8247319ce8fce1b210d",
+      "origin": "original-platform/linux/patches/0004-vdma-single-frame-program-all-address-slots.patch"
+    },
+    {
+      "path": "linux/patches/0005-dp-fast-detect-and-connect-poll.patch",
+      "bytes": 1787,
+      "sha256": "d8dcb12ecb1d16b26fac3d2071ba8d4f8065038718f1b078ea1ecd2cc8dfd373",
+      "origin": "original-platform/linux/patches/0005-dp-fast-detect-and-connect-poll.patch"
+    },
+    {
+      "path": "linux/patches/0006-vdma-error-query.patch",
+      "bytes": 995,
+      "sha256": "1ca44a40ad881d597c2f83bf5b8e091e99e941821c4b0eaf55f41b4a2d096424",
+      "origin": "original-platform/linux/patches/0006-vdma-error-query.patch"
+    },
+    {
+      "path": "linux/raw10check.c",
+      "bytes": 1946,
+      "sha256": "7f445043c2dfe1d8420f472db5ab875fb28907178aab34c8a637863ecb69dc0f",
+      "origin": "original-platform/linux/raw10check.c"
+    },
+    {
+      "path": "linux/rawctl",
+      "bytes": 691,
+      "sha256": "1263b539500479b0383818944db419cb82413cbedcfc017c67211400bde7e590",
+      "origin": "original-platform/linux/rawctl"
+    },
+    {
+      "path": "linux/setup_uvc.sh",
+      "bytes": 4278,
+      "sha256": "0d49cce530afd598ca3baf126ade68788b04e4711ac3dcb991ce9a9c34eaa84e",
+      "origin": "original-platform/linux/setup_uvc.sh"
+    },
+    {
+      "path": "linux/stage-frame.c",
+      "bytes": 2784,
+      "sha256": "8b40303030ef5d671f8632657a97b475353f393ae109d644ceebf8105045b871",
+      "origin": "original-platform/linux/stage-frame.c"
+    },
+    {
+      "path": "linux/start-platform.sh",
+      "bytes": 1068,
+      "sha256": "1f80538bce66a039adf5e2a28fd021c2092e60b4428cc1b13f232acfea1cb12e",
+      "origin": "original-platform/linux/start-platform.sh"
+    },
+    {
+      "path": "linux/tests/test_dp_hpd_poll.py",
+      "bytes": 2727,
+      "sha256": "97f4945d3df435e311a57f26774e9235be0ee4f017bbab282d22392630ddddcf",
+      "origin": "original-platform/linux/tests/test_dp_hpd_poll.py"
+    },
+    {
+      "path": "linux/tests/test_dual.c",
+      "bytes": 2747,
+      "sha256": "571033b53dc74847602b31762b91a85f931b17db33f029c62fbc49c76e12a9b0",
+      "origin": "original-platform/linux/tests/test_dual.c"
+    },
+    {
+      "path": "linux/tests/test_package.py",
+      "bytes": 2918,
+      "sha256": "faad7c4611a5f3d53b239cfc4e6cb3eb113adeba541b7a81d855c0b288de9aa5",
+      "origin": "original-platform/linux/tests/test_package.py"
+    },
+    {
+      "path": "linux/tests/test_raw_capture_contract.c",
+      "bytes": 821,
+      "sha256": "3676e77a455ef6ef370bbbcba91a82857df576268b20beffbefb33f1ec1b26d4",
+      "origin": "original-platform/linux/tests/test_raw_capture_contract.c"
+    },
+    {
+      "path": "linux/tests/test_stage_cli.py",
+      "bytes": 646,
+      "sha256": "231ac555bcf673aecb12843252dba509cba535aabe371f5c8b64dd50b308623f",
+      "origin": "original-platform/linux/tests/test_stage_cli.py"
+    },
+    {
+      "path": "linux/tests/test_stage_frame.c",
+      "bytes": 607,
+      "sha256": "a82a108a7cef30dfe4ad1c22eb01d2ec5e9cb8a3dc7dca3d95159c84d49af9ef",
+      "origin": "original-platform/linux/tests/test_stage_frame.c"
+    },
+    {
+      "path": "linux/tests/test_vblank_restore.py",
+      "bytes": 1969,
+      "sha256": "89a082b73428a283a9d9fc05dc782e0497f9a7cf8a66b398fbd2e98839f1b5a1",
+      "origin": "original-platform/linux/tests/test_vblank_restore.py"
+    },
+    {
+      "path": "linux/tune-irq.sh",
+      "bytes": 809,
+      "sha256": "e097477012cf1002cdd3b23a96df63975bc00042d4bd7085f4e40e2dddf4891c",
+      "origin": "original-platform/linux/tune-irq.sh"
+    },
+    {
+      "path": "rtl/README.md",
+      "bytes": 4856,
+      "sha256": "006e94be36917bd81abd8e1d05420e89158cbf889f502f4a4ac395da14c9ba87",
+      "origin": "frozen-v3/rtl/README.md",
+      "upstream_sha256": "006e94be36917bd81abd8e1d05420e89158cbf889f502f4a4ac395da14c9ba87"
+    },
+    {
+      "path": "rtl/camera_reset.v",
+      "bytes": 1589,
+      "sha256": "f469dc2a31e5d16601b6bb0a81bdb70c017aa198013ad6e850dac986d7a4c8b9",
+      "origin": "frozen-v3/rtl/camera_reset.v",
+      "upstream_sha256": "f469dc2a31e5d16601b6bb0a81bdb70c017aa198013ad6e850dac986d7a4c8b9"
+    },
+    {
+      "path": "rtl/camera_top.v",
+      "bytes": 28654,
+      "sha256": "c46d5cec3861f80cf31a47cf0f18284a4b24fd296cf9853bcd9c11f8816fb8a2",
+      "origin": "frozen-v3/rtl/camera_top.v",
+      "upstream_sha256": "f7c737046482f2b3044efb4adf3e311e4bf44e78bc9ffb63ccb59616b9553b3f"
+    },
+    {
+      "path": "rtl/capture/raw10_capture.v",
+      "bytes": 8677,
+      "sha256": "0e6b56a7df8c1d2edccc34ce832ae0bbed66a6191b6e5f812181db9d86ea923d",
+      "origin": "frozen-v3/rtl/capture/raw10_capture.v",
+      "upstream_sha256": "0e6b56a7df8c1d2edccc34ce832ae0bbed66a6191b6e5f812181db9d86ea923d"
+    },
+    {
+      "path": "rtl/capture/raw10_capture_regs.v",
+      "bytes": 3612,
+      "sha256": "427d14226c48991ecb7c11b2164ec47adf81edbc8719e4c5ccb0cea99ed0ad5b",
+      "origin": "frozen-v3/rtl/capture/raw10_capture_regs.v",
+      "upstream_sha256": "427d14226c48991ecb7c11b2164ec47adf81edbc8719e4c5ccb0cea99ed0ad5b"
+    },
+    {
+      "path": "rtl/capture/video_capture.v",
+      "bytes": 15207,
+      "sha256": "6d891ba8e58a43bb485bfa9fafea02c7c64196f4507be886c9d616e1cf4a14e0",
+      "origin": "frozen-v3/rtl/capture/video_capture.v",
+      "upstream_sha256": "6d891ba8e58a43bb485bfa9fafea02c7c64196f4507be886c9d616e1cf4a14e0"
+    },
+    {
+      "path": "rtl/capture_axi_regs_v2.v",
+      "bytes": 3628,
+      "sha256": "96ced425768502fa72b81da5de32e522a4f276bf6f223d1e86af8082b0677830",
+      "origin": "frozen-v3/rtl/capture_axi_regs_v2.v",
+      "upstream_sha256": "96ced425768502fa72b81da5de32e522a4f276bf6f223d1e86af8082b0677830"
+    },
+    {
+      "path": "rtl/capture_frame_gate.v",
+      "bytes": 4602,
+      "sha256": "2b3f160ebe0915368cb849bf9658736cdde3b19e4b6dc9939f95c176e300f250",
+      "origin": "frozen-v3/rtl/capture_frame_gate.v",
+      "upstream_sha256": "2b3f160ebe0915368cb849bf9658736cdde3b19e4b6dc9939f95c176e300f250"
+    },
+    {
+      "path": "rtl/capture_monitor.v",
+      "bytes": 7097,
+      "sha256": "ed3274ebcc6e0de89d7ac83f7b6e8dd88523bef589bdefb4302c2110cd9c4281",
+      "origin": "frozen-v3/rtl/capture_monitor.v",
+      "upstream_sha256": "ed3274ebcc6e0de89d7ac83f7b6e8dd88523bef589bdefb4302c2110cd9c4281"
+    },
+    {
+      "path": "rtl/capture_phase_gate_v2.v",
+      "bytes": 3534,
+      "sha256": "62f58a8ca6e8c1190ed1cf6edfdc870a0800e2781a038e04355910055284ad20",
+      "origin": "frozen-v3/rtl/capture_phase_gate_v2.v",
+      "upstream_sha256": "62f58a8ca6e8c1190ed1cf6edfdc870a0800e2781a038e04355910055284ad20"
+    },
+    {
+      "path": "rtl/capture_source_clock_v2.v",
+      "bytes": 408,
+      "sha256": "04464111ea730858e7e8259ac6181f932b91480dc85a0dcfceddcf0ed43b8fa5",
+      "origin": "frozen-v3/rtl/capture_source_clock_v2.v",
+      "upstream_sha256": "04464111ea730858e7e8259ac6181f932b91480dc85a0dcfceddcf0ed43b8fa5"
+    },
+    {
+      "path": "rtl/csi_control.v",
+      "bytes": 10393,
+      "sha256": "07cef9a1378e39145f71040ee346506cb76d57e7a2245e95b3defd6e884c2b8a",
+      "origin": "frozen-v3/rtl/csi_control.v",
+      "upstream_sha256": "07cef9a1378e39145f71040ee346506cb76d57e7a2245e95b3defd6e884c2b8a"
+    },
+    {
+      "path": "rtl/debug/debug_monitor.v",
+      "bytes": 7353,
+      "sha256": "3bddef4a09c3ca1630002e1592de19da39e501bbc067cae377f7865a2f02f484",
+      "origin": "frozen-v3/rtl/debug/debug_monitor.v",
+      "upstream_sha256": "3bddef4a09c3ca1630002e1592de19da39e501bbc067cae377f7865a2f02f484"
+    },
+    {
+      "path": "rtl/platform/platform.v",
+      "bytes": 4480,
+      "sha256": "5d36a0b54863f22bbc273fb673a33a336f404dd5f996e9f6458b8108f9fd7e06",
+      "origin": "frozen-v3/rtl/platform/platform.v",
+      "upstream_sha256": "5d36a0b54863f22bbc273fb673a33a336f404dd5f996e9f6458b8108f9fd7e06"
+    },
+    {
+      "path": "rtl/sc130_camera_top_v2.v",
+      "bytes": 1571,
+      "sha256": "045432bb3dcc82fdaecb6c9d31378e01b6c2d1473f9097a74e61c0f4ec8f02a0",
+      "origin": "frozen-v3/rtl/sc130_camera_top_v2.v",
+      "upstream_sha256": "045432bb3dcc82fdaecb6c9d31378e01b6c2d1473f9097a74e61c0f4ec8f02a0"
+    },
+    {
+      "path": "rtl/sensor/ae_fe_event.sv",
+      "bytes": 1295,
+      "sha256": "3beb7aa3f79cb74ec0fe62c0a0eebf2dc1406d272d69af6f9b62bd2254cf2689",
+      "origin": "frozen-v3/rtl/sensor/ae_fe_event.sv",
+      "upstream_sha256": "3beb7aa3f79cb74ec0fe62c0a0eebf2dc1406d272d69af6f9b62bd2254cf2689"
+    },
+    {
+      "path": "rtl/sensor/raw10_capture_tap.sv",
+      "bytes": 2040,
+      "sha256": "8b27ec2c024dfe0d61d344718184bfc84c1798e6f9f9a00c574abfd3905cca46",
+      "origin": "frozen-v3/rtl/sensor/raw10_capture_tap.sv",
+      "upstream_sha256": "8b27ec2c024dfe0d61d344718184bfc84c1798e6f9f9a00c574abfd3905cca46"
+    },
+    {
+      "path": "rtl/sensor/raw10_u16_pack.sv",
+      "bytes": 659,
+      "sha256": "2079efc9d6f7405a8b9b1eefc4e92c9dded1ce0c6b7561c951d87df40b421c7d",
+      "origin": "frozen-v3/rtl/sensor/raw10_u16_pack.sv",
+      "upstream_sha256": "2079efc9d6f7405a8b9b1eefc4e92c9dded1ce0c6b7561c951d87df40b421c7d"
+    },
+    {
+      "path": "rtl/sensor/sensor_rx.v",
+      "bytes": 6265,
+      "sha256": "c4f0f29d8c300eea26a53fefaba9a79c2223776739fcb3380132152093fcbf9a",
+      "origin": "frozen-v3/rtl/sensor/sensor_rx.v",
+      "upstream_sha256": "c4f0f29d8c300eea26a53fefaba9a79c2223776739fcb3380132152093fcbf9a"
+    },
+    {
+      "path": "rtl/soc/soc_subsystem.v",
+      "bytes": 11321,
+      "sha256": "832264ed0d930b9e2b99694d98c4b1bb1157bcf2a98785710ec51250916d5238",
+      "origin": "frozen-v3/rtl/soc/soc_subsystem.v",
+      "upstream_sha256": "e83ecabd6a10eb4c7969429716b449eceb27dd5968e01f08aba8a3258892792a"
+    },
+    {
+      "path": "rtl/tnr_memory_bridge.sv",
+      "bytes": 7840,
+      "sha256": "020d1a33e15df6a9017298115a35829c82e87bf8e7a52e1ca7d554b4ef81e6a7",
+      "origin": "frozen-v3/rtl/tnr_memory_bridge.sv",
+      "upstream_sha256": "020d1a33e15df6a9017298115a35829c82e87bf8e7a52e1ca7d554b4ef81e6a7"
+    },
+    {
+      "path": "rtl/vdma_write_guard_v2.v",
+      "bytes": 1619,
+      "sha256": "3aa387f92be8c0ba17a6c070e464eeb67588fd5620135a4ee525bec0a56ceca2",
+      "origin": "frozen-v3/rtl/vdma_write_guard_v2.v",
+      "upstream_sha256": "3aa387f92be8c0ba17a6c070e464eeb67588fd5620135a4ee525bec0a56ceca2"
+    },
+    {
+      "path": "software/Makefile",
+      "bytes": 2689,
+      "sha256": "f7ca728dbb8c1ec4de03cb200eeb2ce955ad05b81827ca45c988bf6512115695",
+      "origin": "frozen-v3/software/Makefile",
+      "upstream_sha256": "e641e7e6ef7340bfb7ddf1e4a659b5ff875e3eca3a56b3807ef138dcccc08d1d"
+    },
+    {
+      "path": "software/README.md",
+      "bytes": 3162,
+      "sha256": "723b68eca764056b988cc3f9476b19b0b7218f1cbae689353815f81b15828218",
+      "origin": "frozen-v3/software/README.md",
+      "upstream_sha256": "e1e0a094c8a8eaffad06947ea17fcdb5acd545e3b0cf129c01dd5eddd4f56ff5"
+    },
+    {
+      "path": "software/capture_broker.h",
+      "bytes": 1748,
+      "sha256": "6d7d71e7e8e9873795f0fc1ef41de1061981017e4f9349ae67b27787bd3dd001",
+      "origin": "frozen-v3/software/capture_broker.h",
+      "upstream_sha256": "6d7d71e7e8e9873795f0fc1ef41de1061981017e4f9349ae67b27787bd3dd001"
+    },
+    {
+      "path": "software/dp_display.c",
+      "bytes": 16023,
+      "sha256": "7684a980073564e3141b19ed6f73280a0909968c61cf837d323b2df6236e878c",
+      "origin": "frozen-v3/software/dp_display.c",
+      "upstream_sha256": "7684a980073564e3141b19ed6f73280a0909968c61cf837d323b2df6236e878c"
+    },
+    {
+      "path": "software/dp_display.h",
+      "bytes": 744,
+      "sha256": "91037262b94eb3da07b32986bb3d8498a451b7e0fff60d139de432c87921dfeb",
+      "origin": "frozen-v3/software/dp_display.h",
+      "upstream_sha256": "91037262b94eb3da07b32986bb3d8498a451b7e0fff60d139de432c87921dfeb"
+    },
+    {
+      "path": "software/dp_smoke.c",
+      "bytes": 1042,
+      "sha256": "8ca035fbc7994caac32bff3315094bea3c8758270af436770837fbe1523cf544",
+      "origin": "frozen-v3/software/dp_smoke.c",
+      "upstream_sha256": "8ca035fbc7994caac32bff3315094bea3c8758270af436770837fbe1523cf544"
+    },
+    {
+      "path": "software/dual_core.h",
+      "bytes": 3809,
+      "sha256": "6a73b2f78861c5363749fbbfb92bd0606dd733afe12c2686a66b9079a033454e",
+      "origin": "frozen-v3/software/dual_core.h",
+      "upstream_sha256": "6a73b2f78861c5363749fbbfb92bd0606dd733afe12c2686a66b9079a033454e"
+    },
+    {
+      "path": "software/ibex-ae/ae_core.c",
+      "bytes": 3680,
+      "sha256": "c62ead530edf13b3508bc63eb6cc52b72cfc5ac300ff1ea4a6bd2c64c0dc76d7",
+      "origin": "frozen-v3/software/ibex-ae/ae_core.c"
+    },
+    {
+      "path": "software/ibex-ae/ae_core.h",
+      "bytes": 1195,
+      "sha256": "a7256ff784fa764a26aa599754c24bb67bf573c1b368d8f8ed3fdd9c47de5e12",
+      "origin": "frozen-v3/software/ibex-ae/ae_core.h"
+    },
+    {
+      "path": "software/ibex-ae/bin_to_mem.py",
+      "bytes": 396,
+      "sha256": "d52f9a6999b7ba3d0a8afe1515e2792592d928a04065c2fa8647e306a6b57582",
+      "origin": "frozen-v3/software/ibex-ae/bin_to_mem.py"
+    },
+    {
+      "path": "software/ibex-ae/board.h",
+      "bytes": 1123,
+      "sha256": "b4b028bbd354416c5a6362b0e54a9abfd83274e6493ec641fa2e44ba0630340d",
+      "origin": "frozen-v3/software/ibex-ae/board.h"
+    },
+    {
+      "path": "software/ibex-ae/build.sh",
+      "bytes": 567,
+      "sha256": "cd34e0d1529df40185390766d4d1a7eb579f8bff618d9744a588039cffbb451d",
+      "origin": "frozen-v3/software/ibex-ae/build.sh"
+    },
+    {
+      "path": "software/ibex-ae/link.ld",
+      "bytes": 625,
+      "sha256": "983a2d6992414039075b7e0b0c85730763eff01f29da44330b2b88799ca230a0",
+      "origin": "frozen-v3/software/ibex-ae/link.ld"
+    },
+    {
+      "path": "software/ibex-ae/main.c",
+      "bytes": 8505,
+      "sha256": "5f978246f91053d2b6b8682f1349d8eb8099e9a22591f7ec2ce21ed4c8d1e1a8",
+      "origin": "frozen-v3/software/ibex-ae/main.c"
+    },
+    {
+      "path": "software/ibex-ae/runtime.c",
+      "bytes": 410,
+      "sha256": "fdb9dac8a22cf56132d325f6cf616ce63a56cd340bb0f3fc3ab0f50ac37f4945",
+      "origin": "frozen-v3/software/ibex-ae/runtime.c"
+    },
+    {
+      "path": "software/ibex-ae/start.S",
+      "bytes": 1337,
+      "sha256": "6393e8aaeb0e2513409278f41c81d4352542800b3a3d3a31d7ae8b9977560dc0",
+      "origin": "frozen-v3/software/ibex-ae/start.S"
+    },
+    {
+      "path": "software/ibex_isp_handoff.c",
+      "bytes": 5682,
+      "sha256": "a7a996d2e8d8c361e6b8efb00a8982121ebbc77b50000eefe94922a4745ebd96",
+      "origin": "frozen-v3/software/ibex_isp_handoff.c"
+    },
+    {
+      "path": "software/isp-control/Makefile",
+      "bytes": 713,
+      "sha256": "50c8fd0171062464ec005d71cbb4ee577bd39bb66daea38cf30b600ff2865890",
+      "origin": "frozen-v3/software/isp-control/Makefile",
+      "upstream_sha256": "50c8fd0171062464ec005d71cbb4ee577bd39bb66daea38cf30b600ff2865890"
+    },
+    {
+      "path": "software/isp-control/README.md",
+      "bytes": 6487,
+      "sha256": "4cb0fa689b74bf715bb6ac12aee5dc743c145effe8d88ac9b2bf47efbb367c64",
+      "origin": "frozen-v3/software/isp-control/README.md",
+      "upstream_sha256": "4cb0fa689b74bf715bb6ac12aee5dc743c145effe8d88ac9b2bf47efbb367c64"
+    },
+    {
+      "path": "software/isp-control/ispctl.c",
+      "bytes": 14518,
+      "sha256": "49bd237a94896c547bec92a41964e966d13e5e4a0cb7f7cc18824c53c0ceab08",
+      "origin": "frozen-v3/software/isp-control/ispctl.c",
+      "upstream_sha256": "49bd237a94896c547bec92a41964e966d13e5e4a0cb7f7cc18824c53c0ceab08"
+    },
+    {
+      "path": "software/isp-control/sensor_exposure.h",
+      "bytes": 1859,
+      "sha256": "a63b165506f93c8bf655b76b39f1959b26167945c907ccde337cc57b26adf99a",
+      "origin": "frozen-v3/software/isp-control/sensor_exposure.h",
+      "upstream_sha256": "a63b165506f93c8bf655b76b39f1959b26167945c907ccde337cc57b26adf99a"
+    },
+    {
+      "path": "software/isp-control/sensorctl.c",
+      "bytes": 11400,
+      "sha256": "9963b8c31b22311d6e93d3ad5d07b3ae3e4367b552536c793ed438752617625d",
+      "origin": "frozen-v3/software/isp-control/sensorctl.c",
+      "upstream_sha256": "9963b8c31b22311d6e93d3ad5d07b3ae3e4367b552536c793ed438752617625d"
+    },
+    {
+      "path": "software/isp-control/test_exposure.c",
+      "bytes": 1965,
+      "sha256": "bf513d1e141f0ece56dc53c9d849dc0bceced2cad215e71dd52b0ba581f6bc53",
+      "origin": "frozen-v3/software/isp-control/test_exposure.c",
+      "upstream_sha256": "bf513d1e141f0ece56dc53c9d849dc0bceced2cad215e71dd52b0ba581f6bc53"
+    },
+    {
+      "path": "software/isp-control/test_gpio.c",
+      "bytes": 664,
+      "sha256": "bcf56bc55f26f843300bbb6f0219b7f28ab001b8713522b43f4d1e84f00de01a",
+      "origin": "frozen-v3/software/isp-control/test_gpio.c",
+      "upstream_sha256": "bcf56bc55f26f843300bbb6f0219b7f28ab001b8713522b43f4d1e84f00de01a"
+    },
+    {
+      "path": "software/isp-control/test_host.py",
+      "bytes": 4154,
+      "sha256": "fd20a5980f07c99a17b086307f9c4f9101dabb0e16ead20c4d56b8accbff5a7f",
+      "origin": "frozen-v3/software/isp-control/test_host.py",
+      "upstream_sha256": "fd20a5980f07c99a17b086307f9c4f9101dabb0e16ead20c4d56b8accbff5a7f"
+    },
+    {
+      "path": "software/isp-control/test_lock_directory.c",
+      "bytes": 1623,
+      "sha256": "43c4e201a530d3457f1e1e83519f3243aed5acf11d8eb13bc29a053459d8ff26",
+      "origin": "frozen-v3/software/isp-control/test_lock_directory.c",
+      "upstream_sha256": "43c4e201a530d3457f1e1e83519f3243aed5acf11d8eb13bc29a053459d8ff26"
+    },
+    {
+      "path": "software/isp-control/test_sensor_host.py",
+      "bytes": 3460,
+      "sha256": "2739ae5232fca2cd20cc5403d7eb602856301bf24e49e9f9553c8f168c013002",
+      "origin": "frozen-v3/software/isp-control/test_sensor_host.py",
+      "upstream_sha256": "2739ae5232fca2cd20cc5403d7eb602856301bf24e49e9f9553c8f168c013002"
+    },
+    {
+      "path": "software/perf_stats.h",
+      "bytes": 1281,
+      "sha256": "0c5faf9c0e80e17b3c901401df5bdc7e2ff720165629144058f16b43fd3bd7e0",
+      "origin": "frozen-v3/software/perf_stats.h",
+      "upstream_sha256": "0c5faf9c0e80e17b3c901401df5bdc7e2ff720165629144058f16b43fd3bd7e0"
+    },
+    {
+      "path": "software/platform_bridge.c",
+      "bytes": 28865,
+      "sha256": "6450a8a7322e7dfbf62553572d00877c50daa780eb2124fd0a5243bce027f946",
+      "origin": "frozen-v3/software/platform_bridge.c",
+      "upstream_sha256": "6450a8a7322e7dfbf62553572d00877c50daa780eb2124fd0a5243bce027f946"
+    },
+    {
+      "path": "software/r5-ae/BOARD_VALIDATION.md",
+      "bytes": 6614,
+      "sha256": "1730afb643d5dfcdee3959452e9e100dd702dae9fbfffa4d3fdbff85d50e7cf2",
+      "origin": "frozen-v3/software/r5-ae/BOARD_VALIDATION.md",
+      "upstream_sha256": "1730afb643d5dfcdee3959452e9e100dd702dae9fbfffa4d3fdbff85d50e7cf2"
+    },
+    {
+      "path": "software/r5-ae/README.md",
+      "bytes": 5245,
+      "sha256": "eaaa5e110484247634350b8069028161c1613a7945b66ffbfee32526ddfdea0b",
+      "origin": "frozen-v3/software/r5-ae/README.md",
+      "upstream_sha256": "eaaa5e110484247634350b8069028161c1613a7945b66ffbfee32526ddfdea0b"
+    },
+    {
+      "path": "software/r5-ae/ae_core.c",
+      "bytes": 3680,
+      "sha256": "c62ead530edf13b3508bc63eb6cc52b72cfc5ac300ff1ea4a6bd2c64c0dc76d7",
+      "origin": "frozen-v3/software/r5-ae/ae_core.c",
+      "upstream_sha256": "c62ead530edf13b3508bc63eb6cc52b72cfc5ac300ff1ea4a6bd2c64c0dc76d7"
+    },
+    {
+      "path": "software/r5-ae/ae_core.h",
+      "bytes": 1195,
+      "sha256": "a7256ff784fa764a26aa599754c24bb67bf573c1b368d8f8ed3fdd9c47de5e12",
+      "origin": "frozen-v3/software/r5-ae/ae_core.h",
+      "upstream_sha256": "a7256ff784fa764a26aa599754c24bb67bf573c1b368d8f8ed3fdd9c47de5e12"
+    },
+    {
+      "path": "software/r5-ae/decode_log.py",
+      "bytes": 3375,
+      "sha256": "05082fc81c545db83102975fd18c94539df71b024825dcc2a69897ef34b08498",
+      "origin": "frozen-v3/software/r5-ae/decode_log.py",
+      "upstream_sha256": "05082fc81c545db83102975fd18c94539df71b024825dcc2a69897ef34b08498"
+    },
+    {
+      "path": "software/r5-ae/lscript.ld",
+      "bytes": 6666,
+      "sha256": "079082ba00cce56bf3d2494cdbf3a269de1bc0c920d91d22c61feede25e9f08f",
+      "origin": "frozen-v3/software/r5-ae/lscript.ld",
+      "upstream_sha256": "079082ba00cce56bf3d2494cdbf3a269de1bc0c920d91d22c61feede25e9f08f"
+    },
+    {
+      "path": "software/r5-ae/main.c",
+      "bytes": 16845,
+      "sha256": "c57fb7d0756f156c3c84af3f172853fab1ce257d1742625d6b8f8bc8e9a98e80",
+      "origin": "frozen-v3/software/r5-ae/main.c",
+      "upstream_sha256": "c57fb7d0756f156c3c84af3f172853fab1ce257d1742625d6b8f8bc8e9a98e80"
+    },
+    {
+      "path": "software/r5-ae/test_ae_core.c",
+      "bytes": 1418,
+      "sha256": "2d821495121adc377c5e7baa4ad97a6e72a3bf35d02499488ded8667bc476726",
+      "origin": "frozen-v3/software/r5-ae/test_ae_core.c",
+      "upstream_sha256": "2d821495121adc377c5e7baa4ad97a6e72a3bf35d02499488ded8667bc476726"
+    },
+    {
+      "path": "software/r5-ae/test_ae_loop.c",
+      "bytes": 1793,
+      "sha256": "bd9c470f69f1ceff820122e80b7af30615a65378e62953d653503930cca9a41f",
+      "origin": "frozen-v3/software/r5-ae/test_ae_loop.c",
+      "upstream_sha256": "bd9c470f69f1ceff820122e80b7af30615a65378e62953d653503930cca9a41f"
+    },
+    {
+      "path": "software/r5-ae/test_sensor_start.c",
+      "bytes": 1538,
+      "sha256": "7f43462f4a19d0274cbe28964380e35faf4ca06469194abb7bbdfc37943f3260",
+      "origin": "frozen-v3/software/r5-ae/test_sensor_start.c",
+      "upstream_sha256": "7f43462f4a19d0274cbe28964380e35faf4ca06469194abb7bbdfc37943f3260"
+    },
+    {
+      "path": "software/r5-ae/test_sensor_status.c",
+      "bytes": 2417,
+      "sha256": "e4c4431e4522494e8536f1a733ce80cc56de3c20c38909c654f2c85a07e2c0ac",
+      "origin": "frozen-v3/software/r5-ae/test_sensor_status.c",
+      "upstream_sha256": "e4c4431e4522494e8536f1a733ce80cc56de3c20c38909c654f2c85a07e2c0ac"
+    },
+    {
+      "path": "software/r5-ae/test_stubs/camera_pipeline.h",
+      "bytes": 148,
+      "sha256": "a9cfe84c395a497c98a339b9f210f24856a4f60a7fa96b8064ce4b7d072c4903",
+      "origin": "frozen-v3/software/r5-ae/test_stubs/camera_pipeline.h",
+      "upstream_sha256": "a9cfe84c395a497c98a339b9f210f24856a4f60a7fa96b8064ce4b7d072c4903"
+    },
+    {
+      "path": "software/r5-ae/test_stubs/sleep.h",
+      "bytes": 85,
+      "sha256": "4cf80d0ddaa7546b4cb8626eeb534133dbcc10eaf7a632600c9eeeb06b057d65",
+      "origin": "frozen-v3/software/r5-ae/test_stubs/sleep.h",
+      "upstream_sha256": "4cf80d0ddaa7546b4cb8626eeb534133dbcc10eaf7a632600c9eeeb06b057d65"
+    },
+    {
+      "path": "software/r5-ae/test_stubs/xfsbl_hooks.h",
+      "bytes": 61,
+      "sha256": "6c1eed890920d7ac799f94f2f40a1fa822b40c19059830a6a2214058c286bbc7",
+      "origin": "frozen-v3/software/r5-ae/test_stubs/xfsbl_hooks.h",
+      "upstream_sha256": "6c1eed890920d7ac799f94f2f40a1fa822b40c19059830a6a2214058c286bbc7"
+    },
+    {
+      "path": "software/r5-ae/test_stubs/xfsbl_hw.h",
+      "bytes": 127,
+      "sha256": "e4d9f56b01124f4e32877df65b8c8852da146a4fd0b1fc85275d3b47238044a7",
+      "origin": "frozen-v3/software/r5-ae/test_stubs/xfsbl_hw.h",
+      "upstream_sha256": "e4d9f56b01124f4e32877df65b8c8852da146a4fd0b1fc85275d3b47238044a7"
+    },
+    {
+      "path": "software/r5-ae/test_stubs/xiicps.h",
+      "bytes": 792,
+      "sha256": "1e937999c13241b822cd37d7e6f342f4ee92289ad9f34a69402c2b11d09787d1",
+      "origin": "frozen-v3/software/r5-ae/test_stubs/xiicps.h",
+      "upstream_sha256": "1e937999c13241b822cd37d7e6f342f4ee92289ad9f34a69402c2b11d09787d1"
+    },
+    {
+      "path": "software/r5-ae/test_stubs/xil_printf.h",
+      "bytes": 108,
+      "sha256": "ea5a801803314b6909151c27e548a681be8717e4136a1988bf17629868e54d2a",
+      "origin": "frozen-v3/software/r5-ae/test_stubs/xil_printf.h",
+      "upstream_sha256": "ea5a801803314b6909151c27e548a681be8717e4136a1988bf17629868e54d2a"
+    },
+    {
+      "path": "software/r5-ae/test_stubs/xstatus.h",
+      "bytes": 75,
+      "sha256": "f80404753c8b26d53dec92642aad413746233dab98e47c584a34254d1252dc01",
+      "origin": "frozen-v3/software/r5-ae/test_stubs/xstatus.h",
+      "upstream_sha256": "f80404753c8b26d53dec92642aad413746233dab98e47c584a34254d1252dc01"
+    },
+    {
+      "path": "software/tests/dp_ownership_test.c",
+      "bytes": 3945,
+      "sha256": "92f20d62d93ab3157fb00fa219e58195ae51a0dd7daea0430cf0362547dcc990",
+      "origin": "frozen-v3/software/tests/dp_ownership_test.c",
+      "upstream_sha256": "92f20d62d93ab3157fb00fa219e58195ae51a0dd7daea0430cf0362547dcc990"
+    },
+    {
+      "path": "software/tests/test_broker.c",
+      "bytes": 1463,
+      "sha256": "2d842839523f405fbf1e55f16966517c7060114488b88c725d88fcd120e48171",
+      "origin": "frozen-v3/software/tests/test_broker.c",
+      "upstream_sha256": "2d842839523f405fbf1e55f16966517c7060114488b88c725d88fcd120e48171"
+    },
+    {
+      "path": "software/tests/test_perf.c",
+      "bytes": 748,
+      "sha256": "c826840a989c577ecfc733e2478a6bcb36dd86a057b7aca765b21d36cde045e9",
+      "origin": "frozen-v3/software/tests/test_perf.c",
+      "upstream_sha256": "c826840a989c577ecfc733e2478a6bcb36dd86a057b7aca765b21d36cde045e9"
+    },
+    {
+      "path": "software/tests/test_platform_events.c",
+      "bytes": 2160,
+      "sha256": "92c5a6d1b4d37baf51980b90bb2e7de6b05d0ca22003c5dfb2614236fbe5f545",
+      "origin": "frozen-v3/software/tests/test_platform_events.c",
+      "upstream_sha256": "92c5a6d1b4d37baf51980b90bb2e7de6b05d0ca22003c5dfb2614236fbe5f545"
+    },
+    {
+      "path": "software/tests/test_snapshot.c",
+      "bytes": 1500,
+      "sha256": "af66b03dd4f1b29b66d66290f10d8caf2811950015b9c0da8e271ee2d50237db",
+      "origin": "frozen-v3/software/tests/test_snapshot.c",
+      "upstream_sha256": "af66b03dd4f1b29b66d66290f10d8caf2811950015b9c0da8e271ee2d50237db"
+    },
+    {
+      "path": "software/tests/test_usb_completion.c",
+      "bytes": 3606,
+      "sha256": "7a6b577f8166581516090994654502e490590ec6356b9351d86d0dfaddb1d0f8",
+      "origin": "frozen-v3/software/tests/test_usb_completion.c",
+      "upstream_sha256": "7a6b577f8166581516090994654502e490590ec6356b9351d86d0dfaddb1d0f8"
+    },
+    {
+      "path": "software/tests/test_usb_marker.c",
+      "bytes": 746,
+      "sha256": "8cd6d9389abb248eb62e2606b6fab26f8c56725953cf9b47c326b312104e5e6d",
+      "origin": "frozen-v3/software/tests/test_usb_marker.c",
+      "upstream_sha256": "8cd6d9389abb248eb62e2606b6fab26f8c56725953cf9b47c326b312104e5e6d"
+    },
+    {
+      "path": "software/tests/test_usb_perf.c",
+      "bytes": 1840,
+      "sha256": "6fc5484d8c2cb7b3b20145bef3b53e2cb9d61408091dc45c393a47a7c5a0bc9a",
+      "origin": "frozen-v3/software/tests/test_usb_perf.c",
+      "upstream_sha256": "6fc5484d8c2cb7b3b20145bef3b53e2cb9d61408091dc45c393a47a7c5a0bc9a"
+    },
+    {
+      "path": "software/tests/test_usb_shared.c",
+      "bytes": 3761,
+      "sha256": "94fd89cd01b90491d6ddffc1edd6517de632a63bbdc30b39b395166f881cf5f7",
+      "origin": "frozen-v3/software/tests/test_usb_shared.c",
+      "upstream_sha256": "94fd89cd01b90491d6ddffc1edd6517de632a63bbdc30b39b395166f881cf5f7"
+    },
+    {
+      "path": "software/tnr-control/Makefile",
+      "bytes": 260,
+      "sha256": "1163ee327eb9acea529d718985f3cae3ec34cd8bd5ed2c7210e1e4cd63b08dcf",
+      "origin": "frozen-v3/software/tnr-control/Makefile",
+      "upstream_sha256": "1163ee327eb9acea529d718985f3cae3ec34cd8bd5ed2c7210e1e4cd63b08dcf"
+    },
+    {
+      "path": "software/tnr-control/README.md",
+      "bytes": 2493,
+      "sha256": "e8fee7c5422107636c0cc36ad8cdfad1d5a99635d14a277e47be8a2afc5c1c45",
+      "origin": "frozen-v3/software/tnr-control/README.md",
+      "upstream_sha256": "e8fee7c5422107636c0cc36ad8cdfad1d5a99635d14a277e47be8a2afc5c1c45"
+    },
+    {
+      "path": "software/tnr-control/isp-tnr-startup.sh",
+      "bytes": 1787,
+      "sha256": "1f38e86cf8c0baaa041def7fc8a40d8f8911ef343d1aa175ab1916c6d92eaeee",
+      "origin": "frozen-v3/software/tnr-control/isp-tnr-startup.sh",
+      "upstream_sha256": "1f38e86cf8c0baaa041def7fc8a40d8f8911ef343d1aa175ab1916c6d92eaeee"
+    },
+    {
+      "path": "software/tnr-control/tnrctl.c",
+      "bytes": 6917,
+      "sha256": "2a7b8be29fe44246adb1421968e0313f6dbbab61dfd62a2b3917f25518a5e34a",
+      "origin": "frozen-v3/software/tnr-control/tnrctl.c",
+      "upstream_sha256": "2a7b8be29fe44246adb1421968e0313f6dbbab61dfd62a2b3917f25518a5e34a"
+    },
+    {
+      "path": "software/uvc_core.c",
+      "bytes": 5566,
+      "sha256": "05411f315519d03e23d9f0f9b044919aac04d60adbdab6281d2b3f1ed9544c05",
+      "origin": "frozen-v3/software/uvc_core.c",
+      "upstream_sha256": "05411f315519d03e23d9f0f9b044919aac04d60adbdab6281d2b3f1ed9544c05"
+    },
+    {
+      "path": "software/uvc_core.h",
+      "bytes": 1731,
+      "sha256": "b07e283a695e5c1214fa88b05005cd22e3b1cd277e54c2c2eed3f71e57e3b0ed",
+      "origin": "frozen-v3/software/uvc_core.h",
+      "upstream_sha256": "b07e283a695e5c1214fa88b05005cd22e3b1cd277e54c2c2eed3f71e57e3b0ed"
+    },
+    {
+      "path": "tools/add_hierarchy_sources.tcl",
+      "bytes": 1227,
+      "sha256": "ab62bf038951534a7503c6c9eec85de99ad6eb7bc50b0cd593c2e7c8403aedba",
+      "origin": "frozen-v3/tools/add_hierarchy_sources.tcl",
+      "upstream_sha256": "ab62bf038951534a7503c6c9eec85de99ad6eb7bc50b0cd593c2e7c8403aedba"
+    },
+    {
+      "path": "tools/create_full_ae_project.tcl",
+      "bytes": 4577,
+      "sha256": "498847fbdf9371233e9c8a9c937f31ed31620191ba064924435992d21479c697",
+      "origin": "frozen-v3/tools/create_full_ae_project.tcl",
+      "upstream_sha256": "498847fbdf9371233e9c8a9c937f31ed31620191ba064924435992d21479c697"
+    },
+    {
+      "path": "tools/package_full_ae_project.py",
+      "bytes": 3728,
+      "sha256": "7bd6f7924d61ede115f4684b88d2185f2382b3b0a698a7b0fbb199335fe3292d",
+      "origin": "frozen-v3/tools/package_full_ae_project.py",
+      "upstream_sha256": "7bd6f7924d61ede115f4684b88d2185f2382b3b0a698a7b0fbb199335fe3292d"
+    }
+  ]
+}

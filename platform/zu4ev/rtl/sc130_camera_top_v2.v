@@ -1,0 +1,46 @@
+`timescale 1ns/1ps
+module sc130_camera_top_v2 (
+    output wire [16:0] c0_ddr4_adr,
+    output wire [1:0] c0_ddr4_ba,
+    output wire [0:0] c0_ddr4_bg,
+    output wire [0:0] c0_ddr4_cke,
+    output wire [0:0] c0_ddr4_cs_n,
+    output wire [0:0] c0_ddr4_odt,
+    output wire [0:0] c0_ddr4_ck_t,
+    output wire [0:0] c0_ddr4_ck_c,
+    output wire c0_ddr4_act_n,
+    output wire c0_ddr4_reset_n,
+    inout wire [15:0] c0_ddr4_dq,
+    inout wire [1:0] c0_ddr4_dm_dbi_n,
+    inout wire [1:0] c0_ddr4_dqs_t,
+    inout wire [1:0] c0_ddr4_dqs_c,
+    input wire pl_clk_p, pl_clk_n,
+    input wire mipi_clk_p, mipi_clk_n,
+    input wire [1:0] mipi_data_p, mipi_data_n,
+    inout wire camera_scl, camera_sda
+);
+    camera_top camera_top (
+        .c0_ddr4_adr(c0_ddr4_adr),
+        .c0_ddr4_ba(c0_ddr4_ba),
+        .c0_ddr4_bg(c0_ddr4_bg),
+        .c0_ddr4_cke(c0_ddr4_cke),
+        .c0_ddr4_cs_n(c0_ddr4_cs_n),
+        .c0_ddr4_odt(c0_ddr4_odt),
+        .c0_ddr4_ck_t(c0_ddr4_ck_t),
+        .c0_ddr4_ck_c(c0_ddr4_ck_c),
+        .c0_ddr4_act_n(c0_ddr4_act_n),
+        .c0_ddr4_reset_n(c0_ddr4_reset_n),
+        .c0_ddr4_dq(c0_ddr4_dq),
+        .c0_ddr4_dm_dbi_n(c0_ddr4_dm_dbi_n),
+        .c0_ddr4_dqs_t(c0_ddr4_dqs_t),
+        .c0_ddr4_dqs_c(c0_ddr4_dqs_c),
+        .pl_clk_p(pl_clk_p),
+        .pl_clk_n(pl_clk_n),
+        .mipi_clk_p(mipi_clk_p),
+        .mipi_clk_n(mipi_clk_n),
+        .mipi_data_p(mipi_data_p),
+        .mipi_data_n(mipi_data_n),
+        .camera_scl(camera_scl),
+        .camera_sda(camera_sda)
+    );
+endmodule

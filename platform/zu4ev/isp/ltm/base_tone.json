@@ -1,0 +1,28 @@
+{
+  "black_level": 52,
+  "white_corrected": 971,
+  "output_bits": 10,
+  "input_percent_knots": [
+    0,
+    1,
+    4,
+    10,
+    25,
+    50,
+    75,
+    90,
+    100
+  ],
+  "video_y_knots": [
+    16,
+    22,
+    49,
+    82,
+    128,
+    176,
+    208,
+    224,
+    235
+  ],
+  "sha256": "189b2b2d7ed312137601436517777e142a4cd92daa7b804ab3c2864bb5125e6f"
+}
