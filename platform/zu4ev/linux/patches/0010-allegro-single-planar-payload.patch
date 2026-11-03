@@ -1,0 +1,24 @@
+From: SC130 platform integration
+Subject: [PATCH] media: allegro: normalize single-planar P-frame payload
+
+Single-planar DQBUF cannot expose vb2 data_offset. Move the encoded partition
+to byte zero for non-I frames; otherwise userspace receives reserved prefix
+bytes instead of an Annex B access unit. I/IDR header and filler stay intact.
+
+--- a/drivers/media/platform/allegro-dvt/allegro-core.c
++++ b/drivers/media/platform/allegro-dvt/allegro-core.c
+@@ -2091,7 +2091,13 @@
+ 	}
+ 
+ 	if (msg->slice_type != AL_ENC_SLICE_TYPE_I && !msg->is_idr) {
+-		dst_buf->vb2_buf.planes[0].data_offset = free;
++		/* The single-planar ABI has no data_offset field. */
++		u32 encoded_size = partition->size;
++
++		memmove(vb2_plane_vaddr(&dst_buf->vb2_buf, 0),
++			curr + free, encoded_size);
++		vb2_set_plane_payload(&dst_buf->vb2_buf, 0, encoded_size);
++		dst_buf->vb2_buf.planes[0].data_offset = 0;
+ 		free = 0;
+ 	} else {
+ 		if (channel->codec == V4L2_PIX_FMT_H264)

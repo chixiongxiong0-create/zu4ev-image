@@ -1542,3 +1542,4 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
 create_root_design ""
 
 
+source [file join [file dirname [info script]] add_vcu.tcl]

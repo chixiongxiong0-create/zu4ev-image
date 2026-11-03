@@ -2,6 +2,19 @@
 # USB setup errors must never gate camera/DP startup.
 export USB_VID=0x1d6b USB_PID=0x0102 USB_SERIAL=SC130-PLATFORM-001
 [ ! -r /etc/sc130-platform.conf ] || . /etc/sc130-platform.conf
+export UVC_FORMAT=${UVC_FORMAT:-h264}
+if [ "$UVC_FORMAT" = h264 ]; then
+ # The installed U-Boot overrides chosen/bootargs, including maxcpus=1.
+ # Enforce the measured CPU0-only configuration before loading video drivers
+ # or selecting IRQ affinity. Refuse a silently different H264 configuration.
+ for cpu in 3 2 1; do
+  online=/sys/devices/system/cpu/cpu$cpu/online
+  [ ! -f "$online" ] || printf '0\n' > "$online" || exit 1
+ done
+ [ "$(cat /sys/devices/system/cpu/online)" = 0 ] || exit 1
+ modprobe xlnx_vcu || echo 'VCU clock provider unavailable; inspect dmesg'
+ modprobe allegro || echo 'VCU encoder unavailable; capture and DP continue'
+fi
 insmod /opt/sc130/sc130_capture.ko || echo 'capture module already loaded or probe failed; inspect dmesg'
 if [ -f /opt/sc130/sc130_raw.ko ]; then
  insmod /opt/sc130/sc130_raw.ko || echo 'RAW capture module unavailable; inspect dmesg'
@@ -24,7 +37,7 @@ fi
 /opt/sc130/tune-irq.sh &
 # No USB presence, STREAMON, or DP connector state is a prerequisite here.
 if [ -n "$soft" ]; then
- exec /usr/bin/sc130_platform_bridge --soft-connect "$soft"
+ exec /usr/bin/sc130_platform_bridge --usb-format "$UVC_FORMAT" --soft-connect "$soft"
 else
- exec /usr/bin/sc130_platform_bridge
+ exec /usr/bin/sc130_platform_bridge --usb-format "$UVC_FORMAT"
 fi

@@ -46,19 +46,25 @@ static void put32(uint8_t *b,uint32_t v)
 { for(unsigned i=0;i<4;i++) b[i]=(uint8_t)(v>>(8*i)); }
 static uint32_t get32(const uint8_t *b)
 { return (uint32_t)b[0]|((uint32_t)b[1]<<8)|((uint32_t)b[2]<<16)|((uint32_t)b[3]<<24); }
-static void control(uint8_t *b,unsigned fps)
+static void control(uint8_t *b,unsigned fps,bool h264)
 {
     memset(b,0,SC130_CTRL_LEN);b[0]=1;b[2]=1;b[3]=1;
-    put32(b+4,fps==120?83333:166667);put32(b+18,SC130_SIZE);
-    put32(b+22,49152);put32(b+26,48000000);b[30]=0;b[31]=1;b[32]=1;b[33]=1;
+    put32(b+4,fps==120?83333:166667);put32(b+18,h264?SC130_H264_MAX_AU:SC130_SIZE);
+    put32(b+22,h264?8192:49152);put32(b+26,48000000);b[30]=0;b[31]=1;b[32]=1;b[33]=1;
 }
 void uvc_session_init(struct uvc_session *s,bool enable120,unsigned stream_if)
 {
     memset(s,0,sizeof(*s));s->enable120=enable120;s->stream_if=stream_if;s->fps=enable120?120:60;
-    control(s->probe,s->fps);control(s->commit,s->fps);
+    control(s->probe,s->fps,false);control(s->commit,s->fps,false);
+}
+void uvc_session_init_h264(struct uvc_session *s,bool enable120,unsigned stream_if)
+{
+    uvc_session_init(s,enable120,stream_if);s->h264=true;
+    control(s->probe,s->fps,true);control(s->commit,s->fps,true);
 }
 void uvc_session_reset(struct uvc_session *s)
-{ uvc_session_init(s,s->enable120,s->stream_if); }
+{ if(s->h264)uvc_session_init_h264(s,s->enable120,s->stream_if);
+  else uvc_session_init(s,s->enable120,s->stream_if); }
 void uvc_session_stop(struct uvc_session *s,bool disconnect)
 { if(disconnect)uvc_session_reset(s);else {s->streaming=false;s->pending_selector=0;} }
 int uvc_handle_setup(struct uvc_session *s,const struct usb_ctrlrequest *r,struct uvc_request_data *d)
@@ -77,9 +83,9 @@ int uvc_handle_setup(struct uvc_session *s,const struct usb_ctrlrequest *r,struc
     if(r->bRequestType!=0xa1 || !len) {s->request_error=7;return -EINVAL;}
     switch(r->bRequest) {
     case 0x81: memcpy(d->data,sel==1?s->probe:s->commit,SC130_CTRL_LEN);d->length=SC130_CTRL_LEN;break;
-    case 0x83: control(d->data,60);d->length=SC130_CTRL_LEN;break;
-    case 0x87: control(d->data,s->enable120?120:60);d->length=SC130_CTRL_LEN;break;
-    case 0x82: control(d->data,s->enable120?120:60);d->length=SC130_CTRL_LEN;break;
+    case 0x83: control(d->data,60,s->h264);d->length=SC130_CTRL_LEN;break;
+    case 0x87: control(d->data,s->enable120?120:60,s->h264);d->length=SC130_CTRL_LEN;break;
+    case 0x82: control(d->data,s->enable120?120:60,s->h264);d->length=SC130_CTRL_LEN;break;
     case 0x84: memset(d->data,0,SC130_CTRL_LEN);d->length=SC130_CTRL_LEN;break;
     case 0x85: d->data[0]=SC130_CTRL_LEN;d->length=2;break;
     case 0x86: d->data[0]=3;d->length=1;break;
@@ -97,8 +103,8 @@ int uvc_handle_data(struct uvc_session *s,const struct uvc_request_data *d)
     uint32_t interval=get32(d->data+4);
     if(interval!=166667 && !(interval==83333 && s->enable120)) {s->request_error=4;return -EINVAL;}
     unsigned fps=interval==83333?120:60;
-    if(sel==1) control(s->probe,fps);
-    else { control(s->commit,fps);s->fps=fps;s->committed=true; }
+    if(sel==1) control(s->probe,fps,s->h264);
+    else { control(s->commit,fps,s->h264);s->fps=fps;s->committed=true; }
     return 0;
 }
 int uvc_session_start(struct uvc_session *s)
