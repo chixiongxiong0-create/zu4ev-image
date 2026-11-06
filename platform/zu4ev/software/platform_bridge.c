@@ -3,6 +3,7 @@
 #include "dp_display.h"
 #include "capture_broker.h"
 #include "perf_stats.h"
+#include "h264_encoder.h"
 #include <linux/videodev2.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
@@ -19,7 +20,7 @@
 #include <glob.h>
 
 struct mapped { void *ptr; size_t length; };
-struct video { int fd; enum v4l2_buf_type type; unsigned count; bool on,shared; struct mapped b[16]; };
+struct video { int fd; enum v4l2_buf_type type; unsigned count; bool on,shared,h264; struct mapped b[16]; };
 static volatile sig_atomic_t quitting;
 static volatile sig_atomic_t snapshot_requested;
 static void snapshot_signal(int sig) { (void)sig; snapshot_requested=1; }
@@ -60,12 +61,16 @@ static int find_output(struct video *v)
 static void free_buffers(struct video *v)
 {
     if(v->fd<0)return;
-    if(v->on){xioctl(v->fd,VIDIOC_STREAMOFF,&v->type);v->on=false;}
+    if(v->on){
+        if(xioctl(v->fd,VIDIOC_STREAMOFF,&v->type)<0){close(v->fd);v->fd=-1;}
+        v->on=false;
+    }
     for(unsigned i=0;i<v->count;i++) if(v->b[i].ptr) {
         munmap(v->b[i].ptr,v->b[i].length);v->b[i].ptr=NULL;
     }
     struct v4l2_requestbuffers r={.type=v->type,.memory=v->shared?V4L2_MEMORY_DMABUF:V4L2_MEMORY_MMAP};
-    xioctl(v->fd,VIDIOC_REQBUFS,&r);v->count=0;
+    if(v->fd>=0)xioctl(v->fd,VIDIOC_REQBUFS,&r);
+    v->count=0;
 }
 static int alloc_buffers(struct video *v)
 {
@@ -75,10 +80,12 @@ static int alloc_buffers(struct video *v)
         .sizeimage=SC130_SIZE,.colorspace=V4L2_COLORSPACE_REC709,
         .ycbcr_enc=V4L2_YCBCR_ENC_709,.quantization=V4L2_QUANTIZATION_LIM_RANGE,
         .xfer_func=V4L2_XFER_FUNC_709};
+    if(v->h264){f.fmt.pix.pixelformat=V4L2_PIX_FMT_H264;f.fmt.pix.bytesperline=0;f.fmt.pix.sizeimage=SC130_H264_MAX_AU;}
     if(xioctl(v->fd,VIDIOC_S_FMT,&f)<0)return -1;
     if(f.fmt.pix.width!=SC130_WIDTH || f.fmt.pix.height!=SC130_HEIGHT ||
-       f.fmt.pix.pixelformat!=V4L2_PIX_FMT_YUYV || f.fmt.pix.sizeimage!=SC130_SIZE ||
-       (f.fmt.pix.bytesperline && f.fmt.pix.bytesperline!=SC130_STRIDE)) {errno=EINVAL;return -1;}
+       f.fmt.pix.pixelformat!=(v->h264?V4L2_PIX_FMT_H264:V4L2_PIX_FMT_YUYV) ||
+       f.fmt.pix.sizeimage!=(v->h264?SC130_H264_MAX_AU:SC130_SIZE) ||
+       (f.fmt.pix.bytesperline && f.fmt.pix.bytesperline!=(v->h264?0:SC130_STRIDE))) {errno=EINVAL;return -1;}
     struct v4l2_requestbuffers r={.count=v->type==V4L2_BUF_TYPE_VIDEO_CAPTURE?8:4,.type=v->type,.memory=v->shared?V4L2_MEMORY_DMABUF:V4L2_MEMORY_MMAP};
     /* Cacheable capture pages; vb2 and the driver's per-master DMA mappings
      * retain cache ownership synchronization. Never request skip-sync flags. */
@@ -121,6 +128,13 @@ struct platform {
     struct policy usb;
     struct uvc_session session;
     struct dp_display *dp;
+    struct h264_encoder *encoder;
+    const char *encoder_path;
+    const char *nv12_path;
+    unsigned bitrate;
+    uint64_t encoded,encoded_bytes;
+    bool h264_need_idr;
+    uint64_t h264_recovery_drops,h264_recoveries;
     bool dp_fault,latest_used,have_sequence,usb_sent_valid,usb_sequence_marker;
     uint32_t sequence,usb_sent_sequence;
     int exported[16];
@@ -197,6 +211,8 @@ static void usb_release_sources(struct platform *p)
 }
 static void usb_stop(struct platform *p,bool disconnect)
 {
+    h264_encoder_close(p->encoder);p->encoder=NULL;
+    p->h264_need_idr=false;
     /* STREAMOFF must stop DMA before capture pages become writable again.
      * Closing the device is the cancellation barrier if STREAMOFF fails. */
     if(p->out.shared && p->out.fd>=0 && p->out.count) {
@@ -249,6 +265,12 @@ static int usb_events(struct platform *p)
         } else if(e.type==UVC_EVENT_STREAMON) {
             if(uvc_session_start(&p->session)<0){errno=EPROTO;return -1;}
             if(alloc_buffers(&p->out)<0)return -1;
+            if(p->out.h264) {
+                p->encoder=p->nv12_path ? h264_encoder_open_nv12(p->encoder_path,p->nv12_path,p->session.fps,p->bitrate) :
+                    h264_encoder_open(p->encoder_path,p->session.fps,p->bitrate);
+                if(!p->encoder)return -1;
+                p->encoded=0;p->encoded_bytes=0;
+            }
             policy_init(&p->usb,p->out.count,p->session.fps);
             p->usb_sent_valid=false;
             p->perf_started=false;p->last_submit=0;
@@ -284,7 +306,13 @@ static int usb_complete(struct platform *p)
         }
         p->returned++;
         if(p->profile && p->perf_started){p->perf_end=now_ns();p->perf_cpu_end=cpu_ns();}
-        if(b.flags&V4L2_BUF_FLAG_ERROR)usb_error(p,USB_ERR_BUFFER,&b,0);
+        if(b.flags&V4L2_BUF_FLAG_ERROR) {
+            usb_error(p,USB_ERR_BUFFER,&b,0);
+            /* Keep the host connection, but do not submit further predictive
+             * AUs until an independently decodable IDR restores references.
+             * Already queued AUs precede that IDR in the USB FIFO. */
+            if(p->out.h264)p->h264_need_idr=true;
+        }
     }
     if(errno==EAGAIN || errno==EINTR)return 0;
     usb_error(p,USB_ERR_DQBUF,NULL,errno);return -1;
@@ -298,8 +326,81 @@ static void usb_sequence_marker(uint8_t *output,uint32_t sequence,bool enabled)
         (uint8_t)(sequence>>16),(uint8_t)(sequence>>24)};
     for(unsigned i=0;i<8;i++){output[2*i]=y[i];output[2*i+1]=128;}
 }
+static int usb_h264_send(struct platform *p,uint64_t n)
+{
+    if(!p->session.streaming)return 0;
+    if(!p->encoder){errno=ENODEV;return -1;}
+    /* Preserve FIFO order after encoding. Only unencoded source frames may be
+     * skipped. Backpressure leaves completed AUs in the encoder capture queue. */
+    for(;;) {
+        unsigned slot;
+        for(slot=0;slot<p->usb.count && p->usb.slot[slot].state!=FREE;slot++);
+        if(slot==p->usb.count)break;
+        struct h264_access_unit au;
+        int ready=h264_encoder_next(p->encoder,&au);
+        if(ready<0)return -1;
+        if(!ready)break;
+        if(!au.size || au.size>p->out.b[slot].length || au.size>SC130_H264_MAX_AU) {
+            errno=EPROTO;return -1;
+        }
+        if(p->h264_need_idr && !au.keyframe) {
+            if(h264_encoder_release(p->encoder,au.index)<0)return -1;
+            p->h264_recovery_drops++;
+            continue;
+        }
+        memcpy(p->out.b[slot].ptr,au.data,au.size);
+        if(h264_encoder_release(p->encoder,au.index)<0)return -1;
+        struct v4l2_buffer b={.index=slot,.type=p->out.type,.memory=V4L2_MEMORY_MMAP,
+            .bytesused=(unsigned)au.size,.field=V4L2_FIELD_NONE};
+        b.timestamp.tv_sec=(long)(au.timestamp_ns/1000000000);
+        b.timestamp.tv_usec=(long)(au.timestamp_ns%1000000000/1000);
+        if(xioctl(p->out.fd,VIDIOC_QBUF,&b)<0)return -1;
+        if(p->h264_need_idr) {
+            p->h264_need_idr=false;p->h264_recoveries++;
+            fprintf(stderr,"H264 recovery IDR queued recoveries=%llu skipped=%llu usb_errors=%llu\n",
+                (unsigned long long)p->h264_recoveries,(unsigned long long)p->h264_recovery_drops,
+                (unsigned long long)p->usb_errors);
+        }
+        p->usb.slot[slot]=(struct frame_slot){USB_IN_FLIGHT,p->encoded++,au.timestamp_ns};
+        p->sent++;p->encoded_bytes+=au.size;
+        if(!p->out.on) {
+            if(xioctl(p->out.fd,VIDIOC_STREAMON,&p->out.type)<0)return -1;
+            p->out.on=true;
+        }
+    }
+    if(p->nv12_path) {
+        /* Independent PL capture: no YUY2 hold, CPU conversion or raw memcpy. */
+        return h264_encoder_pump_nv12(p->encoder)<0 ? -1 : 0;
+    }
+    int latest=p->broker.latest;
+    if(latest<0 || n<p->usb.next_ns)return 0;
+    uint32_t seq=p->meta[latest].sequence;
+    if(!sc130_accept_sequence(seq,false,0,p->usb_sent_valid,p->usb_sent_sequence))return 0;
+    if(!p->cap.b[latest].ptr || p->cap.b[latest].length<SC130_SIZE){errno=EPROTO;return -1;}
+    if(broker_encoder_hold(&p->broker,(unsigned)latest)<0){errno=EPROTO;return -1;}
+    uint64_t stamp=(uint64_t)p->meta[latest].timestamp.tv_sec*1000000000+
+                   (uint64_t)p->meta[latest].timestamp.tv_usec*1000;
+    uint64_t start=now_ns(),cpu=cpu_ns();
+    /* submit synchronously copies/converts into private NV12 memory. VCU never
+     * references this YUY2 source after submit returns, including failures. */
+    int accepted=h264_encoder_submit(p->encoder,p->cap.b[latest].ptr,SC130_SIZE,seq,stamp);
+    int error=errno;
+    if(broker_encoder_release(&p->broker,(unsigned)latest)<0){errno=EPROTO;return -1;}
+    if(accepted<0){errno=error;return -1;}
+    if(!accepted)return 0;
+    if(p->profile) {
+        if(!p->perf_started){p->perf_started=true;p->perf_start=start;p->perf_cpu_start=cpu;}
+        perf_add(&p->copy_wall,now_ns()-start);perf_add(&p->copy_cpu,cpu_ns()-cpu);
+        p->perf_end=now_ns();p->perf_cpu_end=cpu_ns();
+    }
+    p->usb_sent_sequence=seq;p->usb_sent_valid=true;p->latest_used=true;
+    uint64_t period=(1000000000ull+p->session.fps/2)/p->session.fps;
+    p->usb.next_ns=p->usb.next_ns?p->usb.next_ns+((n-p->usb.next_ns)/period+1)*period:n+period;
+    return 0;
+}
 static int usb_send(struct platform *p,uint64_t n)
 {
+    if(p->out.h264)return usb_h264_send(p,n);
     int latest=p->broker.latest;
     if(!p->session.streaming || latest<0 || n<p->usb.next_ns)return 0;
     uint32_t seq=p->meta[latest].sequence;
@@ -448,13 +549,17 @@ static void usage(const char *name)
 {
     fprintf(stderr,"Usage: %s [--capture /dev/videoN] [--output /dev/videoN]\n"
         " [--soft-connect PATH] [--stream-interface N] [--disable-dp]\n [--snapshot PATH] (SIGUSR1 saves latest YUY2; default /tmp/sc130-frame.yuy2)\n [--usb-sequence-marker] (diagnostic USB copy only; default OFF)\n"
+        " [--usb-format h264|yuy2] (default h264; must match configfs UVC_FORMAT)\n"
+        " [--nv12 /dev/sc130-nv12] [--encoder /dev/videoN] [--bitrate BITS_PER_SECOND] (default 20000000)\n"
         " [--profile] (cumulative per-stream timing; quantiles are bucket upper bounds)\n"
         " [--profile-static-usb] (diagnostic frozen USB image, NOT live video)\n"
         "Camera and DP start at boot. USB defaults to120fps, accepts60fps.\n",name);
 }
 int main(int argc,char **argv)
 {
-    const char *cappath=NULL,*outpath=NULL,*soft=NULL,*snapshot="/tmp/sc130-frame.yuy2";bool use_dp=true,marker=false,profile=false,static_usb=false;unsigned stream_if=1;
+    const char *cappath=NULL,*outpath=NULL,*soft=NULL,*snapshot="/tmp/sc130-frame.yuy2",*encoder_path=NULL,*nv12_path=NULL;
+    bool use_dp=true,marker=false,profile=false,static_usb=false,h264=true;
+    unsigned stream_if=1,bitrate=20000000;
     for(int i=1;i<argc;i++) {
         if(!strcmp(argv[i],"--profile"))profile=true;
         else if(!strcmp(argv[i],"--profile-static-usb")){profile=true;static_usb=true;}
@@ -466,18 +571,37 @@ int main(int argc,char **argv)
         else if(i+1<argc && !strcmp(argv[i],"--output"))outpath=argv[++i];
         else if(i+1<argc && !strcmp(argv[i],"--soft-connect"))soft=argv[++i];
         else if(i+1<argc && !strcmp(argv[i],"--snapshot"))snapshot=argv[++i];
+        else if(i+1<argc && !strcmp(argv[i],"--nv12"))nv12_path=argv[++i];
+        else if(i+1<argc && !strcmp(argv[i],"--encoder"))encoder_path=argv[++i];
+        else if(i+1<argc && !strcmp(argv[i],"--bitrate")) {
+            char *end;errno=0;unsigned long value=strtoul(argv[++i],&end,10);
+            if(errno || *end || value<1000000 || value>100000000){usage(argv[0]);return 2;}
+            bitrate=(unsigned)value;
+        }
+        else if(i+1<argc && !strcmp(argv[i],"--usb-format")) {
+            const char *format=argv[++i];
+            if(!strcmp(format,"h264"))h264=true;
+            else if(!strcmp(format,"yuy2"))h264=false;
+            else {usage(argv[0]);return 2;}
+        }
         else if(i+1<argc && !strcmp(argv[i],"--stream-interface"))stream_if=(unsigned)strtoul(argv[++i],NULL,10);
         else {usage(argv[0]);return 2;}
     }
     if(stream_if>255){usage(argv[0]);return 2;}
+    if(nv12_path && !h264){fprintf(stderr,"--nv12 requires --usb-format h264\n");return 2;}
+    if(h264 && (marker || static_usb)){fprintf(stderr,"raw diagnostics require --usb-format yuy2\n");return 2;}
     signal(SIGINT,stop_signal);signal(SIGTERM,stop_signal);signal(SIGUSR1,snapshot_signal);
     struct platform p={.cap={.fd=-1},.out={.fd=-1},.usb_sequence_marker=marker};
     p.profile=profile;p.static_usb=static_usb;p.perf_start=now_ns();p.perf_cpu_start=cpu_ns();
+    p.out.h264=h264;p.encoder_path=encoder_path;p.nv12_path=nv12_path;p.bitrate=bitrate;
     if(static_usb)fprintf(stderr,"DIAGNOSTIC STATIC USB: output slots copied once; USB image is NOT live; DP stays live\n");
-    p.out.shared=!marker && !static_usb;
+    p.out.shared=!h264 && !marker && !static_usb;
     fprintf(stderr,"USB buffer mode=%s\n",p.out.shared?"shared DMA-BUF":"diagnostic copy");
     for(unsigned i=0;i<16;i++){p.exported[i]=-1;p.usb_source[i]=-1;}
-    policy_init(&p.usb,0,120);uvc_session_init(&p.session,true,stream_if);
+    policy_init(&p.usb,0,120);
+    if(h264)uvc_session_init_h264(&p.session,true,stream_if);
+    else uvc_session_init(&p.session,true,stream_if);
+    if(h264)fprintf(stderr,"USB H264 VCU; DP uses capture YUY2; %s\n",nv12_path?"PL NV12 DMA-BUF":"CPU NEON NV12");
     if(marker)fprintf(stderr,"USB sequence marker enabled: Y[0..7]=SC10 + source sequence LE32; USB output copy only\n");
     int result=1;
     if((cappath?open_video(&p.cap,cappath,false):find_capture(&p.cap))<0){perror("open capture");goto finish;}
@@ -494,19 +618,26 @@ int main(int argc,char **argv)
             if(recycle(&p)<0){perror("capture recycle");goto finish;}
             retry=n+2000000000ull;
         }
-        struct pollfd f[3]={{.fd=p.cap.fd,.events=POLLIN},
+        struct pollfd f[5]={{.fd=p.cap.fd,.events=POLLIN},
             {.fd=p.out.fd,.events=POLLPRI},
-            {.fd=p.dp && !p.dp_fault?dp_display_fd(p.dp):-1,.events=POLLIN}};
+            {.fd=p.dp && !p.dp_fault?dp_display_fd(p.dp):-1,.events=POLLIN},
+            {.fd=h264_encoder_fd(p.encoder),.events=POLLIN},
+            {.fd=h264_encoder_capture_fd(p.encoder),.events=POLLIN}};
         bool inflight=false;
+        bool free_output=false;
         for(unsigned i=0;i<p.usb.count;i++)inflight|=p.usb.slot[i].state==USB_IN_FLIGHT;
+        for(unsigned i=0;i<p.usb.count;i++)free_output|=p.usb.slot[i].state==FREE;
+        /* An already completed AU keeps encoder POLLIN asserted. Do not spin
+         * on it while USB owns every output slot; wait for USB completion. */
+        if(p.out.h264 && !free_output)f[3].fd=-1;
         if(p.out.on && inflight)f[1].events|=POLLOUT;
         int timeout=20;
-        if(p.session.streaming && p.broker.latest>=0 && !p.usb_sent_valid)timeout=0;
+        if(!p.out.h264 && p.session.streaming && p.broker.latest>=0 && !p.usb_sent_valid)timeout=0;
         else if(p.session.streaming && p.broker.latest>=0 &&
             sc130_accept_sequence(p.meta[p.broker.latest].sequence,false,0,p.usb_sent_valid,p.usb_sent_sequence) && n<p.usb.next_ns) {
             timeout=(int)((p.usb.next_ns-n+999999)/1000000);if(timeout>20)timeout=20;
         }
-        int r=poll(f,3,timeout);
+        int r=poll(f,5,timeout);
         if(r<0){if(errno==EINTR)continue;perror("poll");goto finish;}
         if(f[1].revents&POLLPRI)if(usb_events(&p)<0) {
             usb_error(&p,USB_ERR_EVENT,NULL,errno);perror("USB events");if(soft)write_text(soft,"disconnect");usb_detach(&p);
@@ -538,6 +669,8 @@ int main(int argc,char **argv)
                 (unsigned long long)p.usb_error_kind[USB_ERR_EVENT],
                 (unsigned long long)p.usb_error_kind[USB_ERR_SEND]);lastlog=n;
             profile_report(&p);
+            if(p.out.h264)fprintf(stderr,"H264 encoded=%llu bytes=%llu fps=%u bitrate=%u\n",
+                (unsigned long long)p.encoded,(unsigned long long)p.encoded_bytes,p.session.fps,p.bitrate);
         }
     }
     result=0;

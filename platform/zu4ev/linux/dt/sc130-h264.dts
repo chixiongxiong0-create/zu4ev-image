@@ -1,0 +1,7 @@
+/* Pair only with the VCU-enabled bitstream. */
+#include "sc130-uvc.dts"
+#include "../vcu-allegro.dtsi"
+
+&{/chosen} {
+    bootargs = "console=ttyPS0,115200 earlycon=cdns,mmio,0xff000000 clk_ignore_unused rdinit=/init cma=256M maxcpus=1";
+};

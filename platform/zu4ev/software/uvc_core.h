@@ -9,6 +9,7 @@
 #define SC130_HEIGHT 1024u
 #define SC130_STRIDE 2560u
 #define SC130_SIZE 2621440u
+#define SC130_H264_MAX_AU 2621440u
 #define SC130_MAX_BUFFERS 16
 #define SC130_CTRL_LEN 34
 enum frame_state { FREE, CAPTURING, READY, USB_IN_FLIGHT };
@@ -26,13 +27,14 @@ int policy_usb_done(struct policy *, unsigned id);
 void policy_reset(struct policy *);
 bool sc130_accept_sequence(uint32_t candidate,bool held_valid,uint32_t held,bool sent_valid,uint32_t sent);
 struct uvc_session {
-    bool enable120, superspeed, committed, streaming;
+    bool enable120, superspeed, committed, streaming, h264;
     unsigned fps, stream_if;
     uint8_t request_error;
     uint8_t probe[SC130_CTRL_LEN], commit[SC130_CTRL_LEN];
     unsigned pending_selector;
 };
 void uvc_session_init(struct uvc_session *, bool enable120, unsigned stream_if);
+void uvc_session_init_h264(struct uvc_session *, bool enable120, unsigned stream_if);
 void uvc_session_reset(struct uvc_session *);
 void uvc_session_stop(struct uvc_session *, bool disconnect);
 int uvc_handle_setup(struct uvc_session *, const struct usb_ctrlrequest *, struct uvc_request_data *);
