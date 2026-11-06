@@ -6,6 +6,9 @@
 struct h264_encoder;
 struct h264_access_unit { const uint8_t *data; size_t size; unsigned index; uint64_t timestamp_ns; bool keyframe; };
 struct h264_encoder *h264_encoder_open(const char *,unsigned,unsigned);
+struct h264_encoder *h264_encoder_open_nv12(const char *,const char *,unsigned,unsigned);
+int h264_encoder_pump_nv12(struct h264_encoder *);
+int h264_encoder_capture_fd(struct h264_encoder *);
 int h264_encoder_fd(struct h264_encoder *);
 int h264_encoder_submit(struct h264_encoder *,const uint8_t *,size_t,uint32_t,uint64_t);
 int h264_encoder_next(struct h264_encoder *,struct h264_access_unit *);

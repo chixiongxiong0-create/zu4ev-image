@@ -130,6 +130,7 @@ struct platform {
     struct dp_display *dp;
     struct h264_encoder *encoder;
     const char *encoder_path;
+    const char *nv12_path;
     unsigned bitrate;
     uint64_t encoded,encoded_bytes;
     bool h264_need_idr;
@@ -265,7 +266,8 @@ static int usb_events(struct platform *p)
             if(uvc_session_start(&p->session)<0){errno=EPROTO;return -1;}
             if(alloc_buffers(&p->out)<0)return -1;
             if(p->out.h264) {
-                p->encoder=h264_encoder_open(p->encoder_path,p->session.fps,p->bitrate);
+                p->encoder=p->nv12_path ? h264_encoder_open_nv12(p->encoder_path,p->nv12_path,p->session.fps,p->bitrate) :
+                    h264_encoder_open(p->encoder_path,p->session.fps,p->bitrate);
                 if(!p->encoder)return -1;
                 p->encoded=0;p->encoded_bytes=0;
             }
@@ -365,6 +367,10 @@ static int usb_h264_send(struct platform *p,uint64_t n)
             if(xioctl(p->out.fd,VIDIOC_STREAMON,&p->out.type)<0)return -1;
             p->out.on=true;
         }
+    }
+    if(p->nv12_path) {
+        /* Independent PL capture: no YUY2 hold, CPU conversion or raw memcpy. */
+        return h264_encoder_pump_nv12(p->encoder)<0 ? -1 : 0;
     }
     int latest=p->broker.latest;
     if(latest<0 || n<p->usb.next_ns)return 0;
@@ -544,14 +550,14 @@ static void usage(const char *name)
     fprintf(stderr,"Usage: %s [--capture /dev/videoN] [--output /dev/videoN]\n"
         " [--soft-connect PATH] [--stream-interface N] [--disable-dp]\n [--snapshot PATH] (SIGUSR1 saves latest YUY2; default /tmp/sc130-frame.yuy2)\n [--usb-sequence-marker] (diagnostic USB copy only; default OFF)\n"
         " [--usb-format h264|yuy2] (default h264; must match configfs UVC_FORMAT)\n"
-        " [--encoder /dev/videoN] [--bitrate BITS_PER_SECOND] (default 20000000)\n"
+        " [--nv12 /dev/sc130-nv12] [--encoder /dev/videoN] [--bitrate BITS_PER_SECOND] (default 20000000)\n"
         " [--profile] (cumulative per-stream timing; quantiles are bucket upper bounds)\n"
         " [--profile-static-usb] (diagnostic frozen USB image, NOT live video)\n"
         "Camera and DP start at boot. USB defaults to120fps, accepts60fps.\n",name);
 }
 int main(int argc,char **argv)
 {
-    const char *cappath=NULL,*outpath=NULL,*soft=NULL,*snapshot="/tmp/sc130-frame.yuy2",*encoder_path=NULL;
+    const char *cappath=NULL,*outpath=NULL,*soft=NULL,*snapshot="/tmp/sc130-frame.yuy2",*encoder_path=NULL,*nv12_path=NULL;
     bool use_dp=true,marker=false,profile=false,static_usb=false,h264=true;
     unsigned stream_if=1,bitrate=20000000;
     for(int i=1;i<argc;i++) {
@@ -565,6 +571,7 @@ int main(int argc,char **argv)
         else if(i+1<argc && !strcmp(argv[i],"--output"))outpath=argv[++i];
         else if(i+1<argc && !strcmp(argv[i],"--soft-connect"))soft=argv[++i];
         else if(i+1<argc && !strcmp(argv[i],"--snapshot"))snapshot=argv[++i];
+        else if(i+1<argc && !strcmp(argv[i],"--nv12"))nv12_path=argv[++i];
         else if(i+1<argc && !strcmp(argv[i],"--encoder"))encoder_path=argv[++i];
         else if(i+1<argc && !strcmp(argv[i],"--bitrate")) {
             char *end;errno=0;unsigned long value=strtoul(argv[++i],&end,10);
@@ -581,11 +588,12 @@ int main(int argc,char **argv)
         else {usage(argv[0]);return 2;}
     }
     if(stream_if>255){usage(argv[0]);return 2;}
+    if(nv12_path && !h264){fprintf(stderr,"--nv12 requires --usb-format h264\n");return 2;}
     if(h264 && (marker || static_usb)){fprintf(stderr,"raw diagnostics require --usb-format yuy2\n");return 2;}
     signal(SIGINT,stop_signal);signal(SIGTERM,stop_signal);signal(SIGUSR1,snapshot_signal);
     struct platform p={.cap={.fd=-1},.out={.fd=-1},.usb_sequence_marker=marker};
     p.profile=profile;p.static_usb=static_usb;p.perf_start=now_ns();p.perf_cpu_start=cpu_ns();
-    p.out.h264=h264;p.encoder_path=encoder_path;p.bitrate=bitrate;
+    p.out.h264=h264;p.encoder_path=encoder_path;p.nv12_path=nv12_path;p.bitrate=bitrate;
     if(static_usb)fprintf(stderr,"DIAGNOSTIC STATIC USB: output slots copied once; USB image is NOT live; DP stays live\n");
     p.out.shared=!h264 && !marker && !static_usb;
     fprintf(stderr,"USB buffer mode=%s\n",p.out.shared?"shared DMA-BUF":"diagnostic copy");
@@ -593,7 +601,7 @@ int main(int argc,char **argv)
     policy_init(&p.usb,0,120);
     if(h264)uvc_session_init_h264(&p.session,true,stream_if);
     else uvc_session_init(&p.session,true,stream_if);
-    if(h264)fprintf(stderr,"USB H264 VCU; DP uses unchanged capture YUY2; CPU NEON NV12 conversion requires throughput measurement\n");
+    if(h264)fprintf(stderr,"USB H264 VCU; DP uses capture YUY2; %s\n",nv12_path?"PL NV12 DMA-BUF":"CPU NEON NV12");
     if(marker)fprintf(stderr,"USB sequence marker enabled: Y[0..7]=SC10 + source sequence LE32; USB output copy only\n");
     int result=1;
     if((cappath?open_video(&p.cap,cappath,false):find_capture(&p.cap))<0){perror("open capture");goto finish;}
@@ -610,10 +618,11 @@ int main(int argc,char **argv)
             if(recycle(&p)<0){perror("capture recycle");goto finish;}
             retry=n+2000000000ull;
         }
-        struct pollfd f[4]={{.fd=p.cap.fd,.events=POLLIN},
+        struct pollfd f[5]={{.fd=p.cap.fd,.events=POLLIN},
             {.fd=p.out.fd,.events=POLLPRI},
             {.fd=p.dp && !p.dp_fault?dp_display_fd(p.dp):-1,.events=POLLIN},
-            {.fd=h264_encoder_fd(p.encoder),.events=POLLIN}};
+            {.fd=h264_encoder_fd(p.encoder),.events=POLLIN},
+            {.fd=h264_encoder_capture_fd(p.encoder),.events=POLLIN}};
         bool inflight=false;
         bool free_output=false;
         for(unsigned i=0;i<p.usb.count;i++)inflight|=p.usb.slot[i].state==USB_IN_FLIGHT;
@@ -628,7 +637,7 @@ int main(int argc,char **argv)
             sc130_accept_sequence(p.meta[p.broker.latest].sequence,false,0,p.usb_sent_valid,p.usb_sent_sequence) && n<p.usb.next_ns) {
             timeout=(int)((p.usb.next_ns-n+999999)/1000000);if(timeout>20)timeout=20;
         }
-        int r=poll(f,4,timeout);
+        int r=poll(f,5,timeout);
         if(r<0){if(errno==EINTR)continue;perror("poll");goto finish;}
         if(f[1].revents&POLLPRI)if(usb_events(&p)<0) {
             usb_error(&p,USB_ERR_EVENT,NULL,errno);perror("USB events");if(soft)write_text(soft,"disconnect");usb_detach(&p);

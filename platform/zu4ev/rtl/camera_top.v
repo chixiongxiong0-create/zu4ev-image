@@ -261,7 +261,75 @@ module camera_top (
         .c0_ddr4_dqs_c(c0_ddr4_dqs_c),
         .pl_clk_p(pl_clk_p)
     );
+`ifdef SC130_NV12
+    wire [31:0] nv_ctrl_awaddr;
+    wire nv_ctrl_awvalid;
+    wire nv_ctrl_awready;
+    wire [31:0] nv_ctrl_wdata;
+    wire [3:0] nv_ctrl_wstrb;
+    wire nv_ctrl_wvalid;
+    wire nv_ctrl_wready;
+    wire [1:0] nv_ctrl_bresp;
+    wire nv_ctrl_bvalid;
+    wire nv_ctrl_bready;
+    wire [31:0] nv_ctrl_araddr;
+    wire nv_ctrl_arvalid;
+    wire nv_ctrl_arready;
+    wire [31:0] nv_ctrl_rdata;
+    wire [1:0] nv_ctrl_rresp;
+    wire nv_ctrl_rvalid;
+    wire nv_ctrl_rready;
+    wire [31:0] nv_mem_awaddr;
+    wire [7:0] nv_mem_awlen;
+    wire [2:0] nv_mem_awsize;
+    wire [1:0] nv_mem_awburst;
+    wire nv_mem_awvalid;
+    wire nv_mem_awready;
+    wire [127:0] nv_mem_wdata;
+    wire [15:0] nv_mem_wstrb;
+    wire nv_mem_wlast;
+    wire nv_mem_wvalid;
+    wire nv_mem_wready;
+    wire [1:0] nv_mem_bresp;
+    wire nv_mem_bvalid;
+    wire nv_mem_bready;
+    wire nv_irq;
+`endif
     soc_subsystem soc_subsystem (
+`ifdef SC130_NV12
+        .nv_ctrl_awaddr(nv_ctrl_awaddr),
+        .nv_ctrl_awvalid(nv_ctrl_awvalid),
+        .nv_ctrl_awready(nv_ctrl_awready),
+        .nv_ctrl_wdata(nv_ctrl_wdata),
+        .nv_ctrl_wstrb(nv_ctrl_wstrb),
+        .nv_ctrl_wvalid(nv_ctrl_wvalid),
+        .nv_ctrl_wready(nv_ctrl_wready),
+        .nv_ctrl_bresp(nv_ctrl_bresp),
+        .nv_ctrl_bvalid(nv_ctrl_bvalid),
+        .nv_ctrl_bready(nv_ctrl_bready),
+        .nv_ctrl_araddr(nv_ctrl_araddr),
+        .nv_ctrl_arvalid(nv_ctrl_arvalid),
+        .nv_ctrl_arready(nv_ctrl_arready),
+        .nv_ctrl_rdata(nv_ctrl_rdata),
+        .nv_ctrl_rresp(nv_ctrl_rresp),
+        .nv_ctrl_rvalid(nv_ctrl_rvalid),
+        .nv_ctrl_rready(nv_ctrl_rready),
+        .nv_mem_awaddr(nv_mem_awaddr),
+        .nv_mem_awlen(nv_mem_awlen),
+        .nv_mem_awsize(nv_mem_awsize),
+        .nv_mem_awburst(nv_mem_awburst),
+        .nv_mem_awvalid(nv_mem_awvalid),
+        .nv_mem_awready(nv_mem_awready),
+        .nv_mem_wdata(nv_mem_wdata),
+        .nv_mem_wstrb(nv_mem_wstrb),
+        .nv_mem_wlast(nv_mem_wlast),
+        .nv_mem_wvalid(nv_mem_wvalid),
+        .nv_mem_wready(nv_mem_wready),
+        .nv_mem_bresp(nv_mem_bresp),
+        .nv_mem_bvalid(nv_mem_bvalid),
+        .nv_mem_bready(nv_mem_bready),
+        .nv_irq(nv_irq),
+`endif
         .camera_sda(camera_sda),
         .camera_scl_sample(camera_scl_sample),
         .ibex_sensor_grant(ibex_sensor_grant),
@@ -776,4 +844,44 @@ module camera_top (
     );
 `endif
     ibex_board_debug ibex_debug_i (.clk_i(lite_clk), .locked_i(locked), .video_clk_i(video_clk), .video_rst_ni(rx_video_resetn), .isp_stats_i(ibex_isp_stats), .isp_fe_seq_i(ae_fe_seq), .isp_sof_seq_i(ae_sof_seq), .sensor_owner_i(ibex_sensor_owner), .sensor_run_i(ibex_sensor_run), .sensor_stop_i(ibex_sensor_stop), .sensor_ps_scl_release_i(ps_sensor_scl_release), .sensor_ps_sda_release_i(ps_sensor_sda_release), .sensor_scl_i(camera_scl_sample), .sensor_sda_i(camera_sda_sample), .sensor_scl_low_o(ibex_sensor_scl_low), .sensor_sda_low_o(ibex_sensor_sda_low), .sensor_grant_o(ibex_sensor_grant), .sensor_status_o(ibex_sensor_status), .isp_cfg_rst_ni(uvc_resetn), .cfg_reset_no(ibex_cfg_resetn), .m_isp_axi_awaddr(cpu_isp_axi_awaddr), .m_isp_axi_awvalid(cpu_isp_axi_awvalid), .m_isp_axi_awready(cpu_isp_axi_awready), .m_isp_axi_wdata(cpu_isp_axi_wdata), .m_isp_axi_wstrb(cpu_isp_axi_wstrb), .m_isp_axi_wvalid(cpu_isp_axi_wvalid), .m_isp_axi_wready(cpu_isp_axi_wready), .m_isp_axi_bresp(cpu_isp_axi_bresp), .m_isp_axi_bvalid(cpu_isp_axi_bvalid), .m_isp_axi_bready(cpu_isp_axi_bready), .m_isp_axi_araddr(cpu_isp_axi_araddr), .m_isp_axi_arvalid(cpu_isp_axi_arvalid), .m_isp_axi_arready(cpu_isp_axi_arready), .m_isp_axi_rdata(cpu_isp_axi_rdata), .m_isp_axi_rresp(cpu_isp_axi_rresp), .m_isp_axi_rvalid(cpu_isp_axi_rvalid), .m_isp_axi_rready(cpu_isp_axi_rready));
+
+`ifdef SC130_NV12
+    // Parallel output after final TNR; no backpressure into the ISP/DP path.
+    nv12_capture_peripheral nv12_output (
+        .clk(video_clk),.resetn(uvc_resetn),
+        .s_data(converted),.s_valid(cv),.s_sof(cs),.s_eol(ce),
+        .s_fault(packet_d | fault_d),.irq(nv_irq),
+        .s_axi_awaddr(nv_ctrl_awaddr[7:0]),
+        .s_axi_awvalid(nv_ctrl_awvalid),
+        .s_axi_awready(nv_ctrl_awready),
+        .s_axi_wdata(nv_ctrl_wdata),
+        .s_axi_wstrb(nv_ctrl_wstrb),
+        .s_axi_wvalid(nv_ctrl_wvalid),
+        .s_axi_wready(nv_ctrl_wready),
+        .s_axi_bresp(nv_ctrl_bresp),
+        .s_axi_bvalid(nv_ctrl_bvalid),
+        .s_axi_bready(nv_ctrl_bready),
+        .s_axi_araddr(nv_ctrl_araddr[7:0]),
+        .s_axi_arvalid(nv_ctrl_arvalid),
+        .s_axi_arready(nv_ctrl_arready),
+        .s_axi_rdata(nv_ctrl_rdata),
+        .s_axi_rresp(nv_ctrl_rresp),
+        .s_axi_rvalid(nv_ctrl_rvalid),
+        .s_axi_rready(nv_ctrl_rready),
+        .m_axi_awaddr(nv_mem_awaddr),
+        .m_axi_awlen(nv_mem_awlen),
+        .m_axi_awsize(nv_mem_awsize),
+        .m_axi_awburst(nv_mem_awburst),
+        .m_axi_awvalid(nv_mem_awvalid),
+        .m_axi_awready(nv_mem_awready),
+        .m_axi_wdata(nv_mem_wdata),
+        .m_axi_wstrb(nv_mem_wstrb),
+        .m_axi_wlast(nv_mem_wlast),
+        .m_axi_wvalid(nv_mem_wvalid),
+        .m_axi_wready(nv_mem_wready),
+        .m_axi_bresp(nv_mem_bresp),
+        .m_axi_bvalid(nv_mem_bvalid),
+        .m_axi_bready(nv_mem_bready)
+    );
+`endif
 endmodule

@@ -12,6 +12,7 @@
 #undef munmap
 
 static struct platform *current;
+static unsigned nv_pump_calls;
 static unsigned ready_aus,next_calls,release_calls,submit_calls,qbuf_calls,encoder_closed;
 static bool fail_qbuf,fail_stop,output_cancelled,submit_busy,submit_fail;
 static int completion=-1;
@@ -22,6 +23,10 @@ static uint8_t source[SC130_SIZE],output[4][64];
 static unsigned sizes[4]={6,9,12,15};
 struct h264_encoder *h264_encoder_open(const char *path,unsigned fps,unsigned bitrate)
 { (void)path;assert(fps==120 && bitrate==20000000);return (struct h264_encoder *)(uintptr_t)1; }
+struct h264_encoder *h264_encoder_open_nv12(const char *p,const char *n,unsigned f,unsigned b)
+{ (void)n;return h264_encoder_open(p,f,b); }
+int h264_encoder_pump_nv12(struct h264_encoder *e) { assert(e);nv_pump_calls++;return 0; }
+int h264_encoder_capture_fd(struct h264_encoder *e) { (void)e;return -1; }
 int h264_encoder_fd(struct h264_encoder *e) { return e?8:-1; }
 void h264_encoder_close(struct h264_encoder *e) { if(e)encoder_closed++; }
 int h264_encoder_next(struct h264_encoder *e,struct h264_access_unit *au)
@@ -122,6 +127,13 @@ int main(void)
     fail_stop=true;usb_stop(&p,true);
     assert(output_cancelled && p.out.fd==-1 && p.broker.dp[2] && p.cap.on && encoder_closed==1);
     assert(!p.h264_need_idr);
+    assert(nv_pump_calls==0);
+    struct platform nv={.encoder=(struct h264_encoder *)(uintptr_t)1,.nv12_path="/dev/sc130-nv12"};
+    nv.session.streaming=true;
+    unsigned before_nv=submit_calls;
+    assert(!usb_h264_send(&nv,base));
+    assert(nv_pump_calls==1 && submit_calls==before_nv);
+    puts("PL NV12 bridge bypasses YUY2 source ownership and CPU submit: PASS");
     puts("H264 ordered variable-size UVC, cadence, backpressure, failure cancellation and raw DP: PASS");
     return 0;
 }

@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-module isp #(parameter BYPASS=0, PIPELINE=0, LINE_WORDS=640, FRAME_LINES=1024, USE_LTM=0, USE_TNR=0, ISP_RUNTIME=0) (output wire [511:0] ibex_stats_o, input wire ibex_cfg_reset_ni,
+module isp #(parameter BYPASS=0, PIPELINE=0, LINE_WORDS=640, FRAME_LINES=1024, USE_LTM=0, USE_TNR=0, ISP_RUNTIME=0, USE_NV12=0) (output wire [511:0] ibex_stats_o, input wire ibex_cfg_reset_ni,
 
     input wire  clk,
     input wire  resetn,
@@ -72,7 +72,12 @@ module isp #(parameter BYPASS=0, PIPELINE=0, LINE_WORDS=640, FRAME_LINES=1024, U
     input wire  packet_error,
     input wire  global_fault,
     output wire  m_packet_error,
-    output wire  m_global_fault
+    output wire  m_global_fault,
+    output wire [15:0] nv12_y_data,nv12_uv_data,
+    output wire nv12_y_valid,nv12_y_sof,nv12_y_eol,nv12_y_eof,
+    output wire nv12_uv_valid,nv12_uv_sof,nv12_uv_eol,nv12_uv_eof,
+    input wire nv12_y_ready,nv12_uv_ready,
+    output wire nv12_frame_abort,nv12_frame_done
 );
     generate if (!PIPELINE) begin: LEGACY
 
@@ -239,4 +244,14 @@ module isp #(parameter BYPASS=0, PIPELINE=0, LINE_WORDS=640, FRAME_LINES=1024, U
     );
 
     end endgenerate
+generate if(USE_NV12) begin: nv12_output
+ isp_yuy2_nv12 #(.WIDTH(LINE_WORDS*2),.HEIGHT(FRAME_LINES)) converter(
+ .clk(clk),.resetn(resetn),.s_data(m_data),.s_valid(m_valid&&m_ready),
+ .s_sof(m_sof),.s_eol(m_eol),.s_fault(m_packet_error|m_global_fault),
+ .y_data(nv12_y_data),.y_valid(nv12_y_valid),.y_sof(nv12_y_sof),.y_eol(nv12_y_eol),.y_eof(nv12_y_eof),.y_ready(nv12_y_ready),
+ .uv_data(nv12_uv_data),.uv_valid(nv12_uv_valid),.uv_sof(nv12_uv_sof),.uv_eol(nv12_uv_eol),.uv_eof(nv12_uv_eof),.uv_ready(nv12_uv_ready),
+ .frame_abort(nv12_frame_abort),.frame_done(nv12_frame_done));
+end else begin: no_nv12
+ assign {nv12_y_data,nv12_uv_data,nv12_y_valid,nv12_y_sof,nv12_y_eol,nv12_y_eof,nv12_uv_valid,nv12_uv_sof,nv12_uv_eol,nv12_uv_eof,nv12_frame_abort,nv12_frame_done}=0;
+end endgenerate
 endmodule

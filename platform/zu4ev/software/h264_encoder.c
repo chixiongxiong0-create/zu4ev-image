@@ -1,6 +1,7 @@
 #define _GNU_SOURCE
 #include "h264_encoder.h"
 #include "uvc_core.h"
+#include "nv12_capture.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <glob.h>
@@ -19,8 +20,10 @@
 struct encoder_slot { void *data; size_t length; bool busy; };
 struct h264_encoder {
     int fd;
-    unsigned stride, raw_size, cap_size, nr, nc;
-    bool first;
+    unsigned stride, raw_size, cap_size, nr, nc, fps;
+    uint64_t nv_next;
+    bool first, nv12;
+    int nv_fd, imported[ENCODER_SLOTS];
     struct encoder_slot raw[ENCODER_SLOTS], cap[ENCODER_SLOTS];
 };
 static int encoder_ioctl(int fd,unsigned long op,void *arg)
@@ -35,12 +38,14 @@ static int encoder_control(struct h264_encoder *e,unsigned id,int value)
     return encoder_ioctl(e->fd,VIDIOC_S_CTRL,&c);
 }
 int h264_encoder_fd(struct h264_encoder *e) { return e?e->fd:-1; }
+int h264_encoder_capture_fd(struct h264_encoder *e) { return e && e->nv12 ? e->nv_fd : -1; }
 
 /* Close is the cancellation barrier even when STREAMOFF fails. Source capture
  * pages are never submitted to this device: the raw slots are private NV12. */
 void h264_encoder_close(struct h264_encoder *e)
 {
     if(!e)return;
+    if(e->nv12 && e->nv_fd>=0)encoder_ioctl(e->nv_fd,SC130_NV12_STOP,NULL);
     if(e->fd>=0) {
         enum v4l2_buf_type type=V4L2_BUF_TYPE_VIDEO_OUTPUT;
         encoder_ioctl(e->fd,VIDIOC_STREAMOFF,&type);
@@ -51,6 +56,10 @@ void h264_encoder_close(struct h264_encoder *e)
     for(unsigned i=0;i<ENCODER_SLOTS;i++) {
         if(e->raw[i].data)munmap(e->raw[i].data,e->raw[i].length);
         if(e->cap[i].data)munmap(e->cap[i].data,e->cap[i].length);
+    }
+    if(e->nv12) {
+        if(e->nv_fd>=0)close(e->nv_fd);
+        for(unsigned i=0;i<ENCODER_SLOTS;i++)if(e->imported[i]>=0)close(e->imported[i]);
     }
     free(e);
 }
@@ -76,11 +85,12 @@ static int encoder_buffers(struct h264_encoder *e,enum v4l2_buf_type type,
     }
     return 0;
 }
-static struct h264_encoder *encoder_open_device(const char *path,unsigned fps,unsigned bitrate)
+static struct h264_encoder *encoder_open_device(const char *path,unsigned fps,unsigned bitrate,const char *nv12_path)
 {
     struct h264_encoder *e=calloc(1,sizeof(*e));
     if(!e)return NULL;
-    e->fd=-1;e->first=true;
+    e->fd=-1;e->nv_fd=-1;e->first=true;e->fps=fps;e->nv12=nv12_path!=NULL;
+    for(unsigned i=0;i<ENCODER_SLOTS;i++)e->imported[i]=-1;
     e->fd=open(path,O_RDWR|O_NONBLOCK|O_CLOEXEC);
     if(e->fd<0)goto fail;
     struct v4l2_capability c={0};
@@ -124,31 +134,86 @@ static struct h264_encoder *encoder_open_device(const char *path,unsigned fps,un
     p.parm.output.timeperframe=(struct v4l2_fract){1,fps};
     if(encoder_ioctl(e->fd,VIDIOC_S_PARM,&p)<0)goto fail;
     if(p.parm.output.timeperframe.numerator!=1 || p.parm.output.timeperframe.denominator!=fps){errno=EPROTO;goto fail;}
-    if(encoder_buffers(e,V4L2_BUF_TYPE_VIDEO_OUTPUT,e->raw,&e->nr)<0 ||
-       encoder_buffers(e,V4L2_BUF_TYPE_VIDEO_CAPTURE,e->cap,&e->nc)<0)goto fail;
+    if(e->nv12) {
+        e->nv_fd=open(nv12_path,O_RDWR|O_NONBLOCK|O_CLOEXEC);
+        if(e->nv_fd<0)goto fail;
+        struct v4l2_requestbuffers req={.count=ENCODER_SLOTS,.type=V4L2_BUF_TYPE_VIDEO_OUTPUT,.memory=V4L2_MEMORY_DMABUF};
+        if(encoder_ioctl(e->fd,VIDIOC_REQBUFS,&req)<0)goto fail;
+        if(req.count!=ENCODER_SLOTS){errno=EPROTO;goto fail;}
+        e->nr=req.count;
+        for(unsigned i=0;i<e->nr;i++) {
+            struct sc130_nv12_buffer b={.index=i,.fd=-1};
+            if(encoder_ioctl(e->nv_fd,SC130_NV12_GETBUF,&b)<0)goto fail;
+            e->imported[i]=b.fd;
+            if(b.fd<0 || b.width!=SC130_WIDTH || b.height!=SC130_HEIGHT ||
+               b.stride!=e->stride || b.size<e->raw_size){errno=EPROTO;goto fail;}
+            e->raw[i].length=b.size;
+        }
+    } else if(encoder_buffers(e,V4L2_BUF_TYPE_VIDEO_OUTPUT,e->raw,&e->nr)<0)goto fail;
+    if(encoder_buffers(e,V4L2_BUF_TYPE_VIDEO_CAPTURE,e->cap,&e->nc)<0)goto fail;
     enum v4l2_buf_type type=V4L2_BUF_TYPE_VIDEO_CAPTURE;
     if(encoder_ioctl(e->fd,VIDIOC_STREAMON,&type)<0)goto fail;
     type=V4L2_BUF_TYPE_VIDEO_OUTPUT;
     if(encoder_ioctl(e->fd,VIDIOC_STREAMON,&type)<0)goto fail;
+    if(e->nv12 && encoder_ioctl(e->nv_fd,SC130_NV12_START,NULL)<0)goto fail;
     return e;
 fail: {
     int error=errno;h264_encoder_close(e);errno=error;return NULL;
 }
 }
-struct h264_encoder *h264_encoder_open(const char *path,unsigned fps,unsigned bitrate)
+struct h264_encoder *h264_encoder_open_nv12(const char *path,const char *nv12_path,unsigned fps,unsigned bitrate)
 {
     if((fps!=60 && fps!=120) || bitrate<1000000 || bitrate>100000000){errno=EINVAL;return NULL;}
-    if(path)return encoder_open_device(path,fps,bitrate);
+    if(path)return encoder_open_device(path,fps,bitrate,nv12_path);
     glob_t devices={0};struct h264_encoder *e=NULL;int error=ENODEV;
     if(glob("/dev/video*",0,NULL,&devices)==0) {
         for(size_t i=0;i<devices.gl_pathc;i++) {
-            e=encoder_open_device(devices.gl_pathv[i],fps,bitrate);
+            e=encoder_open_device(devices.gl_pathv[i],fps,bitrate,nv12_path);
             if(e)break;
             if(errno!=ENODEV)error=errno;
         }
     }
     globfree(&devices);if(!e)errno=error;
     return e;
+}
+struct h264_encoder *h264_encoder_open(const char *path,unsigned fps,unsigned bitrate)
+{
+    return h264_encoder_open_nv12(path,NULL,fps,bitrate);
+}
+/* Input DQBUF is the sole successful-path capture-slot release event. */
+int h264_encoder_pump_nv12(struct h264_encoder *e)
+{
+    if(!e || !e->nv12){errno=EINVAL;return -1;}
+    for(;;) {
+        struct v4l2_buffer done={.type=V4L2_BUF_TYPE_VIDEO_OUTPUT,.memory=V4L2_MEMORY_DMABUF};
+        if(encoder_ioctl(e->fd,VIDIOC_DQBUF,&done)<0) {
+            if(errno==EAGAIN)break;
+            return -1;
+        }
+        if(done.index>=e->nr || !e->raw[done.index].busy){errno=EPROTO;return -1;}
+        uint32_t index=done.index;
+        if(encoder_ioctl(e->nv_fd,SC130_NV12_QBUF,&index)<0)return -1;
+        e->raw[index].busy=false;
+        if(done.flags&V4L2_BUF_FLAG_ERROR){errno=EIO;return -1;}
+    }
+    struct sc130_nv12_frame frame;
+    if(encoder_ioctl(e->nv_fd,SC130_NV12_DQBUF,&frame)<0) return errno==EAGAIN ? 0 : -1;
+    if(frame.index>=e->nr || e->raw[frame.index].busy){errno=EPROTO;return -1;}
+    uint64_t interval=1000000000ull/e->fps;
+    if(e->fps==60 && e->nv_next && frame.timestamp_ns+interval/4<e->nv_next) {
+        uint32_t index=frame.index;
+        return encoder_ioctl(e->nv_fd,SC130_NV12_QBUF,&index)<0 ? -1 : 0;
+    }
+    struct v4l2_buffer b={.type=V4L2_BUF_TYPE_VIDEO_OUTPUT,.memory=V4L2_MEMORY_DMABUF,
+        .index=frame.index,.m.fd=e->imported[frame.index],.length=e->raw[frame.index].length,
+        .bytesused=e->raw_size,.field=V4L2_FIELD_NONE,.sequence=frame.sequence};
+    b.timestamp.tv_sec=(long)(frame.timestamp_ns/1000000000);
+    b.timestamp.tv_usec=(long)(frame.timestamp_ns%1000000000/1000);
+    if(encoder_ioctl(e->fd,VIDIOC_QBUF,&b)<0)return -1;
+    e->raw[frame.index].busy=true;
+    if(!e->nv_next || frame.timestamp_ns>e->nv_next+interval)e->nv_next=frame.timestamp_ns+interval;
+    else e->nv_next+=interval;
+    return 1;
 }
 /* Read only YUY2; write only encoder-owned NV12. Pair adjacent rows for 4:2:0
  * chroma with rounded averaging. AArch64 deinterleaves 16 pixels per NEON load.
@@ -182,7 +247,7 @@ static void encoder_convert(uint8_t *dst,unsigned stride,unsigned raw_size,const
 }
 int h264_encoder_submit(struct h264_encoder *e,const uint8_t *src,size_t length,uint32_t sequence,uint64_t stamp)
 {
-    if(!e || !src || length<SC130_SIZE){errno=EINVAL;return -1;}
+    if(!e || e->nv12 || !src || length<SC130_SIZE){errno=EINVAL;return -1;}
     for(;;) {
         struct v4l2_buffer done={.type=V4L2_BUF_TYPE_VIDEO_OUTPUT,.memory=V4L2_MEMORY_MMAP};
         if(encoder_ioctl(e->fd,VIDIOC_DQBUF,&done)<0) {
