@@ -179,13 +179,15 @@ int main(int argc,char **argv)
     int stream_on=argc==3 && !strcmp(argv[2],"stream-on");
     int standby=argc==3 && !strcmp(argv[2],"standby");
     int mode_probe=argc==3 && !strcmp(argv[2],"mode-probe");
-    if(!confirmed || argc>3 || (argc==3 && !stream_on && !standby && !mode_probe && strcmp(argv[2],"probe"))) {
-        fprintf(stderr,"Usage: %s --clock-confirmed [probe|mode-probe|standby|stream-on]\n"
+    int calibration_probe=argc==3 && !strcmp(argv[2],"calibration-probe");
+    if(!confirmed || argc>3 || (argc==3 && !stream_on && !standby && !mode_probe && !calibration_probe && strcmp(argv[2],"probe"))) {
+        fprintf(stderr,"Usage: %s --clock-confirmed [probe|mode-probe|calibration-probe|standby|stream-on]\n"
                 "Before ANY IIC0 MMIO, independently confirm through PSU/DAP:\n"
                 "CRL_APB 0xff5e0120 bit24=1, 0xff5e0238 bit9=0, source clock live.\n"
                 "A bus-stalled MMIO read cannot be stopped by software timeout.\n"
                 "Exclusive IIC0 owner required. Probe reads SC130 0x30 ID/stream;\n"
                 "mode-probe additionally reads only 3018/3031/3208..320f.\n"
+                "calibration-probe reads 320e/320f/3e00..3e03/3e08/3e09.\n"
                 "standby/stream-on write only 0x0100=0/1, then verify, requiring\n"
                 "historical board-observed ID 0130 (not manufacturer authentication).\n",argv[0]);
         return argc==2 && !strcmp(argv[1],"--help") ? 0 : 2;
@@ -229,6 +231,14 @@ int main(int argc,char **argv)
             printf("mode[0x%04x] FSBL_expected=0x%02x %s\n",regs[i],expected[i],
                    value==expected[i]?"match":"MISMATCH");
             fflush(stdout);
+        }
+    }
+    if(calibration_probe) {
+        static const uint16_t regs[]={0x320e,0x320f,0x3e00,0x3e01,
+                                      0x3e02,0x3e03,0x3e08,0x3e09};
+        for(unsigned i=0;i<sizeof(regs)/sizeof(regs[0]);++i) {
+            uint8_t value;
+            if(sensor_read(regs[i],&value)) goto cleanup;
         }
     }
     if((stream_on || standby) && sensor_state(stream_on?1:0,id_hi,id_lo,stream))

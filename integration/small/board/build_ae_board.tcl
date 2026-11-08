@@ -33,10 +33,7 @@ if {![file exists [file join $copy project camera.xpr]]} {
 open_project [file join $copy project camera.xpr]
 set_property XPM_LIBRARIES {XPM_MEMORY} [current_project]
 set_property source_mgmt_mode None [current_project]
-set f [open [file join $base sources.txt] r]
-foreach rel [split [read $f] "\n"] {if {$rel ne "" && ![string match */prim_xilinx/rtl/prim_clock_gating.sv $rel]} {add_files [file join $repo $rel]}}
-add_files [file join $base board prim_clock_gating_ultrascale.sv]
-close $f
+source [file join $base board apply_sources.tcl]
 add_files [glob [file join $base rtl *.sv]]
 add_files [file join $base board ibex_board_debug.sv]
 add_files [file join $copy board_rom.mem]

@@ -1,0 +1,10 @@
+--- a/drivers/media/platform/allegro-dvt/allegro-core.c
++++ b/drivers/media/platform/allegro-dvt/allegro-core.c
+@@ -2920,6 +2920,7 @@
+ 	src_vq->dev = &channel->dev->plat_dev->dev;
+ 	src_vq->type = V4L2_BUF_TYPE_VIDEO_OUTPUT;
+ 	src_vq->io_modes = VB2_DMABUF | VB2_MMAP;
++	src_vq->allow_cache_hints = 1;
+ 	src_vq->mem_ops = &vb2_dma_contig_memops;
+ 	src_vq->drv_priv = channel;
+ 	src_vq->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;

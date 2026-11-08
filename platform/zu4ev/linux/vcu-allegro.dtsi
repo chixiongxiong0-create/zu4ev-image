@@ -1,0 +1,47 @@
+/* Include only with the bitstream produced using hardware/add_vcu.tcl.
+ * VCU control base A1000000, concat input7 -> GIC SPI96.
+ * Kernel xlnx_vcu uses named vcu_slcr resource (downstream extension).
+ */
+/ {
+    vcu_lite_clk: vcu-control-clock {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <100000000>;
+    };
+    vcu_bus_clk: vcu-bus-clock {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <200000000>;
+    };
+    vcu_pll_ref: vcu-reference-clock {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <33333333>;
+    };
+};
+
+&amba_pl {
+    vcu_settings: vcu-settings@a1041000 {
+        compatible = "xlnx,vcu-settings", "syscon";
+        reg = <0 0xa1041000 0 0x1000>;
+    };
+    vcu_clocks: vcu@a1040000 {
+        compatible = "xlnx,vcu-logicoreip-1.0";
+        reg = <0 0xa1040000 0 0x1000>;
+        reg-names = "vcu_slcr";
+        clocks = <&vcu_pll_ref>, <&vcu_lite_clk>;
+        clock-names = "pll_ref", "aclk";
+        #clock-cells = <1>;
+    };
+    vcu_encoder: video-codec@a1009000 {
+        compatible = "allegro,al5e-1.1", "allegro,al5e";
+        reg = <0 0xa1009000 0 0x1000>, <0 0xa1000000 0 0x8000>;
+        reg-names = "regs", "sram";
+        interrupt-parent = <&gic>;
+        interrupts = <0 96 4>;
+        clocks = <&vcu_clocks 0>, <&vcu_clocks 1>,
+                 <&vcu_bus_clk>, <&vcu_bus_clk>, <&vcu_lite_clk>;
+        clock-names = "core_clk", "mcu_clk", "m_axi_core_aclk",
+                      "m_axi_mcu_aclk", "s_axi_lite_aclk";
+    };
+};

@@ -1,0 +1,38 @@
+{
+  "core": "ibex_debug_i/u_vio",
+  "session": "vivado-20261106-234256-ced5b158",
+  "probe": "ibex_debug_i/reset_cpu",
+  "output_before": 0,
+  "committed_values": [
+    1,
+    0
+  ],
+  "requested_assertion_ms": 50,
+  "output_after": 0,
+  "observations": {
+    "dpc_vio_before": {
+      "error_type": "COMMAND_ERROR",
+      "exit_code": 1,
+      "output": "ibex_debug_i/u_vio\r\nibex_debug_i/reset_cpu 0\r\nibex_debug_i/major_bus 0\r\nibex_debug_i/major_int 0\r\nibex_debug_i/minor 0\r\nibex_debug_i/sleep 0\r\nERROR: [Labtoolstcl 44-619] Protocol 'AXI4-Lite' does not support bursts. Only value '1' is valid for option 'LEN'",
+      "session_id": "vivado-20261106-234256-ced5b158",
+      "task_progress": "2/4: RAM上板标定与视频回归 (active, 28m54s) | Next: 保存坐标表、证据和使用文档",
+      "used_mode": "proxy"
+    },
+    "dpc_diag_fault": {
+      "exit_code": 0,
+      "output": "INFO: [Labtoolstcl 44-481] READ DATA is: 00000005\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 0000000a\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 0000093a\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 000020d0\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 0000003f\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 0000093a\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000007\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 0010061c\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nstate 00000005 fault 0000000a irq 0000093a exposure 000020d0 gain 0000003f records 0000093a mcause 00000007 mepc 0010061c signature 00000000",
+      "task_progress": "2/4: RAM上板标定与视频回归 (active, 30m8s) | Next: 保存坐标表、证据和使用文档"
+    },
+    "dpc_diag_reset": {
+      "exit_code": 0,
+      "output": "reset_cpu=0\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000001\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nstate 00000001 fault 00000000 irq 00000000 exposure 00000000 gain 00000000 records 00000000 mcause 00000000 mepc 00000000 signature 00000000",
+      "task_progress": "2/4: RAM上板标定与视频回归 (active, 30m28s) | Next: 保存坐标表、证据和使用文档"
+    },
+    "dpc_diag_running": {
+      "elapsed_seconds": 1.046,
+      "exit_code": 0,
+      "output": "INFO: [Labtoolstcl 44-481] READ DATA is: 00000003\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000f36\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 000020d0\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 0000003f\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000f36\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 600dae01\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000003\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000fb2\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 000020d0\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 0000003f\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000fb2\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 00000000\r\nINFO: [Labtoolstcl 44-481] READ DATA is: 600dae01\r\n{state 00000003 fault 00000000 irq 00000f36 exposure 000020d0 gain 0000003f records 00000f36 mcause 00000000 mepc 00000000 signature 600dae01} {state 00000003 fault 00000000 irq 00000fb2 exposure 000020d0 gain 0000003f records 00000fb2 mcause 00000000 mepc 00000000 signature 600dae01}",
+      "task_progress": "2/4: RAM上板标定与视频回归 (active, 31m15s) | Next: 保存坐标表、证据和使用文档"
+    }
+  }
+}

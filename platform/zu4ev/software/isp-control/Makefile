@@ -2,7 +2,7 @@ CC = aarch64-linux-gnu-gcc
 CFLAGS ?= -O2 -std=c11 -Wall -Wextra -Werror
 LDFLAGS ?= -static
 OUT ?= ../../build/ae_stats/software
-all: $(OUT)/ispctl $(OUT)/sensorctl
+all: $(OUT)/ispctl $(OUT)/sensorctl $(OUT)/ffcctl $(OUT)/dpcctl
 $(OUT):
 	mkdir -p $@
 $(OUT)/%: %.c | $(OUT)

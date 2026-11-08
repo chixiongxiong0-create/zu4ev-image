@@ -1,5 +1,28 @@
 # ZU4EV camera platform source snapshot
 
+## H.264 UVC development branch
+
+The H.264 extension adds VCU hardware encoding and real frame-based H.264 UVC
+descriptors. DP still imports the original YUY2 capture buffers; compression
+uses separate NV12 input and encoded output buffers. The A53 performs YUY2-to-NV12
+conversion (NEON on AArch64), not H.264 compression. Its 120 fps CPU cost is an
+explicit hardware acceptance item. USB stop does not stop capture or DP.
+
+`linux/setup_uvc.sh` defaults to H.264; `UVC_FORMAT=yuy2` and the bridge's
+`--usb-format yuy2` select the legacy recovery path together. Never send H.264
+with a YUY2 descriptor. The H.264 path requires the matching VCU bitstream,
+`linux/vcu-allegro.dtsi`, UVC patches 0007–0009, Allegro patch 0010, the upstream
+Allegro driver and matching firmware; see `linux/VCU_PREREQUISITES.md`.
+
+Build recipes are `linux/build_h264_kernel.sh` and the existing Ibex board build
+with the updated `hardware/ps_system.tcl`. Offline QSPI packagers are
+`integration/small/boot/build_h264_boot.ps1` and `package_h264_qspi.py` in the
+parent repository. They preserve the production versus RAM-test boot distinction
+and never program flash. Their output is not evidence of board validation.
+
+The imported `source_manifest.json` below identifies the frozen baseline only;
+it does not describe later H.264 changes. New artifacts need their own hashes.
+
 This directory publishes the source used by the frozen Ibex ISP-master v3
 integration. It contains camera/ISP RTL, hardware/IP configuration Tcl,
 constraints, Linux applications and tests, custom kernel modules/patches/DT,
