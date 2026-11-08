@@ -1,0 +1,13 @@
+{
+  "kind": "dark-only-unity-gain",
+  "dark_mean_raw10": 54.98687357902527,
+  "dark_cell_min_raw10": 49.6080322265625,
+  "dark_cell_max_raw10": 60.96221923828125,
+  "dark_cell_std_raw10": 3.434450138620078,
+  "pedestal": 52,
+  "map_sha256": "3d44f1b79d86b794381dcd95e3635af2bd0ffc847e92ca879062b024e31a008a",
+  "dark_sha256": "ea312636d1df27ba7147c55965ea03398c3df1aa7a4e3c9564d5a3752d8d99c9",
+  "flat_sha256": null,
+  "scope": "smooth spatial field; not per-pixel PRNU/DSNU or hot-pixel correction",
+  "conditions": "valid only for recorded sensor exposure, gain and temperature; retain matching acquisition metadata"
+}

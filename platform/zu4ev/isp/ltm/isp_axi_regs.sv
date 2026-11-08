@@ -1,6 +1,10 @@
 `timescale 1ns/1ps
-module isp_axi_regs #(parameter WIDTH=1280, HEIGHT=720, AE_STATS=0)(
+module isp_axi_regs #(parameter WIDTH=1280, HEIGHT=720, AE_STATS=0, FFC=0, DPC=0)(
  input wire clk,resetn,
+ output wire ffc_write, output wire ffc_read,
+ output wire [15:0] ffc_waddr, output wire [15:0] ffc_raddr,
+ output wire [31:0] ffc_wdata,
+ input wire ffc_write_ok, input wire [31:0] ffc_rdata,
  input wire [15:0] s_axi_awaddr,input wire s_axi_awvalid,output wire s_axi_awready,
  input wire [31:0] s_axi_wdata,input wire [3:0] s_axi_wstrb,input wire s_axi_wvalid,output wire s_axi_wready,
  output reg [1:0] s_axi_bresp,output reg s_axi_bvalid,input wire s_axi_bready,
@@ -24,11 +28,28 @@ module isp_axi_regs #(parameter WIDTH=1280, HEIGHT=720, AE_STATS=0)(
  reg [1:0] pending_mode,pending_range; reg [9:0] pending_black,pending_gain; reg pending_swap;
  reg [31:0] applied_seq,frame_count; reg read_wait;
  reg ae_control_enable;
+ // Shared synchronous correction-register bridge; FFC addresses are unchanged.
+ wire ffc_ar=s_axi_araddr[1:0]==0 && ((FFC && (
+  (s_axi_araddr>=16'h3000 && s_axi_araddr<=16'h3024) ||
+  (s_axi_araddr>=16'h3040 && s_axi_araddr<=16'h304c) || s_axi_araddr==16'h3050 ||
+  (s_axi_araddr>=16'h4000 && s_axi_araddr<16'h4000+4*(WIDTH/32+1)*(HEIGHT/32+1)) ||
+  (s_axi_araddr>=16'h6000 && s_axi_araddr<16'h6000+4*(WIDTH/32)*(HEIGHT/32)))) ||
+  (DPC && ((s_axi_araddr>=16'h3100 && s_axi_araddr<=16'h3154) ||
+   (s_axi_araddr>=16'h8000 && s_axi_araddr<16'h9000) ||
+   (s_axi_araddr>=16'ha000 && s_axi_araddr<16'hc000))));
+ wire ffc_aw=(FFC && ((aw>=16'h3000 && aw<16'h3100)||(aw>=16'h4000 && aw<16'h6000))) ||
+  (DPC && ((aw>=16'h3100 && aw<16'h3160)||(aw>=16'h8000 && aw<16'h9000)));
+ reg read_ffc;
+ assign ffc_read=s_axi_arvalid && s_axi_arready && ffc_ar;
+ assign ffc_raddr=s_axi_araddr;
+ assign ffc_waddr=aw; assign ffc_wdata=wd;
+ assign ffc_write=resetn && aw_full && w_full && !s_axi_bvalid && !read_wait &&
+  !s_axi_rvalid && !curve_re && ffc_aw && aw[1:0]==0 && ws==4'hf;
  wire lut_ar=s_axi_araddr>=16'h1000 && s_axi_araddr<=16'h1ffc && s_axi_araddr[1:0]==0;
  assign s_axi_awready=resetn && !aw_full && !s_axi_bvalid;
  assign s_axi_wready=resetn && !w_full && !s_axi_bvalid;
  wire applying=cfg_pending && cfg_safe && !read_wait && !s_axi_rvalid && !curve_we;
- assign s_axi_arready=resetn && !s_axi_rvalid && !read_wait && !curve_we && !(applying && lut_ar);
+ assign s_axi_arready=resetn && !s_axi_rvalid && !read_wait && !curve_we && !(aw_full && w_full) && !(applying && lut_ar);
  assign curve_re=s_axi_arvalid && s_axi_arready && lut_ar;
  assign curve_raddr=s_axi_araddr[11:2];
  function automatic [31:0] merge(input [31:0] oldv,input [31:0] newv,input [3:0] strb);
@@ -36,6 +57,7 @@ module isp_axi_regs #(parameter WIDTH=1280, HEIGHT=720, AE_STATS=0)(
  reg [31:0] merged;
  always @(posedge clk) begin
  if(!resetn) begin
+ read_ffc<=0;
  ae_enable<=1;ae_region<=3;ae_black<=52;ae_control_enable<=1;
  aw_full<=0;w_full<=0;aw<=0;wd<=0;ws<=0;s_axi_bvalid<=0;s_axi_bresp<=0;
  s_axi_rvalid<=0;s_axi_rresp<=0;s_axi_rdata<=0;read_wait<=0;
@@ -63,6 +85,9 @@ module isp_axi_regs #(parameter WIDTH=1280, HEIGHT=720, AE_STATS=0)(
  if(aw_full && w_full && !s_axi_bvalid && !read_wait && !s_axi_rvalid && !curve_re) begin
  aw_full<=0;w_full<=0;s_axi_bvalid<=1;s_axi_bresp<=0;
  if(aw[1:0]!=0) s_axi_bresp<=2;
+ else if(ffc_aw) begin
+ if(ws!=4'hf || !ffc_write_ok) s_axi_bresp<=2;
+ end
  else if(aw>=16'h1000 && aw<=16'h1ffc) begin
  if(cfg_pending || ws!=4'hf || wd>1023) s_axi_bresp<=2;
  else begin curve_we<=1;curve_waddr<=aw[11:2];curve_wdata<=wd[9:0];end
@@ -93,10 +118,10 @@ module isp_axi_regs #(parameter WIDTH=1280, HEIGHT=720, AE_STATS=0)(
  default:s_axi_bresp<=2;
  endcase
  end
- if(read_wait) begin s_axi_rdata<={22'b0,curve_rdata};s_axi_rresp<=0;s_axi_rvalid<=1;read_wait<=0;end
+ if(read_wait) begin s_axi_rdata<=read_ffc ? ffc_rdata : {22'b0,curve_rdata};s_axi_rresp<=0;s_axi_rvalid<=1;read_wait<=0;end
  if(s_axi_arvalid && s_axi_arready) begin
  s_axi_rdata<=0;s_axi_rresp<=0;
- if(lut_ar) read_wait<=1;
+ if(lut_ar || ffc_ar) begin read_wait<=1;read_ffc<=ffc_ar;end
  else begin
  s_axi_rvalid<=1;
  if(s_axi_araddr[1:0]!=0) s_axi_rresp<=2;

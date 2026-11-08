@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-07",
+  "git_base": "6bf61d54ebfc614fe4cd0b756439e5a0cbd4bcd9",
+  "source_changes_uncommitted": true,
+  "qspi_modified": false,
+  "ram_boot_only": true,
+  "bright_field_calibrated": false,
+  "artifacts": {
+    "camera_top.bit": {
+      "bytes": 7797858,
+      "sha256": "171c8aef3c37ef3c1e99610546f63c2de77b4806510ccd3352a86b688116777a"
+    },
+    "board_rom.mem": {
+      "bytes": 13710,
+      "sha256": "ec2aa824eed1a225857fe923826f76ca65ec84b0ea42374073c60779734eb8f8"
+    },
+    "ram_candidate_hold/BOOT.BIN": {
+      "bytes": 9095384,
+      "sha256": "89da47d0328a8c5110bf3726588f6ea45f6cd2dcc46d2696927f97f4be092737"
+    },
+    "ram_candidate_hold/image.ub": {
+      "bytes": 18876856,
+      "sha256": "f828dbb6d2dbfc8460b7d1372203b0d328d1a376e44a2425dc2bf4b21e7ca286"
+    },
+    "ffcctl": {
+      "bytes": 770296,
+      "sha256": "fd75c700e0c87357942129d067355da9d96e67af83cd7b4e49f32630b04e72f5"
+    },
+    "ffc_sensor_meta": {
+      "bytes": 704696,
+      "sha256": "489fc7fa461260b0dbc982fac2713fe36096f658139c87b50f0b2237653a244a"
+    },
+    "board/dark.map": {
+      "bytes": 9493,
+      "sha256": "9e6b2e4b81313aad2ecae886a03c6f16c8d78454051acf5f881322f2b0f8bdcb"
+    },
+    "board/dark.stats": {
+      "bytes": 10273,
+      "sha256": "e2a68d98577c5606b8bea6131025e56681c5b117c366a9c1c7158d2be8d2e4dd"
+    },
+    "board/corrected3.stats": {
+      "bytes": 10273,
+      "sha256": "3929bc7b0ee2ea2177091ad045f415ac22b1f1194fb6d14ff00913a8e590e80c"
+    },
+    "route_reports/timing_acceptance.rpt": {
+      "bytes": 471067,
+      "sha256": "292127aa31349a785b1889b97f5893d0bd3874e3e0a97f13d4604685ab5ca690"
+    },
+    "route_reports/drc_acceptance.rpt": {
+      "bytes": 87583,
+      "sha256": "74021dafddcc019f06cdf5b2908e00a509b0ae18a9af08b552624381506502d4"
+    },
+    "route_reports/bus_skew_acceptance.rpt": {
+      "bytes": 684375,
+      "sha256": "85f3e8248bdb9ed2ea2f312fe5bdd03daf6f656055c27268cb8a5fcc76f0a509"
+    }
+  },
+  "sources": {
+    "platform/zu4ev/isp/isp_capture_frontend.sv": {
+      "bytes": 7451,
+      "sha256": "919a20dd51cfb8b5c9f015b090f38b59b6b7a30ba99cd662a6ce5d23397bfc4d"
+    },
+    "platform/zu4ev/isp/ltm/isp_axi_regs.sv": {
+      "bytes": 9965,
+      "sha256": "c1181940129ebbded99430e7d2d2a8944e34308d32a950a5e376360be012153c"
+    },
+    "platform/zu4ev/isp/ffc/ffc_raw10.sv": {
+      "bytes": 10099,
+      "sha256": "115f5b828869efa341d89bc0645bda1f50744c5dc9eb473ce08860d3720c46e6"
+    },
+    "platform/zu4ev/isp/ffc/ffc_stats.sv": {
+      "bytes": 3626,
+      "sha256": "1fb7c3800fba8c9ab08355a3b13b03447656ad7c5392f2ccaf396f8ec3bc100d"
+    },
+    "platform/zu4ev/isp/ffc/ffc_dual_ram.sv": {
+      "bytes": 854,
+      "sha256": "163b8985a37f10e3cc9b95be7c2bc48790e199532c7afd83d80cdd08abe75c78"
+    },
+    "platform/zu4ev/isp/ffc/calibrate.py": {
+      "bytes": 3103,
+      "sha256": "229b5073d6027b5078be233975140d09545608207bf7ff2748ddf271e3c87ffb"
+    },
+    "platform/zu4ev/software/isp-control/ffcctl.c": {
+      "bytes": 4812,
+      "sha256": "b0ccdde6c1e3d4cf0c8a37c23fa25565c51df2a0aa979a73df4edb19bf5e6cb2"
+    },
+    "integration/small/tools/ps_iic_probe.c": {
+      "bytes": 10928,
+      "sha256": "5d3d1b68344856372a7e7626825b0878a59e7cbad41db63b63cc5bb035b980c1"
+    },
+    "platform/zu4ev/boot/package_ffc_ram.py": {
+      "bytes": 3557,
+      "sha256": "acc3529ddb49b4c6545af1f63744bcba011673522e5b782cd8653cc9ac54b2c6"
+    },
+    "platform/zu4ev/tools/build_ffc_project.tcl": {
+      "bytes": 2050,
+      "sha256": "dcd6c9674a14d827f48220c7f3ce4c56bdb0ba0474f01ec2a1586e1ad9577e80"
+    }
+  }
+}
