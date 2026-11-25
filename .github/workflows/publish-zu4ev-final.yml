@@ -46,7 +46,13 @@ jobs:
             }
             const assets = (await github.rest.repos.listReleaseAssets({owner,repo,release_id:release.id})).data;
             if (assets.length !== 2 || assets.some(a=>a.state !== 'uploaded')) throw new Error('Assets incomplete');
-            const ref = (await github.rest.git.getRef({owner,repo,ref:'tags/'+tag})).data;
+            let ref;
+            try {
+              ref = (await github.rest.git.getRef({owner,repo,ref:'tags/'+tag})).data;
+            } catch (error) {
+              if (error.status !== 404) throw error;
+              ref = (await github.rest.git.createRef({owner,repo,ref:'refs/tags/'+tag,sha:source})).data;
+            }
             if (ref.object.sha !== source) throw new Error('Release tag source mismatch');
             await github.rest.repos.updateRelease({owner,repo,release_id:release.id,draft:false,make_latest:'true'});
             core.notice(release.html_url);
