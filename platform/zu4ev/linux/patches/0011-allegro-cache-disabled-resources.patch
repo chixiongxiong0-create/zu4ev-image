@@ -1,0 +1,37 @@
+--- a/drivers/media/platform/allegro-dvt/allegro-core.c
++++ b/drivers/media/platform/allegro-dvt/allegro-core.c
+@@ -974,6 +974,11 @@
+ 	if (err < 0)
+ 		return err;
+ 
++	/* Cache-disabled VCU designs expose zero depth/core metadata.
++	 * Let firmware discover hard-core resources instead of passing zero. */
++	if (!memory_depth || !num_cores)
++		return -ENODEV;
++
+ 	clk_rate = clk_get_rate(dev->clk_core);
+ 	if (clk_rate == 0)
+ 		return -EINVAL;
+@@ -3042,6 +3047,8 @@
+ 	struct allegro_dev *dev = video_get_drvdata(vdev);
+ 	struct allegro_channel *channel = NULL;
+ 	struct v4l2_ctrl_handler *handler;
++	struct v4l2_ctrl_config buffer_config =
++		allegro_encoder_buffer_ctrl_config;
+ 	u64 mask;
+ 	int ret;
+ 	unsigned int bitrate_max;
+@@ -3187,8 +3194,12 @@
+ 			V4L2_CID_MPEG_VIDEO_GOP_SIZE,
+ 			0, ALLEGRO_GOP_SIZE_MAX,
+ 			1, ALLEGRO_GOP_SIZE_DEFAULT);
++	buffer_config.max = dev->has_encoder_buffer;
++	buffer_config.def = dev->has_encoder_buffer;
++	if (!dev->has_encoder_buffer)
++		buffer_config.flags |= V4L2_CTRL_FLAG_READ_ONLY;
+ 	channel->encoder_buffer = v4l2_ctrl_new_custom(handler,
+-			&allegro_encoder_buffer_ctrl_config, NULL);
++			&buffer_config, NULL);
+ 	v4l2_ctrl_new_std(handler,
+ 			  &allegro_ctrl_ops,
+ 			  V4L2_CID_MIN_BUFFERS_FOR_OUTPUT,

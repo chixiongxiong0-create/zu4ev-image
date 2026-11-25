@@ -1,0 +1,30 @@
+{
+  "pixels": 1,
+  "runs": 1,
+  "longest_run": 1,
+  "map_sha256": "052c787a2989675e81cae400331db4942cd025bb9d097e9e8e678e020947bc9f",
+  "sources": [
+    {
+      "path": "build\\dpc\\board\\ae76-a.survey",
+      "sha256": "25080bd00964e83eceda07ecc876136993f2004d8493f5d68e30c35e8cb09a1b",
+      "frames": 64,
+      "mode": "high",
+      "threshold": 76,
+      "min_hits": 61,
+      "candidates": 24818,
+      "persistent": 1
+    },
+    {
+      "path": "build\\dpc\\board\\ae76-b.survey",
+      "sha256": "e0036eb6a91740c30969c5b8252dedf60830cb97fa0f5338fb833953575c2d90",
+      "frames": 64,
+      "mode": "high",
+      "threshold": 76,
+      "min_hits": 61,
+      "candidates": 24751,
+      "persistent": 1
+    }
+  ],
+  "survey_combination": "intersection",
+  "conditions": "Only use surveys taken under verified dark or uniform flat illumination."
+}

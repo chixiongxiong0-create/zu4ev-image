@@ -1,0 +1,17 @@
+PREFLIGHT CRL_APB IIC0_REF_CTRL[ff5e0120]=01010f00 RST_LPD_IOU2[ff5e0238]=0001fdfc CLKACT=1 IIC0_RESET=0
+PREFLIGHT-PASSED: beginning IIC0 MMIO; concurrent clock/reset changes remain a race; software timeout/signals cannot cancel bus stalls.
+BEFORE CR=00000b0e SR=00000000 ISR=00000003 IMR=000002ff SIZE=00000000
+sensor[0x3107]=0x01
+sensor[0x3108]=0x30
+sensor[0x0100]=0x01
+sensor[0x320e]=0x02
+sensor[0x320f]=0x11
+sensor[0x3e00]=0x00
+sensor[0x3e01]=0x20
+sensor[0x3e02]=0xd0
+sensor[0x3e03]=0x0a
+sensor[0x3e08]=0x02
+sensor[0x3e09]=0x20
+RESTORED CR=00000b0e SR=00000000 ISR=00000000 IMR=000002ff SIZE=00000000
+Restored CR, IMR, transfer size. ISR/FIFO/address pointer are not restorable.
+cat: can't open '/sys/class/thermal/thermal_zone0/temp': No such file or directory

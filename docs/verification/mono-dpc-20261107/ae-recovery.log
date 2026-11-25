@@ -1,0 +1,25 @@
+
+
+~ # ibex_isp_handoff stop && dpcctl status && ffcctl status && ibex_isp_handoff 
+
+
+start --ps-writers-stopped && sleep 2 && ibex_isp_handoff status; printf '\nDPC_
+
+
+OP_78741954827800 %d\n' "$?"
+
+PS owns ISP and sensor bus; AE is stopped. PS writers may now resume.
+
+owner=0 run=0 stop_request=0 stop_ack=0 quiescent=1 grant=0 busy=0 armed=0 fault=0 restart=1 boot_ready=1 scl=1 sda=1
+
+DPC enable=1 pending=0 bank=0 apply_seq=3 active_runs=1 uploaded=0 frame_seq=134912 last_repaired=1 fault_events=0 probe=2
+
+FFC enable=1 pending=0 bank=1 seq=1 uploaded=0 pedestal=52 stats=2 frames=32
+
+Ibex owns ISP and sensor bus; live AE session authorized. USB/DP consumers continue.
+
+owner=1 run=1 stop_request=1 stop_ack=1 quiescent=0 grant=1 busy=1 armed=1 fault=0 restart=0 boot_ready=1 scl=0 sda=1
+
+owner=1 run=1 stop_request=1 stop_ack=1 quiescent=0 grant=1 busy=0 armed=1 fault=0 restart=0 boot_ready=1 scl=1 sda=1
+
+

@@ -5,10 +5,7 @@ file mkdir $work
 create_project -force ibex_small $work -part xczu4ev-sfvc784-2-i
 set_property XPM_LIBRARIES {XPM_MEMORY} [current_project]
 set_property source_mgmt_mode None [current_project]
-set f [open [file join $base sources.txt] r]
-foreach rel [split [read $f] "\n"] { if {$rel ne "" && ![string match */prim_xilinx/rtl/prim_clock_gating.sv $rel]} { add_files [file join $repo $rel] } }
-close $f
-add_files [file join $base board prim_clock_gating_ultrascale.sv]
+source [file join $base board apply_sources.tcl]
 add_files [glob [file join $base rtl *.sv]]
 set_property include_dirs [list [file join $repo vendor lowrisc_ip ip prim rtl] [file join $repo vendor lowrisc_ip dv sv dv_utils] [file join $base ae]] [current_fileset]
 set_property verilog_define {SYNTHESIS FPGA_XILINX} [current_fileset]

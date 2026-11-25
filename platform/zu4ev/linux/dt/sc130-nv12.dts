@@ -1,0 +1,14 @@
+/* Pair only with SC130_NV12 + VCU bitstream. */
+#include "sc130-h264.dts"
+&amba_pl {
+    sc130_nv12: capture@a0080000 {
+        compatible = "sc130,nv12-capture-v2";
+        reg = <0 0xa0080000 0 0x10000>;
+        interrupt-parent = <&gic>;
+        /* PL IRQ1[0] is GIC INTID136, DT SPI index104. */
+        interrupts = <0 104 4>;
+        clocks = <&sc130_video_clock>;
+        clock-names = "video";
+        status = "okay";
+    };
+};

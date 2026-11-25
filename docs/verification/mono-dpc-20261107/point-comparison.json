@@ -1,0 +1,14 @@
+{
+  "x": 1021,
+  "y": 472,
+  "threshold_raw10": 76,
+  "frames_per_batch": 64,
+  "hits": {
+    "ae76-a": 64,
+    "ae76-b": 62,
+    "ae76-bypass": 57,
+    "after76-a": 0,
+    "off76": 62,
+    "after76-b": 0
+  }
+}

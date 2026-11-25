@@ -1,5 +1,7 @@
 # Ibex ISP Master on Zynq UltraScale+
 
+当前定版为 **ZU4EV 2026-11-25**，包含动态 DPC 和默认关闭的两个 ILA。[定版入口与验证结果](docs/verification/2026-11-25-zu4ev-final.md)。本地构建统一保存在 `build/dpc/`。
+
 基于 lowRISC Ibex 的 ISP/传感器 AE 主控工程，包含真实统计与中断、native I²C、安全所有权交接、DP/UVC DMA-BUF 共享和 QSPI 固化。
 
 [完整研发报告](docs/reports/2026-10-31-完整研发报告.md) · [源码清单](docs/reports/2026-10-31-source-inventory.csv) · [集成源码](integration/small) · [平台源码](platform/zu4ev) · [QSPI 构建说明](integration/small/boot/README.md) · [上游 Ibex 说明](README.upstream.md)

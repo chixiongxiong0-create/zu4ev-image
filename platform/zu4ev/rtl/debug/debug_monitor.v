@@ -1,5 +1,8 @@
 `timescale 1ns/1ps
-module debug_monitor (
+module debug_monitor #(
+    parameter ENABLE_CAMERA_ILA = 1'b0,
+    parameter ENABLE_UVC_ILA = 1'b0
+) (
     input wire  camera_sda,
     output wire [94:0] gi,
     input wire [94:0] go,
@@ -161,21 +164,25 @@ module debug_monitor (
     // -------------------------------------------------------------------------
     // 9. ILA 探针：像素、事件、帧/行计数和帧周期
     // -------------------------------------------------------------------------
-    camera_ila ila_i (
-        .clk    (video_clk),
-        .probe0 (pixels),
-        // Probe1[9:8] sample the physical IIC bus with the same clock as FE/SOF.
-        .probe1 ({22'b0, camera_scl, camera_sda,
-                  phy_locked, locked, frame_pulse, vs, hs, active_video, eol, sof}),
-        .probe2 (frame_count),
-        .probe3 (line_count),
-        .probe4 (last_frame_words),
-        .probe5 (last_frame_lines),
-        .probe6 (last_line_pixels),
-        .probe7 (frame_period_cycles)
-    );
+    generate if (ENABLE_CAMERA_ILA) begin : gen_camera_ila
+        camera_ila ila_i (
+            .clk    (video_clk),
+            .probe0 (pixels),
+            // Probe1[9:8] sample the physical IIC bus with the same clock as FE/SOF.
+            .probe1 ({22'b0, camera_scl, camera_sda,
+                      phy_locked, locked, frame_pulse, vs, hs, active_video, eol, sof}),
+            .probe2 (frame_count),
+            .probe3 (line_count),
+            .probe4 (last_frame_words),
+            .probe5 (last_frame_lines),
+            .probe6 (last_line_pixels),
+            .probe7 (frame_period_cycles)
+        );
+    end endgenerate
 `ifdef SC130_UVC
-    uvc_ila uvc_ila_i(.clk(video_clk),.probe0(yuy2_data),
-        .probe1({24'b0,cap1_irq,yuy2_1_valid,cap_irq,phy_fault_sync[1],yuy2_ready,yuy2_valid,yuy2_eol,yuy2_sof}));
+    generate if (ENABLE_UVC_ILA) begin : gen_uvc_ila
+        uvc_ila uvc_ila_i(.clk(video_clk),.probe0(yuy2_data),
+            .probe1({24'b0,cap1_irq,yuy2_1_valid,cap_irq,phy_fault_sync[1],yuy2_ready,yuy2_valid,yuy2_eol,yuy2_sof}));
+    end endgenerate
 `endif
 endmodule

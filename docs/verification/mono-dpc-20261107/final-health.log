@@ -1,0 +1,39 @@
+
+
+~ # ibex_isp_handoff status; grep "USB error" /tmp/sc130-platform.log; tail -6 /
+
+
+tmp/sc130-platform.log; dmesg | tail -6; printf '\nDPC_OP_78927491198400 %d\n' "
+
+
+$?"
+
+owner=1 run=1 stop_request=1 stop_ack=1 quiescent=0 grant=1 busy=0 armed=1 fault=0 restart=0 boot_ready=1 scl=1 sda=1
+
+USB error kind=buffer count=1 ns=1253968971183 errno=0 streaming=1 on=1 index=0 flags=0x4041 bytesused=0 sequence=0 source_seq=4176 state=0
+
+H264 encoded=4177 bytes=37052638 fps=120 bitrate=20000000
+
+stats ns=1305232476030 capture=156254 sent=8347 returned=8346 invalid=0 drop=25 usb_error=1 dp_flips=156228 seq=156934 dp_held=2 usb_buf_error=1 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+
+H264 encoded=4177 bytes=37052638 fps=120 bitrate=20000000
+
+DP flip gap=2 sequence=156448
+
+stats ns=1306232683900 capture=156374 sent=8347 returned=8346 invalid=0 drop=25 usb_error=1 dp_flips=156347 seq=157054 dp_held=2 usb_buf_error=1 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+
+H264 encoded=4177 bytes=37052638 fps=120 bitrate=20000000
+
+[ 1146.129418] configfs-gadget.sc130_platform gadget.0: uvc: uvc_function_set_alt(1, 1)
+
+[ 1146.137179] configfs-gadget.sc130_platform gadget.0: uvc: reset UVC
+
+[ 1180.946780] configfs-gadget.sc130_platform gadget.0: uvc: uvc_function_set_alt(1, 0)
+
+[ 1219.241645] configfs-gadget.sc130_platform gadget.0: uvc: uvc_function_set_alt(1, 1)
+
+[ 1219.249403] configfs-gadget.sc130_platform gadget.0: uvc: reset UVC
+
+[ 1254.123293] configfs-gadget.sc130_platform gadget.0: uvc: uvc_function_set_alt(1, 0)
+
+

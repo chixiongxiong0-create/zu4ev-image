@@ -13,7 +13,7 @@ foreach {ltm_name ltm_script} {
 } {
  if {[lsearch -exact $ltm_existing $ltm_name]<0} {source -notrace [file join $ltm_dir $ltm_script]}
 }
-set ltm_sources [concat [glob [file join $ltm_dir *.sv]] [list [file join $ltm_repo isp isp_capture_frontend.sv] [file join $ltm_repo isp ae ae_stats_raw10.sv]]]
+set ltm_sources [concat [glob [file join $ltm_dir *.sv]] [list [file join $ltm_repo isp isp_capture_frontend.sv] [file join $ltm_repo isp ae ae_stats_raw10.sv] [file join $ltm_repo isp dpc dpc_dynamic_window.sv] [file join $ltm_repo isp dpc dpc_dynamic_kernel.sv] [file join $ltm_repo isp dpc dpc_dynamic_raw10.sv]]]
 set ltm_existing_sources [get_files -of_objects [get_filesets sources_1]]
 foreach ltm_source $ltm_sources {
  if {[lsearch -exact $ltm_existing_sources $ltm_source]<0} {add_files $ltm_source}

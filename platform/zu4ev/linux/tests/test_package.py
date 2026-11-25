@@ -3,18 +3,34 @@
 from pathlib import Path
 import os, subprocess, sys, tempfile
 root=Path(__file__).resolve().parents[1]
-with tempfile.TemporaryDirectory() as d:
- e=dict(os.environ,CONFIGFS_ROOT=d,SC130_TEST='1',USB_VID='0x1234',USB_PID='0x5678')
- subprocess.run(['sh',str(root/'setup_uvc.sh'),'prepare'],env=e,check=True)
- g=Path(d)/'sc130_platform';f=g/'functions/uvc.usb1';frame=f/'streaming/uncompressed/yuy2/1280x1024'
- assert (frame/'dwDefaultFrameInterval').read_text()=='83333\n'
- assert (frame/'dwFrameInterval').read_text()=='83333\n166667\n'
- assert (frame/'dwMaxVideoFrameBufferSize').read_text()=='2621440\n'
- assert (frame.parent/'guidFormat').read_bytes()==bytes.fromhex('5955593200001000800000aa00389b71')
- assert (f/'streaming/class/ss/h').is_symlink()
- assert not (f/'streaming/class/hs/h').exists() and not (f/'streaming/class/fs/h').exists()
- assert (g/'UDC').read_text()=='\n'
- print('TEST_PASS gadget SS-only YUY2 default120 unbound')
+for fmt in ['h264','yuy2']:
+ with tempfile.TemporaryDirectory() as d:
+  e=dict(os.environ,CONFIGFS_ROOT=d,SC130_TEST='1',USB_VID='0x1234',USB_PID='0x5678')
+  if fmt=='yuy2': e['UVC_FORMAT']=fmt
+  else: e.pop('UVC_FORMAT',None)  # production default must be H264
+  subprocess.run(['sh',str(root/'setup_uvc.sh'),'prepare'],env=e,check=True)
+  g=Path(d)/'sc130_platform';f=g/'functions/uvc.usb1'
+  frame=f/('streaming/framebased/h264/1280x1024' if fmt=='h264' else 'streaming/uncompressed/yuy2/1280x1024')
+  assert (frame/'dwDefaultFrameInterval').read_text()=='83333\n'
+  assert (frame/'dwFrameInterval').read_text()=='83333\n166667\n'
+  assert (frame/'dwMaxVideoFrameBufferSize').read_text()=='2621440\n'
+  assert (f/'streaming_maxpacket').read_text()==('1024\n' if fmt=='h264' else '3072\n')
+  assert (f/'streaming_maxburst').read_text()==('7\n' if fmt=='h264' else '15\n')
+  guid='4832363400001000800000aa00389b71' if fmt=='h264' else '5955593200001000800000aa00389b71'
+  assert (frame.parent/'guidFormat').read_bytes()==bytes.fromhex(guid)
+  if fmt=='h264':
+   # Kernel exposes this as RO=0; setup must never try to create/write it.
+   assert not (frame.parent/'bBitsPerPixel').exists()
+  else: assert (frame.parent/'bBitsPerPixel').read_text()=='16\n'
+  if fmt=='h264': assert (frame/'dwBytesPerLine').read_text()=='0\n'
+  color=f/('streaming/color_matching/default' if fmt=='h264' else 'streaming/color_matching/yuy2')
+  assert (color/'bMatrixCoefficients').read_text()=='1\n'
+  assert (frame.parent/'color_matching').is_symlink()==(fmt=='yuy2')
+  assert (f/'streaming/header/h'/fmt).is_symlink()
+  assert (f/'streaming/class/ss/h').is_symlink()
+  assert not (f/'streaming/class/hs/h').exists() and not (f/'streaming/class/fs/h').exists()
+  assert (g/'UDC').read_text()=='\n'
+  print('TEST_PASS gadget SS-only '+fmt+' default120 unbound')
 if len(sys.argv)>1:
  dt=sys.argv[1]
  def get(node,prop,t='x'):return subprocess.check_output(['fdtget','-t',t,dt,node,prop],text=True).strip()

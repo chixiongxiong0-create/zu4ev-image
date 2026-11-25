@@ -1,0 +1,8 @@
+owner=1 run=1 stop_request=0 stop_ack=0 quiescent=0 grant=1 busy=0 armed=1 fault=0 restart=0 boot_ready=1 scl=1 sda=1
+USB error kind=buffer count=1 ns=436266085110 errno=0 streaming=1 on=1 index=0 flags=0x4041 bytesused=0 sequence=0 source_seq=4155 state=0
+stats ns=719981148264 capture=86045 sent=8331 returned=8331 invalid=0 drop=21 usb_error=1 dp_flips=86023 seq=86723 dp_held=2 usb_buf_error=1 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+H264 encoded=4175 bytes=41784980 fps=120 bitrate=20000000
+stats ns=720981432213 capture=86165 sent=8331 returned=8331 invalid=0 drop=21 usb_error=1 dp_flips=86143 seq=86843 dp_held=2 usb_buf_error=1 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+H264 encoded=4175 bytes=41784980 fps=120 bitrate=20000000
+stats ns=721981709623 capture=86285 sent=8331 returned=8331 invalid=0 drop=21 usb_error=1 dp_flips=86263 seq=86963 dp_held=2 usb_buf_error=1 usb_owner_error=0 usb_dq_error=0 usb_event_error=0 usb_send_error=0
+H264 encoded=4175 bytes=41784980 fps=120 bitrate=20000000
