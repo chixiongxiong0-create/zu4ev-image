@@ -1,0 +1,52 @@
+name: Publish frozen ZU4EV baseline
+on:
+  push:
+    branches:
+      - codex/publish-zu4ev-final-20261125
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify hardware archive
+        working-directory: release-payload
+        run: sha256sum --check SHA256SUMS
+      - name: Publish release and assets
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const tag = 'zu4ev-final-20261125';
+            const source = '83ba2627fa73e4b6b8f0a58f88e10e751f42161b';
+            let release;
+            try {
+              release = (await github.rest.repos.getReleaseByTag({owner, repo, tag})).data;
+              if (!release.draft) throw new Error('Release already published; refusing to overwrite');
+            } catch (error) {
+              if (error.status !== 404) throw error;
+              release = (await github.rest.repos.createRelease({
+                owner, repo, tag_name: tag, target_commitish: source,
+                name: 'ZU4EV Dynamic DPC Final 2026-11-25',
+                body: fs.readFileSync('release-payload/RELEASE_NOTES.md', 'utf8'),
+                draft: true, prerelease: false
+              })).data;
+            }
+            for (const name of ['zu4ev-final-20261125-hardware.zip', 'SHA256SUMS']) {
+              if (release.assets.some(a => a.name === name)) continue;
+              await github.rest.repos.uploadReleaseAsset({
+                owner, repo, release_id: release.id, name,
+                headers: {'content-type': 'application/octet-stream'},
+                data: fs.readFileSync(path.join('release-payload', name))
+              });
+            }
+            const assets = (await github.rest.repos.listReleaseAssets({owner,repo,release_id:release.id})).data;
+            if (assets.length !== 2 || assets.some(a=>a.state !== 'uploaded')) throw new Error('Assets incomplete');
+            const ref = (await github.rest.git.getRef({owner,repo,ref:'tags/'+tag})).data;
+            if (ref.object.sha !== source) throw new Error('Release tag source mismatch');
+            await github.rest.repos.updateRelease({owner,repo,release_id:release.id,draft:false,make_latest:'true'});
+            core.notice(release.html_url);
