@@ -29,7 +29,7 @@ _start:
 5: j 5b
 .balign 256
 trap:
-  li t0,0x0023f83c
+  li t0,0x0020f83c
   li t1,0xbad0ae00
   sw t1,0(t0)
   csrr t1,mcause

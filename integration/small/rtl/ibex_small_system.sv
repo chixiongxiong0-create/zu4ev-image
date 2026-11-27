@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-module ibex_small_system #(parameter RomFile="", parameter RamPrimitive="block", parameter ProgramPrimitive="block", parameter int unsigned BootImageWords=65536, parameter bit EnableInputMailbox=1'b0, parameter bit EnableFirmwareLoader=1'b0, parameter bit EnablePeripherals=1'b0, parameter bit EnableIspAccess=1'b0, parameter bit EnableIspConfig=1'b0, parameter bit EnableCpuResetInput=1'b0, parameter bit EnableSensorControl=1'b0) (
+module ibex_small_system #(parameter RomFile="", parameter RamPrimitive="block", parameter ProgramPrimitive="block", parameter int unsigned BootImageWords=16384, parameter bit EnableInputMailbox=1'b0, parameter bit EnableFirmwareLoader=1'b0, parameter bit EnablePeripherals=1'b0, parameter bit EnableIspAccess=1'b0, parameter bit EnableIspConfig=1'b0, parameter bit EnableCpuResetInput=1'b0, parameter bit EnableSensorControl=1'b0) (
  input wire cpu_rst_ni,
  input wire sensor_owner_i,sensor_run_i,sensor_stop_i,
  input wire sensor_ps_scl_release_i,sensor_ps_sda_release_i,sensor_scl_i,sensor_sda_i,

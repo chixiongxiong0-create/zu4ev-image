@@ -11,6 +11,18 @@ ibex_small_mem #(.ProgramPrimitive("ultra"),.BootImageWords(1),.EnableFirmwareLo
 task write(input [31:0] a,input [31:0] v,input [3:0] s,input [1:0] expected); begin
 @(negedge clk); aw=a; awv=1; do @(posedge clk); while(!awr); @(negedge clk); awv=0; w=v; st=s; wv=1; do @(posedge clk); while(!wr); @(negedge clk); wv=0; wait(bv); if(bp!==expected) $fatal(1,"bad bresp"); repeat(2) @(negedge clk); if(!bv) $fatal(1,"bvalid dropped"); br=1; @(negedge clk); br=0; end endtask
 task read(input [31:0] a,input [31:0] expected,input [1:0] er); begin @(negedge clk); ar=a; arv=1; do @(posedge clk); while(!arr); @(negedge clk); arv=0; wait(rv); if(rp!==er || data!==expected) $fatal(1,"bad read %h %h",data,rp); repeat(2) @(negedge clk); if(!rv || data!==expected) $fatal(1,"rvalid dropped"); rr=1; @(negedge clk); rr=0; end endtask
-initial begin repeat(2) @(negedge clk); rst=1; wait(ready); @(negedge clk); if(cr) $fatal(1,"early release"); write('h100000,'h12345678,15,0); write('h100000,'h0000aa00,2,0); read('h100000,'h1234aa78,0); write(0,1,15,0); if(!cr) $fatal(1,"not running"); write('h100000,0,15,2); read('h100000,0,2); write(0,0,15,0); if(cr) $fatal(1,"not halted"); read('h100000,'h1234aa78,0); $display("LOADER_PASS"); $finish; end
+initial begin
+  repeat(2) @(negedge clk); rst=1;
+  repeat(32767) begin @(posedge clk); #1; if(ready) $fatal(1,"early boot ready"); end
+  @(posedge clk); #1; if(!ready) $fatal(1,"boot copy did not finish after 32768 cycles");
+  @(negedge clk); if(cr) $fatal(1,"early release");
+  read('h10fffc,0,0);
+  write('h100000,'h12345678,15,0); write('h100000,'h0000aa00,2,0); read('h100000,'h1234aa78,0);
+  write('h10fffc,'h89abcdef,15,0); read('h10fffc,'h89abcdef,0);
+  write('h110000,'hdeadbeef,15,2); read('h110000,0,2); read('h100000,'h1234aa78,0);
+  write(0,1,15,0); if(!cr) $fatal(1,"not running"); write('h100000,0,15,2); read('h100000,0,2);
+  write(0,0,15,0); if(cr) $fatal(1,"not halted"); read('h100000,'h1234aa78,0);
+  $display("LOADER_PASS 64KiB boundaries and 32768 boot cycles"); $finish;
+end
 initial begin #1500000; $fatal(1,"timeout"); end
 endmodule

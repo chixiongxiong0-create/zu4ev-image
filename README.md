@@ -1,6 +1,6 @@
 # Ibex ISP Master on Zynq UltraScale+
 
-当前定版为 **ZU4EV 2026-11-25**，包含动态 DPC 和默认关闭的两个 ILA。[定版入口与验证结果](docs/verification/2026-11-25-zu4ev-final.md)。本地构建统一保存在 `build/dpc/`。
+当前构建为 **ZU4EV 2026-11-26 Ibex 64 KiB**，包含动态 DPC、默认关闭的两个 ILA，以及各 64 KiB 的 Ibex 程序和数据存储。[构建及上板验证记录](docs/verification/2026-11-26-ibex-64k.md)。本地仅保留 `build/dpc_64k/`，历史版本见 [2026-11-25 已发布定版](https://github.com/chixiongxiong0-create/zu4ev-image/releases/tag/zu4ev-final-20261125)。
 
 基于 lowRISC Ibex 的 ISP/传感器 AE 主控工程，包含真实统计与中断、native I²C、安全所有权交接、DP/UVC DMA-BUF 共享和 QSPI 固化。
 
@@ -26,7 +26,7 @@
 
 当前成果包括：
 
-1. 可综合的 Ibex small 集成、256 KiB 程序存储和 256 KiB 数据存储、真实 ISP 访问、所有权隔离和传感器控制。
+1. 可综合的 Ibex small 集成、64 KiB 程序存储和 64 KiB 数据存储、真实 ISP 访问、所有权隔离和传感器控制。
 2. RV32 原生 AE 固件，含帧中断、统计一致性检查、写后读回、故障记录及安全停止。
 3. V4L2 DMA-BUF 图像缓冲共享：采集缓冲供 DP 与 USB 使用，避免默认路径中的 A53 整帧复制。
 4. 已完成综合、布局布线、bitstream/LTX 生成及实板 AE、DP、USB 基础吞吐测试。
@@ -44,7 +44,7 @@
 | 指令/配置 | RV32I、快速乘除、压缩指令；固件 `rv32imc_zicsr`；FF 寄存器堆 |
 | 关闭的可选特性 | ICache、PMP、SecureIbex、分支预测；当前板版未开启 OpenTitan 外设分支或 PS 动态固件 loader |
 | Ibex/lite 时钟 | 100 MHz；视频域沿用平台配置 |
-| 程序/数据存储 | 各 256 KiB，板版使用 UltraRAM；小 BRAM 保存紧凑启动镜像 |
+| 程序/数据存储 | 各 64 KiB，板版使用 UltraRAM；小 BRAM 保存紧凑启动镜像 |
 | 传感器接口 | 16 位寄存器地址、8 位数据的硬件 I²C；板级 ID 读回 `0130` |
 | AE 策略 | 目标 96，死区 ±8，曝光/增益限幅和四 FE 等待 |
 | 视频输出测试 | 1280×1024 YUY2，约 120 帧/秒，DP 与 UVC |
@@ -337,9 +337,9 @@ capture QBUF → DMA 写入 → DQBUF → 成为候选/最新帧
 
 | 访问者/地址 | 对象 |
 |---|---|
-| Ibex `0x00100000..0x0013ffff` | 256 KiB 程序存储；复位入口 `0x00100080` |
-| Ibex `0x00200000..0x0023ffff` | 256 KiB 数据 RAM；链接器为普通 data/bss/stack 分配前 240 KiB |
-| Ibex `0x0023e000` | 固定 mailbox；512 条日志环的实际地址由 ELF 符号定位，不是简单假定紧跟 mailbox |
+| Ibex `0x00100000..0x0010ffff` | 64 KiB 程序存储；复位入口 `0x00100080` |
+| Ibex `0x00200000..0x0020ffff` | 64 KiB 数据 RAM；链接器为普通 data/bss/stack 分配前 48 KiB |
+| Ibex `0x0020e000` | 固定 mailbox；512 条日志环的实际地址由 ELF 符号定位，不是简单假定紧跟 mailbox |
 | Ibex `0x50000000..0x5000007f` | 统计、FE/SOF、pending 快照窗口 |
 | Ibex `0x51000000..0x5100ffff` | 真实 ISP 配置窗口，保留平台 16 位偏移 |
 | PS `0xa0040000` | 同一 ISP 的 PS 基地址 |
@@ -367,7 +367,7 @@ capture QBUF → DMA 写入 → DQBUF → 成为候选/最新帧
 
 mailbox magic 为 `49414531`，状态为 WAITING=1、STARTING=2、RUNNING=3、STOPPED=4、FAULT=5。成功初始化签名 `600dae01` 仅证明 sensor/ISP 初始化完成；需要结合帧推进、实际寄存器更新和画面统计判断闭环行为。fault、mcause、mepc、session、changes 等用于现场分析。
 
-JTAG host 的受限 input mailbox 写入区为 `0x0023f000..0x0023f7ff`；`0x0023e000` 是 CPU 输出诊断区，二者不应混为一处控制输入。
+JTAG host 的受限 input mailbox 写入区为 `0x0020f000..0x0020f7ff`；`0x0020e000` 是 CPU 输出诊断区，二者不应混为一处控制输入。
 
 ## 7. 所有权、CDC、复位和实时行为
 

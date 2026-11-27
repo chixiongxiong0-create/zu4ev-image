@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-// 256 KiB ROM (two synchronous read ports) + 256 KiB byte-write RAM.
+// 64 KiB ROM (two synchronous read ports) + 64 KiB byte-write RAM.
 module ibex_small_mem #(
   parameter RomFile = "",
   parameter RamPrimitive = "block",
   parameter ProgramPrimitive = "block",
-  parameter int unsigned BootImageWords = 65536,
+  parameter int unsigned BootImageWords = 16384,
   parameter bit EnableInputMailbox = 1'b0,
   parameter bit EnableFirmwareLoader = 1'b0
 ) (
@@ -36,40 +36,40 @@ module ibex_small_mem #(
 );
   wire cpu_reset_n = memory_ready_o && (EnableFirmwareLoader ? cpu_rst_ni : rst_ni);
   wire loader_access = EnableFirmwareLoader && rst_ni && !cpu_reset_n && load_req_i &&
-      load_addr_i[31:18] == (32'h00100000 >> 18) && load_addr_i[1:0] == 0;
+      load_addr_i[31:16] == 16'h0010 && load_addr_i[1:0] == 0;
   // Port A is shared by instruction fetch and the halted firmware loader.
   wire rom_port_a_enable = loader_access || (instr_gnt_o && instr_rom);
-  wire [15:0] rom_port_a_addr = loader_access ? load_addr_i[17:2] : instr_addr_i[17:2];
+  wire [13:0] rom_port_a_addr = loader_access ? load_addr_i[15:2] : instr_addr_i[15:2];
   logic [31:0] instr_word, rom_word, ram_word;
   assign load_rdata_o = instr_word;
   logic data_rom_q;
-  wire instr_rom = instr_addr_i[31:18] == (32'h00100000 >> 18);
-  wire data_rom = data_addr_i[31:18] == (32'h00100000 >> 18);
-  wire data_ram = data_addr_i[31:18] == (32'h00200000 >> 18);
+  wire instr_rom = instr_addr_i[31:16] == 16'h0010;
+  wire data_rom = data_addr_i[31:16] == 16'h0010;
+  wire data_ram = data_addr_i[31:16] == 16'h0020;
   logic [31:0] axi_ram_word;
   logic axi_pending, axi_error_q, aw_seen, w_seen;
   logic [31:0] awaddr_q, wdata_q;
   logic [3:0] wstrb_q;
   // Host writes are restricted to the input half of the final 4 KiB mailbox.
   // CPU owns output half; all other host writes still return SLVERR.
-  wire write_legal = EnableInputMailbox && awaddr_q[31:11] == (32'h0023f000 >> 11)
+  wire write_legal = EnableInputMailbox && awaddr_q[31:11] == (32'h0020f000 >> 11)
                      && awaddr_q[1:0] == 0;
   wire write_collision = data_gnt_o && data_ram &&
-                         data_addr_i[17:2] == awaddr_q[17:2];
+                         data_addr_i[15:2] == awaddr_q[15:2];
   wire write_pair = aw_seen && w_seen && !s_axi_bvalid;
   wire write_exec = rst_ni && write_pair && !(write_legal && write_collision);
   wire write_ram = write_exec && write_legal;
-  wire axi_legal = s_axi_araddr[31:18] == (32'h00200000 >> 18) && s_axi_araddr[1:0] == 0;
+  wire axi_legal = s_axi_araddr[31:16] == 16'h0020 && s_axi_araddr[1:0] == 0;
   wire collision = data_gnt_o && data_ram && data_we_i &&
-                   data_addr_i[17:2] == s_axi_araddr[17:2];
+                   data_addr_i[15:2] == s_axi_araddr[15:2];
   wire axi_accept = s_axi_arvalid && s_axi_arready;
   assign s_axi_arready = rst_ni && !axi_pending && !s_axi_rvalid && !collision && !write_pair;
   assign s_axi_awready = rst_ni && !aw_seen && !s_axi_bvalid;
   assign s_axi_wready = rst_ni && !w_seen && !s_axi_bvalid;
 
   xpm_memory_tdpram #(
-    .MEMORY_SIZE(2097152), .MEMORY_PRIMITIVE(RamPrimitive), .CLOCKING_MODE("common_clock"),
-    .ADDR_WIDTH_A(16), .ADDR_WIDTH_B(16), .READ_DATA_WIDTH_A(32), .READ_DATA_WIDTH_B(32),
+    .MEMORY_SIZE(524288), .MEMORY_PRIMITIVE(RamPrimitive), .CLOCKING_MODE("common_clock"),
+    .ADDR_WIDTH_A(14), .ADDR_WIDTH_B(14), .READ_DATA_WIDTH_A(32), .READ_DATA_WIDTH_B(32),
     .WRITE_DATA_WIDTH_A(32), .WRITE_DATA_WIDTH_B(32),
     .BYTE_WRITE_WIDTH_A(8), .BYTE_WRITE_WIDTH_B(8),
     .READ_LATENCY_A(1), .READ_LATENCY_B(1),
@@ -79,7 +79,7 @@ module ibex_small_mem #(
   ) u_ram (
     .clka(clk_i), .clkb(clk_i), .rsta(!rst_ni), .rstb(!rst_ni),
     .ena(data_gnt_o && data_ram), .enb((axi_accept && axi_legal) || write_ram),
-    .addra(data_addr_i[17:2]), .addrb(write_ram ? awaddr_q[17:2] : s_axi_araddr[17:2]),
+    .addra(data_addr_i[15:2]), .addrb(write_ram ? awaddr_q[15:2] : s_axi_araddr[15:2]),
     .dina(data_wdata_i), .dinb(wdata_q),
     .wea(data_be_i & {4{data_we_i}}), .web(wstrb_q & {4{write_ram}}),
     .douta(ram_word), .doutb(axi_ram_word),
@@ -120,12 +120,12 @@ module ibex_small_mem #(
       // Every runtime word is written, with zero padding beyond the image.
       (* rom_style = "block" *) logic [31:0] boot_rom [0:BootImageWords-1];
       logic [31:0] boot_word;
-      logic [15:0] boot_addr;
+      logic [13:0] boot_addr;
       logic boot_write, boot_done;
       wire boot_busy = !boot_done;
       initial begin
-        if (BootImageWords < 1 || BootImageWords > 65536)
-          $fatal(1, "BootImageWords must be between 1 and 65536");
+        if (BootImageWords < 1 || BootImageWords > 16384)
+          $fatal(1, "BootImageWords must be between 1 and 16384");
         if (RomFile != "") $readmemh(RomFile, boot_rom, 0, BootImageWords-1);
       end
       always_ff @(posedge clk_i) begin
@@ -143,15 +143,15 @@ module ibex_small_mem #(
         end else if (!boot_done) begin
           boot_write <= !boot_write;
           if (boot_write) begin
-            if (boot_addr == 16'hffff) boot_done <= 1'b1;
-            else boot_addr <= boot_addr + 16'd1;
+            if (boot_addr == 14'h3fff) boot_done <= 1'b1;
+            else boot_addr <= boot_addr + 14'd1;
           end
         end
       end
       assign memory_ready_o = boot_done && rst_ni;
       xpm_memory_tdpram #(
-        .MEMORY_SIZE(2097152), .MEMORY_PRIMITIVE("ultra"), .CLOCKING_MODE("common_clock"),
-        .ADDR_WIDTH_A(16), .ADDR_WIDTH_B(16), .READ_DATA_WIDTH_A(32), .READ_DATA_WIDTH_B(32),
+        .MEMORY_SIZE(524288), .MEMORY_PRIMITIVE("ultra"), .CLOCKING_MODE("common_clock"),
+        .ADDR_WIDTH_A(14), .ADDR_WIDTH_B(14), .READ_DATA_WIDTH_A(32), .READ_DATA_WIDTH_B(32),
         .WRITE_DATA_WIDTH_A(32), .WRITE_DATA_WIDTH_B(32),
         .BYTE_WRITE_WIDTH_A(8), .BYTE_WRITE_WIDTH_B(8),
         .READ_LATENCY_A(1), .READ_LATENCY_B(1),
@@ -161,7 +161,7 @@ module ibex_small_mem #(
         .clka(clk_i), .clkb(clk_i), .rsta(!rst_ni), .rstb(!rst_ni),
         .ena((boot_busy && boot_write && rst_ni) || (!boot_busy && rom_port_a_enable)),
         .enb(data_gnt_o && data_rom && !data_we_i),
-        .addra(boot_busy ? boot_addr : rom_port_a_addr), .addrb(data_addr_i[17:2]),
+        .addra(boot_busy ? boot_addr : rom_port_a_addr), .addrb(data_addr_i[15:2]),
         .dina(boot_busy ? boot_word : load_wdata_i), .dinb(32'b0),
         .wea(boot_busy ? {4{boot_write && rst_ni}} : (load_be_i & {4{loader_access && load_we_i}})),
         .web(4'b0), .douta(instr_word), .doutb(rom_word),
@@ -171,7 +171,7 @@ module ibex_small_mem #(
         .sbiterra(), .dbiterra(), .sbiterrb(), .dbiterrb()
       );
     end else begin : gen_program_block
-      (* rom_style = "block" *) logic [31:0] rom [0:65535];
+      (* rom_style = "block" *) logic [31:0] rom [0:16383];
       assign memory_ready_o = rst_ni;
       initial if (RomFile != "") $readmemh(RomFile, rom);
       always_ff @(posedge clk_i) begin
@@ -184,7 +184,7 @@ module ibex_small_mem #(
           end
           instr_word <= rom[rom_port_a_addr];
         end
-        if (data_gnt_o && data_rom && !data_we_i) rom_word <= rom[data_addr_i[17:2]];
+        if (data_gnt_o && data_rom && !data_we_i) rom_word <= rom[data_addr_i[15:2]];
       end
     end
   endgenerate

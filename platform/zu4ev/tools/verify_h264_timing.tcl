@@ -1,6 +1,9 @@
 # Run in the opened routed design before accepting a deployment artifact.
-if {![info exists ::env(H264_REPORT_DIR)]} {error "Set H264_REPORT_DIR"}
-set h264_reports [file normalize $::env(H264_REPORT_DIR)]
+if {[info exists ::env(H264_REPORT_DIR)]} {
+    set h264_reports [file normalize $::env(H264_REPORT_DIR)]
+} else {
+    set h264_reports [file normalize [file join [pwd] route_reports]]
+}
 file mkdir $h264_reports
 set h264_timing [report_timing_summary -return_string -max_paths 1]
 set h264_file [open [file join $h264_reports timing_acceptance.rpt] w]

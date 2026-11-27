@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "ae_core.h"
-#define INPUT ((volatile uint32_t *)0x0023f000u)
-#define OUTPUT ((volatile uint32_t *)0x0023f800u)
+#define INPUT ((volatile uint32_t *)0x0020f000u)
+#define OUTPUT ((volatile uint32_t *)0x0020f800u)
 static inline void barrier(void) { __asm__ volatile("fence rw,rw" ::: "memory"); }
 static inline uint32_t cycles(void) { uint32_t n; __asm__ volatile("csrr %0,mcycle":"=r"(n)); return n; }
 void *memset(void *p,int v,unsigned n) { unsigned char *b=p; while(n--) *b++=(unsigned char)v; return p; }

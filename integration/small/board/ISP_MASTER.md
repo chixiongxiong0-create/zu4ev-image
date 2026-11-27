@@ -87,7 +87,7 @@ a two-byte exposure can leave a partial sensor value: the fresh session rereads
 both bytes; it does not assume the abandoned proposal applied. Full coordinated
 reset resets both the camera register crossing and the sensor controller.
 
-Native diagnostics live at Ibex RAM `0x0023e000`, with schema in
+Native diagnostics live at Ibex RAM `0x0020e000`, with schema in
 `software/ibex-ae/board.h`; the ELF locates the 512-record ring. `600dae01` means
 sensor/ISP initialization completed, not that AE converged. Advancing records,
 statistics and verified sensor changes are separate evidence. PS handoff

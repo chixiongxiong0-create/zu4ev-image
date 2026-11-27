@@ -20,12 +20,12 @@ foreach line [split [read $rom_handle] "\n"] {
   if {[string trimleft $word 0] ne ""} {set boot_words [llength $rom_words]}
 }
 close $rom_handle
-if {[llength $rom_words] > 65536 || [llength $rom_words] == 0} {error "ROM must contain 1..65536 words"}
+if {[llength $rom_words] > 16384 || [llength $rom_words] == 0} {error "ROM must contain 1..16384 words"}
 if {$boot_words == 0} {set boot_words 1}
 set rom_handle [open [file join $copy board_rom.mem] w]
 puts $rom_handle [join [lrange $rom_words 0 [expr {$boot_words-1}]] "\n"]
 close $rom_handle
-puts "IBEX_BOOT_IMAGE_WORDS $boot_words (zero padded at runtime to 65536)"
+puts "IBEX_BOOT_IMAGE_WORDS $boot_words (zero padded at runtime to 16384)"
 if {![file exists [file join $copy project camera.xpr]]} {
   if {[llength [get_projects -quiet]]} {close_project}
   source -notrace [file join $copy tools create_full_ae_project.tcl]

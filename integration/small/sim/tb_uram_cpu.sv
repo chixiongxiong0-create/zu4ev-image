@@ -4,7 +4,7 @@ module tb_uram_cpu;
   wire memory_done;
   assign memory_done = 1;
   always #5 clk=~clk;
-  ibex_small_system #(.RomFile("selftest.mem"), .RamPrimitive("ultra"), .ProgramPrimitive("ultra"), .BootImageWords(65536)) dut (
+  ibex_small_system #(.RomFile("selftest.mem"), .RamPrimitive("ultra"), .ProgramPrimitive("ultra"), .BootImageWords(16384)) dut (
     .clk_i(clk), .rst_ni(rst_n), .irq_software_i(1'b0), .irq_timer_i(1'b0),
     .irq_external_i(1'b0), .irq_fast_i(15'b0), .irq_nm_i(1'b0), .debug_req_i(1'b0),
     .s_axi_araddr(32'b0), .s_axi_awaddr(32'b0), .s_axi_wdata(32'b0),

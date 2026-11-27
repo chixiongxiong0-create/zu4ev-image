@@ -15,7 +15,7 @@ _start:
 1: j 1b
 .balign 256
 trap:
-  li t0, 0x0023f000
+  li t0, 0x0020f000
   csrr t1, mcause
   sw t1, 0x54(t0)
   csrr t1, mepc

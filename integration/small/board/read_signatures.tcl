@@ -6,7 +6,7 @@ reset_hw_axi $ax
 foreach {label address expected} {
   signature 00200010 600d600d
   first_word 00200000 abcd5578
-  last_word 0023fffc deadbeef
+  last_word 0020fffc deadbeef
 } {
   create_hw_axi_txn ibex_$label $ax -type READ -address $address -len 1
   run_hw_axi [get_hw_axi_txns ibex_$label]

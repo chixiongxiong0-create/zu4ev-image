@@ -1,5 +1,5 @@
-set repo {E:/workspace/AI_Projects/RISC_V/ibex}
-set platform {E:/workspace/AI_Projects/ZU4EV/zynq-zu4ev_platform}
+set repo [file normalize [file join [file dirname [info script]] ../../..]]
+set platform [file join $repo platform zu4ev]
 set base $repo/integration/small
 create_project -force ae_live_system $repo/build/ae_live_system -part xczu4ev-sfvc784-2-i
 set_property XPM_LIBRARIES {XPM_MEMORY} [current_project]
@@ -16,7 +16,7 @@ set_property include_dirs [list $repo/vendor/lowrisc_ip/ip/prim/rtl $repo/vendor
 set_property verilog_define {SYNTHESIS FPGA_XILINX} [current_fileset]
 add_files -fileset sim_1 $base/sim/tb_ae_live_system.sv
 add_files -fileset sim_1 $base/sim/sc130_sensor_model.sv
-add_files -fileset sim_1 $repo/build/ae_live_test_image_v2/ae_live.mem
+add_files -fileset sim_1 $repo/build/ibex_small/ae_live/ae_live.mem
 set_property file_type {Memory Initialization Files} [get_files ae_live.mem]
 set_property top tb_ae_live_system [get_filesets sim_1]
 set test_defines {SYNTHESIS FPGA_XILINX}

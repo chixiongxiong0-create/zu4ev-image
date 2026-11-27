@@ -1,6 +1,6 @@
 ENTRY(_start)
-MEMORY { ROM (rx) : ORIGIN = 0x00100000, LENGTH = 256K
-         RAM (rwx) : ORIGIN = 0x00200000, LENGTH = 248K }
+MEMORY { ROM (rx) : ORIGIN = 0x00100000, LENGTH = 64K
+         RAM (rwx) : ORIGIN = 0x00200000, LENGTH = 56K }
 SECTIONS {
  .vectors : { KEEP(*(.vectors)) } >ROM
  .text : { *(.text*) *(.rodata*) . = ALIGN(4); } >ROM

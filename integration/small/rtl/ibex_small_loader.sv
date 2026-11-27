@@ -4,7 +4,7 @@
 // Firmware persists across reset; software must finish readback before setting RUN.
 module ibex_small_loader #(
   parameter logic [31:0] FirmwareBase = 32'h00100000,
-  parameter logic [31:0] FirmwareBytes = 32'h00040000
+  parameter logic [31:0] FirmwareBytes = 32'h00010000
 ) (
   input logic clk_i, rst_ni,
   output logic cpu_rst_no,

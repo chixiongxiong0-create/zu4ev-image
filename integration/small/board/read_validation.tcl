@@ -20,7 +20,7 @@ namespace eval ibex_validation {
     variable master
     variable serial
     set name ibex_validation_[incr serial]
-    create_hw_axi_txn $name $master -type READ -address [format %08x [expr {0x0023f000+$offset}]] -len 1
+    create_hw_axi_txn $name $master -type READ -address [format %08x [expr {0x0020f000+$offset}]] -len 1
     set txn [get_hw_axi_txns $name]
     run_hw_axi $txn
     set value [get_property DATA $txn]
@@ -36,7 +36,7 @@ namespace eval ibex_validation {
     if {$enable ni {0 1}} {error "Video readiness must be 0 or 1"}
     set name ibex_validation_[incr serial]
     if {$enable} {set data 56494431} else {set data 00000000}
-    create_hw_axi_txn $name $master -type WRITE -address 0023f02c -data $data -len 1
+    create_hw_axi_txn $name $master -type WRITE -address 0020f02c -data $data -len 1
     set txn [get_hw_axi_txns $name]
     run_hw_axi $txn
     delete_hw_axi_txn $txn

@@ -7,7 +7,7 @@ _start:
   la t0, trap
   csrw mtvec, t0
   li s0, 0x00200000
-  li s1, 0x0023fffc
+  li s1, 0x0020fffc
   li t0, 0x12345678
   sw t0, 0(s0)
   lw t1, 0(s0)
@@ -46,7 +46,7 @@ _start:
   li s2, 0
   li s4, 6
   li s3, 5
-  li t0, 0x00240000
+  li t0, 0x00210000
   lw t1, 0(t0)
   li s3, 7
   li s4, 7

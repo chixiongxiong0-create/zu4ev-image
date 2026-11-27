@@ -167,24 +167,24 @@ reg [31:0] irq_count=0,fe_seen=0,stats_seen=0,mean_seen=0,records_seen=0;
 reg [31:0] accepted_address=0; reg accepted_write=0;
 always @(posedge clk) begin
  if(dut.data_gnt && dut.data_req) begin accepted_address<=dut.data_addr;accepted_write<=dut.data_we;end
- if(dut.data_gnt && dut.data_req && dut.data_addr==32'h23bfe4) $display("A1_STACK_REQUEST we=%b data=%h",dut.data_we,dut.data_wdata);
- if(dut.data_rvalid && accepted_address==32'h23bfe4) $display("A1_STACK_RESPONSE we=%b data=%h err=%b",accepted_write,dut.data_rdata,dut.data_err);
+ if(dut.data_gnt && dut.data_req && dut.data_addr==32'h20bfe4) $display("A1_STACK_REQUEST we=%b data=%h",dut.data_we,dut.data_wdata);
+ if(dut.data_rvalid && accepted_address==32'h20bfe4) $display("A1_STACK_RESPONSE we=%b data=%h err=%b",accepted_write,dut.data_rdata,dut.data_err);
  if(dut.data_rvalid && dut.data_err) $display("DATA_ERROR addr=%h write=%b sel=%d",accepted_address,accepted_write,dut.gen_isp.selected_q);
 end
 always @(posedge vc) if(m_wvalid && m_wready) writes<=writes+1;
 always @(negedge clk) if(dut.data_gnt && dut.data_we) begin
  case(dut.data_addr)
-  32'h23e00c:state=dut.data_wdata;
-  32'h23e014:fault=dut.data_wdata;
-  32'h23e018:irq_count=dut.data_wdata;
-  32'h23e01c:fe_seen=dut.data_wdata;
-  32'h23e024:stats_seen=dut.data_wdata;
-  32'h23e02c:mean_seen=dut.data_wdata;
-  32'h23e038:changes=dut.data_wdata;
-  32'h23e040:records_seen=dut.data_wdata;
-  32'h23e044:mcause=dut.data_wdata;
-  32'h23e048:mepc=dut.data_wdata;
-  32'h23e050:signature=dut.data_wdata;
+  32'h20e00c:state=dut.data_wdata;
+  32'h20e014:fault=dut.data_wdata;
+  32'h20e018:irq_count=dut.data_wdata;
+  32'h20e01c:fe_seen=dut.data_wdata;
+  32'h20e024:stats_seen=dut.data_wdata;
+  32'h20e02c:mean_seen=dut.data_wdata;
+  32'h20e038:changes=dut.data_wdata;
+  32'h20e040:records_seen=dut.data_wdata;
+  32'h20e044:mcause=dut.data_wdata;
+  32'h20e048:mepc=dut.data_wdata;
+  32'h20e050:signature=dut.data_wdata;
  endcase
 end
 task pswrite(input [15:0] a,input [31:0] value,input [1:0] expected);

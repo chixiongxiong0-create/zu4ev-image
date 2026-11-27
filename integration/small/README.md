@@ -1,4 +1,4 @@
-# Ibex small + 256 KiB ROM / 256 KiB RAM
+# Ibex small + 64 KiB ROM / 64 KiB RAM
 
 本目录提供独立的可综合 SystemVerilog 封装，以及 Vivado 2025.1 XSim 自检。
 上游 Ibex RTL 不作修改。small 参数逐项对应根目录 `ibex_configs.yaml`，
@@ -7,7 +7,7 @@
 ## 集成入口
 
 - `rtl/ibex_small_core.sv`：CPU 原生指令/数据接口封装。适合项目自行连接存储与总线。
-- `rtl/ibex_small_mem.sv`：256 KiB ROM 与 256 KiB RAM。
+- `rtl/ibex_small_mem.sv`：64 KiB ROM 与 64 KiB RAM。
 - `rtl/ibex_small_system.sv`：CPU 与上述存储的组合顶层，固定启动基址。
 - `sources.txt`：按依赖顺序列出的上游文件，路径相对于仓库根目录。
 
@@ -23,10 +23,10 @@ Vivado 自动依赖扫描无法完整识别该版本部分 package-import 模块
 
 | 地址范围 | 大小 | 访问 |
 | --- | --- | --- |
-| `0x00100000–0x0013FFFF` | 256 KiB | 指令读取、数据读取；写入返回错误 |
-| `0x00200000–0x0023FFFF` | 256 KiB | 数据读写，支持四个字节使能 |
+| `0x00100000–0x0010FFFF` | 64 KiB | 指令读取、数据读取；写入返回错误 |
+| `0x00200000–0x0020FFFF` | 64 KiB | 数据读写，支持四个字节使能 |
 
-CPU 从 `0x00100080` 执行。ROM 可通过 `RomFile` 设置完整的 65536 行、每行8位
+CPU 从 `0x00100080` 执行。ROM 可通过 `RomFile` 设置完整的 16384 行、每行8位
 十六进制字符的32位小端字镜像。程序常量可通过数据端读 ROM。
 RAM 不预先清零，软件必须初始化需要使用的区域；复位不改变 ROM/RAM 内容。
 存储模块按字索引访问，低两地址位由 CPU 的字节使能/LSU管理。
@@ -73,7 +73,7 @@ RAM复位后内容保持。20000周期超时即失败。
 
 ## Shared RAM / AXI4-Lite and AE shadow boundary
 
-RAM now uses Xilinx xpm_memory_tdpram (256 KiB). Port A serves Ibex; port B serves a 32-bit AXI4-Lite reader. Addresses remain absolute byte addresses 0x00200000..0x0023ffff. Only word-aligned reads succeed; invalid/unaligned reads return SLVERR and zero. Set Vivado XPM_LIBRARIES to XPM_MEMORY. CPU and AXI use the same clock/reset; external clock domains require an AXI Clock Converter and coordinated reset.
+RAM now uses Xilinx xpm_memory_tdpram (64 KiB). Port A serves Ibex; port B serves a 32-bit AXI4-Lite reader. Addresses remain absolute byte addresses 0x00200000..0x0020ffff. Only word-aligned reads succeed; invalid/unaligned reads return SLVERR and zero. Set Vivado XPM_LIBRARIES to XPM_MEMORY. CPU and AXI use the same clock/reset; external clock domains require an AXI Clock Converter and coordinated reset.
 
 One AXI read may be outstanding. RDATA/RRESP/RVALID hold under backpressure. AW and W may arrive independently in either order; each pair returns SLVERR, with BVALID held until BREADY. No AXI write changes RAM. PROT and WSTRB do not override write rejection; access protection belongs in the system interconnect. CPU writes and AXI reads of different words can run concurrently. A same-cycle same-word CPU write stalls AR acceptance, avoiding undefined cross-port collision values. Continuous CPU writes to that word can starve AXI. Reset discards pending AXI transactions without clearing RAM; masters must discard pre-reset transactions.
 

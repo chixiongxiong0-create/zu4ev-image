@@ -1,5 +1,5 @@
-set repo {E:/workspace/AI_Projects/RISC_V/ibex}
-set platform {E:/workspace/AI_Projects/ZU4EV/zynq-zu4ev_platform}
+set repo [file normalize [file join [file dirname [info script]] ../../..]]
+set platform [file join $repo platform zu4ev]
 set base $repo/integration/small
 create_project -force board_validation $repo/build/board_validation -part xczu4ev-sfvc784-2-i
 set_property XPM_LIBRARIES {XPM_MEMORY} [current_project]

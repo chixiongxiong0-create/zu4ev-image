@@ -1,5 +1,5 @@
 set repo [file normalize [file join [file dirname [info script]] ../../..]]
-set platform [file normalize [file join $repo ../../ZU4EV/zynq-zu4ev_platform]]
+set platform [file join $repo platform zu4ev]
 if {[info exists ::env(IBEX_PLATFORM)]} {set platform $::env(IBEX_PLATFORM)}
 set base $repo/integration/small
 file mkdir $repo/build/uram_verify
@@ -7,7 +7,7 @@ set image $repo/build/ibex_small/board_validation/board_validation.mem
 if {![file exists $image]} {error "Build board-validation firmware first: $image"}
 set f [open $image r]; set lines [split [string trim [read $f]] "\n"]; close $f
 set n 0; foreach line $lines {set word [string trim $line]; if {![regexp {^[0-9a-fA-F]{8}$} $word]} {error "Invalid firmware word"}; incr n; if {$word ne "00000000"} {set used $n}}
-if {![info exists used]} {set used 1}; if {$n > 65536} {error "Firmware too large"}
+if {![info exists used]} {set used 1}; if {$n > 16384} {error "Firmware too large"}
 set f [open $repo/build/uram_verify/board_validation_uram.mem w]; puts $f [join [lrange $lines 0 [expr {$used-1}]] "\n"]; close $f
 set f [open $base/sim/tb_board_validation.sv r]; set tb [read $f]; close $f
 set tb [string map [list {.RomFile("board_validation.mem"),} ".RomFile(\"board_validation_uram.mem\"),.ProgramPrimitive(\"ultra\"),.BootImageWords($used),"] $tb]

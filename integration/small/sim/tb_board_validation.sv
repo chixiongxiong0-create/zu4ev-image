@@ -161,10 +161,10 @@ always @(posedge vc) if(m_wvalid && m_wready) begin
 end
 always @(negedge clk) if(dut.data_gnt && dut.data_we) begin
  case(dut.data_addr)
-  32'h23f00c: state=dut.data_wdata; 32'h23f014: errors=dut.data_wdata;
-  32'h23f018: sig=dut.data_wdata; 32'h23f028: ack=dut.data_wdata;
-  32'h23f040: before_val=dut.data_wdata; 32'h23f04c: restored=dut.data_wdata;
-  32'h23f050: dirty=dut.data_wdata;
+  32'h20f00c: state=dut.data_wdata; 32'h20f014: errors=dut.data_wdata;
+  32'h20f018: sig=dut.data_wdata; 32'h20f028: ack=dut.data_wdata;
+  32'h20f040: before_val=dut.data_wdata; 32'h20f04c: restored=dut.data_wdata;
+  32'h20f050: dirty=dut.data_wdata;
  endcase
 end
 task host_write(input [31:0] a,input [31:0] d); begin
@@ -178,24 +178,24 @@ initial begin
  wait(state==1);
  for(integer i=0;i<140;i=i+1) begin @(negedge vc); valid=1; sof=i==0; eol=i%10==9; end
  @(negedge vc); valid=0;sof=0;eol=0; repeat(60) @(negedge vc);fe=1; @(negedge vc);fe=0;
- host_write(32'h23f02c,32'h56494431);
+ host_write(32'h20f02c,32'h56494431);
  wait(state==2); repeat(200) @(posedge clk);
  if(writes!=0) $fatal(1,"unexpected writes");
- host_write(32'h23f020,32'h54455354);host_write(32'h23f024,32'h11111111);
+ host_write(32'h20f020,32'h54455354);host_write(32'h20f024,32'h11111111);
  wait(ack==32'h11111111); if(state!==7 || (errors & 32'h20)==0 || writes!=0) $fatal(1,"ungranted command accepted");
  @(negedge clk); cpu_rst=0; repeat(10) @(negedge clk); cpu_rst=1;
- wait(state==1); host_write(32'h23f02c,32'h56494431); wait(state==2);
+ wait(state==1); host_write(32'h20f02c,32'h56494431); wait(state==2);
  @(negedge vc);ps_awaddr=16'hff00;ps_awvalid=1;ps_wdata=1;ps_wstrb=15;ps_wvalid=1;ps_bready=1;
  fork begin do @(posedge vc); while(!ps_awready); @(negedge vc);ps_awvalid=0; end
       begin do @(posedge vc); while(!ps_wready); @(negedge vc);ps_wvalid=0; end join
  do @(posedge vc); while(!ps_bvalid); if(ps_bresp!==0) $fatal(1,"grant failed");
  @(negedge vc);ps_bready=0;granted=1;
- wait(state==3);host_write(32'h23f020,32'h54455354);host_write(32'h23f024,32'h12345678);
+ wait(state==3);host_write(32'h20f020,32'h54455354);host_write(32'h20f024,32'h12345678);
  wait(ack==32'h12345678); repeat(5) @(posedge clk);
  if(state!==6 || sig!==32'h600dcf01 || errors!==0 || dirty!==0 || restored!==before_val || writes!==2)
   $fatal(1,"bad state=%h sig=%h errors=%h dirty=%h before=%h restored=%h writes=%d",state,sig,errors,dirty,before_val,restored,writes);
  $display("PASS unauthorized command and successful grant/restore");
- inject_fault=1; host_write(32'h23f024,32'h22222222); wait(ack==32'h22222222);
+ inject_fault=1; host_write(32'h20f024,32'h22222222); wait(ack==32'h22222222);
  if(state!==7 || dirty!==1 || (errors & 32'h10)==0 || writes!==4) $fatal(1,"restore fault not detected state=%h dirty=%h errors=%h writes=%d",state,dirty,errors,writes);
  $display("PASS corrupt restore readback detected");
  saved_before=before_val;

@@ -47,30 +47,30 @@ module tb_ibex_ae;
   $readmemh("vectors.mem",vectors);
   repeat(5) @(negedge clk);rst=1;
   polls=0;value=0;
-  while(value!==32'h41454942 && polls<2000) begin get(32'h0023f83c,value);polls++;end
+  while(value!==32'h41454942 && polls<2000) begin get(32'h0020f83c,value);polls++;end
   if(value!==32'h41454942) $fatal(1,"AE boot failed %h",value);
   put(32'h00200000,32'hdeadbeef,15,2,0);
-  put(32'h0023f800,32'hdeadbeef,15,2,1);
-  put(32'h0023f001,32'hdeadbeef,15,2,0);
-  put(32'h0023f100,32'h11223344,15,0,0);
-  put(32'h0023f100,32'haabbccdd,5,0,1);
-  get(32'h0023f100,value);if(value!==32'h11bb33dd) $fatal(1,"mailbox byte enables");
+  put(32'h0020f800,32'hdeadbeef,15,2,1);
+  put(32'h0020f001,32'hdeadbeef,15,2,0);
+  put(32'h0020f100,32'h11223344,15,0,0);
+  put(32'h0020f100,32'haabbccdd,5,0,1);
+  get(32'h0020f100,value);if(value!==32'h11bb33dd) $fatal(1,"mailbox byte enables");
   for(int c=0;c<AE_CASES;c++) begin
    version=2*(c+1);
-   put(32'h0023f000,version|1,15,0,0);
-   for(int j=1;j<=13;j++) put(32'h0023f000+4*j,vectors[c*23+j-1],15,0,j%2);
+   put(32'h0020f000,version|1,15,0,0);
+   for(int j=1;j<=13;j++) put(32'h0020f000+4*j,vectors[c*23+j-1],15,0,j%2);
    // Odd input version must never publish the corresponding even response.
-   get(32'h0023f800,value);if(value===version) $fatal(1,"consumed odd input");
-   put(32'h0023f000,version,15,0,1);
+   get(32'h0020f800,value);if(value===version) $fatal(1,"consumed odd input");
+   put(32'h0020f000,version,15,0,1);
    polls=0;value=0;
-   while(value!==version && polls<20000) begin get(32'h0023f800,value);polls++;end
+   while(value!==version && polls<20000) begin get(32'h0020f800,value);polls++;end
    if(value!==version) $fatal(1,"AE timeout case=%0d value=%h",c,value);
-   get(32'h0023f804,value);if(value!==vectors[c*23]) $fatal(1,"case ID mismatch");
+   get(32'h0020f804,value);if(value!==vectors[c*23]) $fatal(1,"case ID mismatch");
    for(int j=0;j<10;j++) begin
-    get(32'h0023f808+4*j,value);
+    get(32'h0020f808+4*j,value);
     if(value!==vectors[c*23+13+j]) $fatal(1,"AE case=%0d field=%0d actual=%h expected=%h",c,j,value,vectors[c*23+13+j]);
    end
-   get(32'h0023f800,value);if(value!==version) $fatal(1,"output snapshot changed");
+   get(32'h0020f800,value);if(value!==version) $fatal(1,"output snapshot changed");
    if(c%100==0) $display("IBEX_AE_PROGRESS %0d/%0d",c,AE_CASES);
   end
   wait(memory_done);
